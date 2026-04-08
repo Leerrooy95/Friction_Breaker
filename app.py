@@ -304,17 +304,48 @@ IMPORTANT:
 
     except json.JSONDecodeError as e:
         logger.error(f"Claude returned invalid JSON: {e}")
-        return {"error": f"Invalid JSON from Claude: {str(e)}", "raw_response": raw[:2000]}
+        return {"error": "Claude returned an invalid response. Please try again."}
     except anthropic.AuthenticationError:
         return {"error": "Invalid API key. Check your ANTHROPIC_API_KEY."}
     except anthropic.RateLimitError:
         return {"error": "Rate limited. Wait a moment and try again."}
     except Exception as e:
-        return {"error": f"Claude API error: {str(e)}"}
+        logger.error(f"Claude API error: {e}")
+        return {"error": "An error occurred during analysis. Please try again."}
 
 
 # ─── URL fetching ─────────────────────────────────────────────────────────────
 _BLOCKED_HOSTS = {"localhost", "127.0.0.1", "0.0.0.0", "[::1]", "metadata.google.internal", "169.254.169.254"}
+
+# Pre-compiled regex for HTML stripping (case-insensitive, non-backtracking)
+_RE_SCRIPT = re.compile(r"<script\b[^<]*(?:(?!</script>)<[^<]*)*</script>", re.IGNORECASE | re.DOTALL)
+_RE_STYLE = re.compile(r"<style\b[^<]*(?:(?!</style>)<[^<]*)*</style>", re.IGNORECASE | re.DOTALL)
+_RE_TAGS = re.compile(r"<[^>]+>")
+_RE_WHITESPACE = re.compile(r"\s+")
+
+
+def _is_private_host(hostname: str) -> bool:
+    """Check if a hostname resolves to a private/internal address."""
+    if hostname in _BLOCKED_HOSTS:
+        return True
+    if hostname.endswith(".local"):
+        return True
+    # Block common private IP ranges
+    for prefix in ("10.", "192.168.", "172.16.", "172.17.", "172.18.", "172.19.",
+                    "172.20.", "172.21.", "172.22.", "172.23.", "172.24.", "172.25.",
+                    "172.26.", "172.27.", "172.28.", "172.29.", "172.30.", "172.31."):
+        if hostname.startswith(prefix):
+            return True
+    return False
+
+
+def _strip_html(text: str) -> str:
+    """Remove HTML tags and normalize whitespace from text."""
+    text = _RE_SCRIPT.sub("", text)
+    text = _RE_STYLE.sub("", text)
+    text = _RE_TAGS.sub(" ", text)
+    text = _RE_WHITESPACE.sub(" ", text)
+    return text.strip()
 
 
 def fetch_url(url: str) -> str:
@@ -324,27 +355,17 @@ def fetch_url(url: str) -> str:
     try:
         parsed = urlparse(url)
         hostname = (parsed.hostname or "").lower()
-        is_private = (
-            hostname in _BLOCKED_HOSTS
-            or hostname.endswith(".local")
-            or hostname.startswith("10.")
-            or hostname.startswith("192.168.")
-        )
-        if is_private:
-            logger.warning(f"Blocked request to private/internal address: {hostname}")
+        if _is_private_host(hostname):
+            logger.warning("Blocked request to private/internal address")
             return ""
         if parsed.scheme not in ("http", "https"):
-            logger.warning(f"Blocked request with non-HTTP scheme: {parsed.scheme}")
+            logger.warning("Blocked request with non-HTTP scheme")
             return ""
         resp = req_lib.get(url, timeout=15, allow_redirects=False, headers={
             "User-Agent": "FrictionBreaker/1.0 (OSINT research tool)"
         })
         resp.raise_for_status()
-        text = resp.text
-        text = re.sub(r'<script[^>]*>.*?</script>', '', text, flags=re.DOTALL)
-        text = re.sub(r'<style[^>]*>.*?</style>', '', text, flags=re.DOTALL)
-        text = re.sub(r'<[^>]+>', ' ', text)
-        text = re.sub(r'\s+', ' ', text).strip()
+        text = _strip_html(resp.text)
         return text[:_MAX_INPUT_CHARS]
     except Exception as e:
         logger.warning(f"URL fetch failed: {e}")
@@ -430,7 +451,7 @@ def create_app():
         if url and not text:
             text = fetch_url(url)
             if not text:
-                return jsonify({"error": f"Could not fetch content from URL: {url}"}), 400
+                return jsonify({"error": "Could not fetch content from the provided URL."}), 400
 
         if not text:
             return jsonify({"error": "No text provided. Paste text or provide a URL."}), 400
