@@ -26,6 +26,10 @@ jobs:
 
       - name: Replace _AI_CONTEXT_INDEX
         run: |
+          if [ ! -d source/_AI_CONTEXT_INDEX ]; then
+            echo "Error: _AI_CONTEXT_INDEX not found in source repository." >&2
+            exit 1
+          fi
           rm -rf target/_AI_CONTEXT_INDEX
           cp -r source/_AI_CONTEXT_INDEX target/_AI_CONTEXT_INDEX
 
