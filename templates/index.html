@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friction Breaker — Countermeasure Engine</title>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d;
+            --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff;
+            --green: #3fb950; --yellow: #d29922; --red: #f85149;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1 { font-size: 1.5em; margin-bottom: 4px; }
+        .subtitle { color: var(--muted); font-size: 0.9em; margin-bottom: 20px; }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-size: 0.85em; color: var(--muted); margin-bottom: 4px; }
+        input, textarea { width: 100%; padding: 10px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: inherit; font-size: 0.95em; }
+        input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+        textarea { min-height: 200px; resize: vertical; }
+        .api-key-input { font-family: monospace; }
+        .btn { display: inline-block; padding: 10px 24px; background: var(--accent); color: var(--bg); border: none; border-radius: 6px; font-size: 0.95em; font-weight: 600; cursor: pointer; }
+        .btn:hover { opacity: 0.9; }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .or-divider { text-align: center; color: var(--muted); margin: 8px 0; font-size: 0.85em; }
+        #status { margin-top: 12px; font-size: 0.85em; color: var(--muted); }
+        #results { margin-top: 24px; display: none; }
+        .result-section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+        .result-section h2 { font-size: 1.1em; margin-bottom: 12px; color: var(--accent); }
+        .result-section h3 { font-size: 0.95em; margin: 12px 0 6px; }
+        .mechanism-card { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 10px; }
+        .mechanism-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .mechanism-id { font-family: monospace; font-size: 0.8em; color: var(--accent); }
+        .confidence-high { color: var(--red); font-weight: 600; }
+        .confidence-medium { color: var(--yellow); font-weight: 600; }
+        .confidence-low { color: var(--green); font-weight: 600; }
+        .durability-bar { height: 6px; background: var(--border); border-radius: 3px; margin: 4px 0; }
+        .durability-fill { height: 100%; border-radius: 3px; }
+        .countermeasure { background: #0d2818; border-left: 3px solid var(--green); padding: 8px 12px; margin: 6px 0; border-radius: 0 4px 4px 0; font-size: 0.9em; }
+        .countermeasure .who { color: var(--green); font-weight: 600; font-size: 0.85em; }
+        .translator { font-size: 1em; line-height: 1.8; white-space: pre-wrap; }
+        .meta { font-size: 0.8em; color: var(--muted); margin-top: 8px; }
+        .error { color: var(--red); background: #2d1013; border: 1px solid var(--red); padding: 12px; border-radius: 6px; }
+        .new-mechanism { background: #2d2000; border-left: 3px solid var(--yellow); padding: 8px 12px; margin: 6px 0; border-radius: 0 4px 4px 0; }
+        footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8em; text-align: center; }
+        a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🔧 Friction Breaker</h1>
+    <p class="subtitle">Mechanism Classifier + Countermeasure Engine — Powered by <a href="https://github.com/Leerrooy95/The_Regulated_Friction_Project" target="_blank">The Regulated Friction Project</a></p>
+
+    <div class="form-group">
+        <label for="apiKey">ANTHROPIC_API_KEY (BYOK — your key stays in your browser)</label>
+        <input type="password" id="apiKey" class="api-key-input" placeholder="sk-ant-api03-..." autocomplete="off">
+    </div>
+
+    <div class="form-group">
+        <label for="inputText">Paste text (news article, bill text, executive order, regulatory action)</label>
+        <textarea id="inputText" placeholder="Paste the text you want analyzed here..."></textarea>
+    </div>
+
+    <div class="or-divider">— or —</div>
+
+    <div class="form-group">
+        <label for="inputUrl">Fetch from URL</label>
+        <input type="url" id="inputUrl" placeholder="https://example.com/article">
+    </div>
+
+    <button class="btn" id="analyzeBtn" onclick="runAnalysis()">Analyze → Identify Mechanisms → Generate Countermeasures</button>
+    <div id="status"></div>
+
+    <div id="results"></div>
+
+    <footer>
+        Open source. No data stored. Your API key is sent directly to Anthropic — it never touches our servers.<br>
+        Built by <a href="https://github.com/Leerrooy95" target="_blank">Austin Smith</a> · <a href="https://github.com/Leerrooy95/The_Regulated_Friction_Project" target="_blank">Source Repository</a>
+    </footer>
+</div>
+
+<script>
+async function runAnalysis() {
+    const btn = document.getElementById('analyzeBtn');
+    const status = document.getElementById('status');
+    const resultsDiv = document.getElementById('results');
+
+    const apiKey = document.getElementById('apiKey').value.trim();
+    const text = document.getElementById('inputText').value.trim();
+    const url = document.getElementById('inputUrl').value.trim();
+
+    if (!apiKey) { status.innerHTML = '<span style="color:var(--red)">Enter your ANTHROPIC_API_KEY above.</span>'; return; }
+    if (!text && !url) { status.innerHTML = '<span style="color:var(--red)">Paste text or provide a URL.</span>'; return; }
+
+    btn.disabled = true;
+    status.textContent = 'Extracting entities (GLiNER2, local)... then sending to Claude for analysis...';
+    resultsDiv.style.display = 'none';
+
+    try {
+        const resp = await fetch('/analyze', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ api_key: apiKey, text: text, url: url })
+        });
+        const data = await resp.json();
+
+        if (data.error) {
+            resultsDiv.innerHTML = `<div class="error">${data.error}</div>`;
+            resultsDiv.style.display = 'block';
+            status.textContent = '';
+            btn.disabled = false;
+            return;
+        }
+
+        renderResults(data);
+        resultsDiv.style.display = 'block';
+        status.textContent = `Done in ${data._meta?.processing_time_seconds || '?'}s · ${data._meta?.gliner_entities_extracted || 0} entities extracted · ${data.mechanisms_identified?.length || 0} mechanisms identified`;
+    } catch (e) {
+        resultsDiv.innerHTML = `<div class="error">Request failed: ${e.message}</div>`;
+        resultsDiv.style.display = 'block';
+        status.textContent = '';
+    }
+    btn.disabled = false;
+}
+
+function renderResults(data) {
+    const r = document.getElementById('results');
+    let html = '';
+
+    // Political Translator Summary
+    if (data.political_translator_summary) {
+        html += `<div class="result-section"><h2>📋 What This Means (Plain English)</h2><div class="translator">${escHtml(data.political_translator_summary)}</div></div>`;
+    }
+
+    // Mechanisms identified
+    if (data.mechanisms_identified?.length) {
+        html += '<div class="result-section"><h2>🔍 Mechanisms Identified</h2>';
+        for (const m of data.mechanisms_identified) {
+            const confClass = `confidence-${(m.confidence || 'low').toLowerCase()}`;
+            const durPct = ((m.durability || 5) / 10 * 100);
+            const durColor = durPct > 70 ? 'var(--red)' : durPct > 40 ? 'var(--yellow)' : 'var(--green)';
+            html += `<div class="mechanism-card">
+                <div class="mechanism-header">
+                    <span class="mechanism-id">${escHtml(m.taxonomy_id || '?')}</span>
+                    <span class="${confClass}">${escHtml(m.confidence || '')} confidence</span>
+                </div>
+                <strong>${escHtml(m.name || '')}</strong>
+                <p style="font-size:0.9em;color:var(--muted);margin:4px 0">${escHtml(m.what_it_does || '')}</p>
+                <p style="font-size:0.85em;margin:4px 0"><em>Evidence: ${escHtml(m.evidence || '')}</em></p>
+                <div style="font-size:0.8em;color:var(--muted)">Durability: ${m.durability || '?'}/10</div>
+                <div class="durability-bar"><div class="durability-fill" style="width:${durPct}%;background:${durColor}"></div></div>
+                <h3 style="color:var(--green)">Countermeasures:</h3>`;
+            for (const c of (m.countermeasures || [])) {
+                html += `<div class="countermeasure">
+                    <strong>${escHtml(c.action || '')}</strong> <span style="font-size:0.8em">(durability: ${c.durability_score || '?'}/10, feasibility: ${c.feasibility || '?'})</span>
+                    <div class="who">Who can do it: ${escHtml(c.who_can_do_it || '?')}</div>
+                    <div>${escHtml(c.plain_english || '')}</div>
+                </div>`;
+            }
+            html += '</div>';
+        }
+        html += '</div>';
+    }
+
+    // New mechanisms detected
+    if (data.new_mechanisms_detected?.length) {
+        html += '<div class="result-section"><h2>⚠️ New Mechanisms Detected (Not in Taxonomy)</h2>';
+        for (const nm of data.new_mechanisms_detected) {
+            html += `<div class="new-mechanism">
+                <strong>${escHtml(nm.name || '')}</strong> <span style="font-size:0.8em">(suggested category: ${escHtml(nm.suggested_category || '?')}, durability: ${nm.suggested_durability || '?'}/10)</span>
+                <p style="font-size:0.9em;margin:4px 0">${escHtml(nm.description || '')}</p>
+                <p style="font-size:0.9em">${escHtml(nm.why_it_matters || '')}</p>
+            </div>`;
+        }
+        html += '</div>';
+    }
+
+    // Meta
+    if (data._meta) {
+        html += `<div class="meta">
+            GLiNER entities: ${data._meta.gliner_entities_extracted || 0} ·
+            Taxonomy: ${data._meta.taxonomy_mechanisms_available || 0} mechanisms ·
+            Model: ${data._meta.model || '?'} ·
+            Time: ${data._meta.processing_time_seconds || '?'}s
+        </div>`;
+    }
+
+    r.innerHTML = html;
+}
+
+function escHtml(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+</script>
+</body>
+</html>

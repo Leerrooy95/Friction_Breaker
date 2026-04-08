@@ -1,154 +1,199 @@
-# Mechanism Classifier Taxonomy — Documentation
+# 🔧 Friction Breaker
 
-**Version**: 1.0.0
-**Source**: The Regulated Friction Project (v11.9)
-**Generated**: April 4, 2026
-**Authors**: Austin Smith + Claude (Opus 4.6)
+**Mechanism Classifier + Countermeasure Engine**
 
----
+An open-source tool that identifies legal, regulatory, and procedural mechanisms used to bypass democratic accountability — and generates ranked countermeasures that citizens, legislators, and courts can implement.
 
-## What This Is
+Powered by [The Regulated Friction Project](https://github.com/Leerrooy95/The_Regulated_Friction_Project).
 
-This taxonomy is the foundation layer for the countermeasure engine. It extracts every legal, regulatory, personnel, financial, and procedural mechanism documented in The Regulated Friction Project and classifies them into a machine-queryable structure.
-
-**Total mechanisms cataloged**: 54 (v2.1 — comprehensive extraction, all gaps addressed)
-**Categories**: 8
+[![CI](https://github.com/Leerrooy95/Friction_Breaker/actions/workflows/ci.yml/badge.svg)](https://github.com/Leerrooy95/Friction_Breaker/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
 
-## Category Summary
+## What It Does
 
-| ID | Category | Count | Description |
-|----|----------|-------|-------------|
-| A | Legislative Architecture | 12 | Auto-approvals, iterative loops, emergency clauses, bespoke carve-outs, competitor exclusions, federal oversight bypasses, interstate incentive race, state preemption of local authority |
-| B | Regulatory Capture and Override | 6 | Forced approval despite adverse findings, beneficial ownership concealment, 13F gaps, OCC preemption, PILOT agreements, ratepayer cost shift without binding demand |
-| C | Personnel Cycling and Lock-In | 6 | Pre-accountability firings, acting official installation, civil service conversion, wartime purges, temporary entity absorption, impoundment |
-| D | Democratic Check Suppression | 9 | Ballot initiative restrictions, constitutional protection reversal, clock-running litigation, coercion template, theological access architecture, curriculum pipeline, compliance enforcement, CUFI lobbying, CREC/Pentagon access |
-| E | Information Control | 7 | Selective redaction, witness support defunding, media acquisition, FaaS protest supply chain, cyber-kinetic operations, information archive as deterrent, calendar anchor exploitation |
-| F | Surveillance / Data Centralization | 4 | FISA Section 702 coupling, backdoor US person queries, ECSP definition expansion, PCLOB oversight gutting |
-| G | Capital Opacity | 6 | Emoluments bypass via stablecoin, revolving door nexus, mBridge CBDC settlement, dual-alignment bridge state, OPEC+ leverage, BRI vacuum capture |
-| H | Judicial / Enforcement Architecture | 4 | Invalid appointments, supply chain risk designation, subpoena non-enforcement, NPA leverage capture |
+1. **You paste text** — a news article, executive order, bill text, regulatory action, or anything else.
+2. **GLiNER2 extracts entities** locally (zero-cost, no API needed, runs on CPU).
+3. **The Mechanism Classifier** matches what it finds against a taxonomy of 54 documented mechanisms extracted from The Regulated Friction Project.
+4. **Claude generates countermeasure analysis** — ranked by durability (hardest to reverse first) — in plain English anyone can understand.
+
+**No data is stored on any server. Your API key goes directly to Anthropic. This tool is fully open source.**
 
 ---
 
-## How The Taxonomy Works
+## Quick Start
 
-Each mechanism entry contains:
+### Prerequisites
 
-```
-id              — Unique identifier (e.g., A-01)
-name            — Human-readable name
-category        — Which of the 8 categories
-jurisdiction    — federal / state / both
-mechanism_type  — legislative / regulatory / personnel / judicial / executive / financial / procedural / institutional / information_control / surveillance
-description     — What it does
-how_it_works    — Step-by-step operational sequence
-durability      — 1-10 scale (10 = hardest to reverse)
-reversal_pathways — Array of structural countermeasures
-repo_references — Where in the Regulated Friction Project this is documented
-real_examples   — Verified real-world instances
-status          — enacted / proposed / pending / active / challenged / active_threat
-```
+- Python 3.10 or later
+- An [Anthropic API key](https://console.anthropic.com/) (for the Claude analysis step)
 
----
+### Installation
 
-## Durability Scale
+```bash
+# Clone
+git clone https://github.com/Leerrooy95/Friction_Breaker.git
+cd Friction_Breaker
 
-The durability score (1-10) measures how resistant a mechanism is to reversal once deployed:
+# Create a virtual environment (recommended)
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-| Score | Meaning | Example |
-|-------|---------|---------|
-| 1-2 | **Tactical** — one-time use, easily reversed | Clock-running litigation, single personnel action |
-| 3-4 | **Operational** — reversible but requires organized effort | Funding freezes, selective redaction, acting official installation |
-| 5-6 | **Structural** — requires legislative action or court order | State statutes (Acts 373/548), 13F gaps, Schedule F rulemaking |
-| 7-8 | **Institutional** — requires constitutional change, major legislation, or reversing entrenched precedent | Edgmon reversal, OCC charters, DOGE absorption into OPM, FISA, enacted CLARITY Act |
-| 9-10 | **Constitutional** — requires amendment or fundamental systemic reform | (None currently at this level — but some mechanisms, if unchallenged for years, approach it) |
+# Install dependencies
+pip install -r requirements.txt
 
----
+# Set your API key
+cp .env.example .env
+# Edit .env → add your ANTHROPIC_API_KEY
 
-## Countermeasure Durability Spectrum
-
-The reversal_pathways for each mechanism are themselves ranked by durability — the most durable countermeasures are the hardest to undo:
-
-| Countermeasure Type | Durability | Time to Implement | Difficulty |
-|--------------------|------------|-------------------|------------|
-| **Constitutional amendment** | 10 | Years | Requires 2/3 Congress + 3/4 states |
-| **Treaty obligation** | 9 | Months-years | Requires Senate 2/3 to withdraw |
-| **Federal statute with sunset-proof design** | 8 | Months | Requires congressional majority + presidential signature |
-| **State constitutional amendment** | 7 | Months | Requires ballot initiative or legislative referral |
-| **Federal court precedent** | 7 | Months-years | Requires litigation + favorable ruling |
-| **Independent IG / commission with removal-for-cause** | 6 | Months | Requires legislative creation |
-| **State statute** | 5 | Months | Requires state legislative majority |
-| **Federal rulemaking** | 5 | 1-2 years | Requires agency action + public comment |
-| **Executive order** | 3 | Days | Requires presidential signature; reversible by next president |
-| **Public documentation / pattern recognition** | 2 | Immediate | Requires publication; effectiveness depends on uptake |
-
----
-
-## How This Feeds Into The Countermeasure Engine
-
-### Input Flow
-```
-New event (from Brave Search API / Federal Register / Congressional Record)
-    ↓
-Mechanism Classifier (this taxonomy)
-    ↓
-Identifies: "This is a [Category A / B / C / D / E / F / G / H] mechanism"
-    ↓
-Identifies: "Closest match: [specific mechanism ID]"
-    ↓
-Identifies: "Durability score: [X/10]"
-    ↓
-Retrieves: "Reversal pathways for this mechanism type"
+# Run
+python app.py
+# Open http://localhost:5000
 ```
 
-### Output Flow
-```
-Reversal pathways retrieved
-    ↓
-LLM analysis (Claude API, user's key)
-    ↓
-Contextualizes: "For THIS specific instance, the most effective countermeasure is..."
-    ↓
-Ranks by: durability, feasibility, time-to-implement, political viability
-    ↓
-Outputs: Plain-English report (Political Translator format)
+### CLI Mode
+
+```bash
+# Analyze text directly
+python app.py --analyze "The Arkansas PSC approved Entergy's application despite finding the cost not reasonable..."
+
+# Analyze a URL
+python app.py --url "https://example.com/article-about-new-regulation"
+
+# Custom port
+python app.py --port 8080
 ```
 
 ---
 
-## Taxonomy Completeness
+## BYOK (Bring Your Own Key)
 
-v2.1 addresses all identified gaps. The taxonomy is comprehensive as of April 4, 2026.
+This tool requires an **Anthropic API key** for the countermeasure analysis step. You can:
 
-**Completed areas:**
-- ✅ Legislative architecture (12 mechanisms) — Arkansas model + interstate replication + state preemption
-- ✅ Regulatory capture (6 mechanisms) — including ratepayer cost shift pattern across 18+ states
-- ✅ Personnel cycling (6 mechanisms) — including impoundment as executive spending override
-- ✅ Democratic check suppression (9 mechanisms) — including full religious layer
-- ✅ Information control (7 mechanisms) — including FaaS, cyber-kinetic, information deterrent, calendar anchor exploitation
-- ✅ Surveillance (4 mechanisms) — full FISA 702 mechanics including backdoor searches, ECSP expansion, PCLOB gutting
-- ✅ Capital opacity (6 mechanisms) — including mBridge, UAE dual-alignment, OPEC+, BRI vacuum capture
-- ✅ Judicial architecture (4 mechanisms) — including NPA leverage capture
+1. Enter it in the web interface (stays in your browser, sent directly to Anthropic)
+2. Set it in `.env` as `ANTHROPIC_API_KEY=sk-ant-...`
+3. Export it: `export ANTHROPIC_API_KEY=sk-ant-...`
 
-**Future growth**: The taxonomy will expand as the tool detects new mechanisms via `new_mechanisms_detected` in analysis outputs. Each new mechanism flagged by Claude should be verified and added to the taxonomy JSON.
+GLiNER2 runs entirely locally — no API key needed for entity extraction.
 
 ---
 
-## File Locations
+## How It Works
 
-| File | Location |
-|------|----------|
-| Taxonomy JSON | `mechanism_classifier_taxonomy.json` |
-| This documentation | `MECHANISM_CLASSIFIER_README.md` |
-| Source repository | `github.com/Leerrooy95/The_Regulated_Friction_Project` |
+```
+New text input (news article, executive order, legislative text, etc.)
+    ↓
+GLiNER2 entity extraction (local, zero-cost)
+    ↓
+Mechanism Classifier (matches against 54-mechanism taxonomy)
+    ↓
+Claude API analysis (user's own key)
+    ↓
+Countermeasure Report (plain English, ranked by durability)
+```
+
+### The Mechanism Taxonomy
+
+Each mechanism in the taxonomy has:
+
+| Field               | Description                                                              |
+|---------------------|--------------------------------------------------------------------------|
+| **ID**              | Unique identifier (e.g., A-01)                                          |
+| **Category**        | Legislative Architecture, Regulatory Capture, Personnel Cycling, etc.   |
+| **Durability**      | 1–10 score (how resistant to reversal)                                  |
+| **Reversal Pathways** | Specific countermeasures ranked by durability                         |
+| **Real Examples**   | Verified instances from the research                                    |
+
+**8 categories, 54 mechanisms.** See [`MECHANISM_CLASSIFIER_README.md`](MECHANISM_CLASSIFIER_README.md) for full documentation.
+
+---
+
+## Stack
+
+| Component              | What It Does                                          | Cost  |
+|------------------------|-------------------------------------------------------|-------|
+| **GLiNER2**            | Local entity extraction (205M params, runs on CPU)    | Free  |
+| **Claude API**         | Mechanism classification + countermeasure analysis     | BYOK  |
+| **Flask**              | Web interface + REST API                               | Free  |
+| **Mechanism Taxonomy** | 54 mechanisms from The Regulated Friction Project      | Free  |
+
+---
+
+## Project Structure
+
+```
+Friction_Breaker/
+├── app.py                              # Flask app + CLI + analysis pipeline
+├── mechanism_classifier_taxonomy.json  # Mechanism taxonomy (54 mechanisms, 8 categories)
+├── MECHANISM_CLASSIFIER_README.md      # Taxonomy documentation
+├── templates/
+│   └── index.html                      # Web UI
+├── _AI_CONTEXT_INDEX/                  # Background knowledge base
+├── output/                             # Analysis results (auto-created, gitignored)
+├── tests/                              # Test suite
+├── requirements.txt                    # Python dependencies
+├── pyproject.toml                      # Modern Python project metadata
+├── .env.example                        # API key template
+├── .github/
+│   ├── workflows/ci.yml                # CI pipeline (lint + test + security audit)
+│   └── dependabot.yml                  # Automated dependency updates
+├── CONTRIBUTING.md                     # How to contribute
+├── CODE_OF_CONDUCT.md                  # Community standards
+├── SECURITY.md                         # Vulnerability reporting policy
+├── LICENSE                             # MIT License
+└── README.md                           # This file
+```
+
+---
+
+## Syncing the Knowledge Base
+
+The `_AI_CONTEXT_INDEX/` directory contains background research context from [The Regulated Friction Project](https://github.com/Leerrooy95/The_Regulated_Friction_Project). To update:
+
+```bash
+git clone https://github.com/Leerrooy95/The_Regulated_Friction_Project.git /tmp/rfp
+cp /tmp/rfp/_AI_CONTEXT_INDEX/*.md _AI_CONTEXT_INDEX/
+```
+
+---
+
+## Development
+
+```bash
+# Install dev dependencies
+pip install -e ".[dev]"
+
+# Run the linter
+ruff check .
+
+# Run tests
+pytest
+
+# Start development server
+python app.py
+```
+
+---
+
+## Contributing
+
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+The most impactful contribution is **adding new mechanisms to the taxonomy**. The tool itself flags mechanisms it detects that aren't in the taxonomy (`new_mechanisms_detected` in analysis outputs) — these are candidates for addition.
+
+---
+
+## Security
+
+See [SECURITY.md](SECURITY.md) for the vulnerability reporting policy and the project's security design principles.
 
 ---
 
 ## License
 
-Open source — same license as The Regulated Friction Project repository.
+[MIT License](LICENSE) — same as [The Regulated Friction Project](https://github.com/Leerrooy95/The_Regulated_Friction_Project).
 
 ---
 
-*This taxonomy was built by systematically reading every mechanism-bearing file in the _AI_CONTEXT_INDEX, DAILY_REPORTS, 13_State_and_County_Analysis, 10_Real-Time_Updates_and_Tasks, 08_How_It's_Possible, 14_Files, and Project_Trident directories of the source repository.*
+Built by [Austin Smith](https://github.com/Leerrooy95) · Leroy's Web Development

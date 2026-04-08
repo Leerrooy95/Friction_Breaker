@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=67.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "friction-breaker"
+version = "1.0.0"
+description = "Mechanism Classifier + Countermeasure Engine — identifies legal, regulatory, and procedural mechanisms that bypass democratic accountability and generates ranked countermeasures."
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Austin Smith", email = "leerrooy95@users.noreply.github.com"},
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+    "flask>=3.0",
+    "anthropic>=0.39.0",
+    "gliner>=0.2.20",
+    "python-dotenv>=1.0",
+    "requests>=2.32",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.4",
+]
+
+[project.urls]
+Homepage = "https://github.com/Leerrooy95/Friction_Breaker"
+Repository = "https://github.com/Leerrooy95/Friction_Breaker"
+"Parent Project" = "https://github.com/Leerrooy95/The_Regulated_Friction_Project"
+Issues = "https://github.com/Leerrooy95/Friction_Breaker/issues"
+
+[project.scripts]
+friction-breaker = "app:create_app"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "SIM"]
+ignore = [
+    "E501",   # Long lines in prompt templates are acceptable
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
