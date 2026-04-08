@@ -123,8 +123,7 @@ def load_context_index() -> str:
     if _cached_context_index is not None:
         return _cached_context_index
     if not _CONTEXT_DIR.exists():
-        _cached_context_index = ""
-        return _cached_context_index
+        return ""
     parts = []
     for md_file in sorted(_CONTEXT_DIR.glob("*.md")):
         try:

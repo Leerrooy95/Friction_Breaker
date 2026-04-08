@@ -248,35 +248,30 @@ def test_api_key_not_in_health_response():
 
 def test_anthropic_model_env_override(monkeypatch):
     """The ANTHROPIC_MODEL env var must override the default model."""
-    monkeypatch.setenv("ANTHROPIC_MODEL", "claude-test-model")
-    # Reload the module to pick up the new env var
     import importlib
 
     import app
+
+    monkeypatch.setenv("ANTHROPIC_MODEL", "claude-test-model")
     importlib.reload(app)
     try:
         assert app._ANTHROPIC_MODEL == "claude-test-model"
     finally:
-        # Restore default so other tests aren't affected
         monkeypatch.delenv("ANTHROPIC_MODEL", raising=False)
         importlib.reload(app)
 
 
-def test_anthropic_model_default():
+def test_anthropic_model_default(monkeypatch):
     """Without ANTHROPIC_MODEL env var, the default model must be set."""
-    import os
+    import importlib
 
     import app
-    # Ensure env var is not set
-    old = os.environ.pop("ANTHROPIC_MODEL", None)
+
+    monkeypatch.delenv("ANTHROPIC_MODEL", raising=False)
+    importlib.reload(app)
     try:
-        import importlib
-        importlib.reload(app)
         assert app._ANTHROPIC_MODEL == "claude-sonnet-4-6"
     finally:
-        if old is not None:
-            os.environ["ANTHROPIC_MODEL"] = old
-        import importlib
         importlib.reload(app)
 
 
