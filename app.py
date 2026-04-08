@@ -433,7 +433,7 @@ def fetch_url(url: str) -> str:
                 "User-Agent": "FrictionBreaker/1.0 (OSINT research tool)"
             })
 
-            if resp.is_redirect or resp.status_code in (301, 302, 303, 307, 308):
+            if resp.status_code in (301, 302, 303, 307, 308):
                 location = resp.headers.get("Location", "")
                 if not location:
                     logger.warning("Redirect with no Location header")
@@ -604,7 +604,7 @@ def create_app():
         return render_template("index.html")
 
     @app.route("/analyze", methods=["POST"])
-    def analyze():
+    def analyze():  # Rate-limited to 10/min per IP when flask-limiter is available (applied below)
         data = request.get_json()
         if not data:
             return jsonify({"error": "No JSON body"}), 400

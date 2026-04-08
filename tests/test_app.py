@@ -314,21 +314,20 @@ def test_paths_anchored_to_module():
 
 
 def test_context_index_loads_subdirectories():
-    """load_context_index() must find .md files inside subdirectories."""
+    """load_context_index() with rglob must discover more files than top-level glob."""
     import app
 
-    # Reset cached context so it reloads
-    app._cached_context_index = None
-    content = app.load_context_index()
-    # The _AI_CONTEXT_INDEX has subdirectories Node_Dossiers/ and sources/
-    # If rglob is working, we should find content from subdirectory files
-    # At minimum the result should be non-empty if .md files exist in subdirs
+    # Verify rglob discovers subdirectory files (the actual loading may be
+    # truncated by the 60K character hard cap, so we test discovery, not content)
     subdir_files = list(app._CONTEXT_DIR.rglob("*.md"))
     top_files = list(app._CONTEXT_DIR.glob("*.md"))
-    if len(subdir_files) > len(top_files):
-        # There are subdirectory .md files, ensure they appear in context
-        assert len(content) > 0
-    # Reset
+    assert len(subdir_files) > len(top_files), (
+        "rglob should find more .md files than top-level glob"
+    )
+    # Ensure load_context_index still returns non-empty content
+    app._cached_context_index = None
+    content = app.load_context_index()
+    assert len(content) > 0
     app._cached_context_index = None
 
 
@@ -415,6 +414,10 @@ def test_result_to_markdown():
     assert "Take action" in md
     assert "Citizens" in md
     assert "Plain English" in md
+    assert "Test input summary." in md
+    assert "What this means in plain English." in md
+    assert "Evidence quote here." in md
+    assert "claude-sonnet-4-6" in md
 
 
 def test_save_result_creates_markdown(tmp_path, monkeypatch):
