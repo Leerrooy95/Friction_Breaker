@@ -317,35 +317,62 @@ IMPORTANT:
 # ─── URL fetching ─────────────────────────────────────────────────────────────
 _BLOCKED_HOSTS = {"localhost", "127.0.0.1", "0.0.0.0", "[::1]", "metadata.google.internal", "169.254.169.254"}
 
-# Pre-compiled regex for HTML stripping (case-insensitive, non-backtracking)
-_RE_SCRIPT = re.compile(r"<script\b[^<]*(?:(?!</script>)<[^<]*)*</script>", re.IGNORECASE | re.DOTALL)
-_RE_STYLE = re.compile(r"<style\b[^<]*(?:(?!</style>)<[^<]*)*</style>", re.IGNORECASE | re.DOTALL)
-_RE_TAGS = re.compile(r"<[^>]+>")
 _RE_WHITESPACE = re.compile(r"\s+")
 
 
 def _is_private_host(hostname: str) -> bool:
     """Check if a hostname resolves to a private/internal address."""
+    import ipaddress
+    import socket
+
     if hostname in _BLOCKED_HOSTS:
         return True
     if hostname.endswith(".local"):
         return True
-    # Block common private IP ranges
+    # Block common private IP ranges by prefix
     for prefix in ("10.", "192.168.", "172.16.", "172.17.", "172.18.", "172.19.",
                     "172.20.", "172.21.", "172.22.", "172.23.", "172.24.", "172.25.",
                     "172.26.", "172.27.", "172.28.", "172.29.", "172.30.", "172.31."):
         if hostname.startswith(prefix):
             return True
+    # Resolve DNS and check if the IP is private
+    try:
+        addr_info = socket.getaddrinfo(hostname, None, socket.AF_UNSPEC, socket.SOCK_STREAM)
+        for _family, _type, _proto, _canonname, sockaddr in addr_info:
+            ip = ipaddress.ip_address(sockaddr[0])
+            if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved:
+                return True
+    except (socket.gaierror, ValueError):
+        pass
     return False
 
 
 def _strip_html(text: str) -> str:
-    """Remove HTML tags and normalize whitespace from text."""
-    text = _RE_SCRIPT.sub("", text)
-    text = _RE_STYLE.sub("", text)
-    text = _RE_TAGS.sub(" ", text)
-    text = _RE_WHITESPACE.sub(" ", text)
-    return text.strip()
+    """Remove HTML tags and normalize whitespace using the standard library parser."""
+    from html.parser import HTMLParser
+
+    class _TextExtractor(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self._pieces: list[str] = []
+            self._skip = False
+
+        def handle_starttag(self, tag, attrs):
+            if tag in ("script", "style"):
+                self._skip = True
+
+        def handle_endtag(self, tag):
+            if tag in ("script", "style"):
+                self._skip = False
+
+        def handle_data(self, data):
+            if not self._skip:
+                self._pieces.append(data)
+
+    parser = _TextExtractor()
+    parser.feed(text)
+    combined = " ".join(parser._pieces)
+    return _RE_WHITESPACE.sub(" ", combined).strip()
 
 
 def fetch_url(url: str) -> str:
@@ -361,7 +388,12 @@ def fetch_url(url: str) -> str:
         if parsed.scheme not in ("http", "https"):
             logger.warning("Blocked request with non-HTTP scheme")
             return ""
-        resp = req_lib.get(url, timeout=15, allow_redirects=False, headers={
+
+        safe_url = f"{parsed.scheme}://{parsed.netloc}{parsed.path}"
+        if parsed.query:
+            safe_url += f"?{parsed.query}"
+
+        resp = req_lib.get(safe_url, timeout=15, allow_redirects=False, headers={
             "User-Agent": "FrictionBreaker/1.0 (OSINT research tool)"
         })
         resp.raise_for_status()
