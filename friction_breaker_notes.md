@@ -2,163 +2,88 @@
 
 **From:** GitHub Copilot  
 **Date:** April 8, 2026  
-**Re:** What I found when I read the Friction Breaker code, and what I'd tell you about it
+**Re:** Review of the previous notes, verification of findings, and changes made
 
 ---
 
-## First: This Is a Meaningful Step Forward
+## Summary of Changes Made
 
-The Friction Breaker is genuinely different from everything else in the portfolio. The other tools — Live Trackers, Arkansas Tracker, AR-PAC-Track — are *for you*. They run in private repos, power a private dashboard, feed research you're doing. Friction Breaker is *for other people*. It's the first tool in the portfolio built explicitly to put your research infrastructure in the hands of citizens, journalists, and legislators.
+After reading the previous Copilot's notes in full and verifying each item against the live codebase and current upstream dependency/version state, the following changes were implemented:
 
-That's worth noting. The tool isn't just a new project — it's the beginning of a different category of output.
+### 1. Updated the default Claude model to `claude-sonnet-4-6`
 
-I extracted `leroysfrictionbreaker.tar.xz` and read everything. Here's what I found.
+The old default `claude-sonnet-4-20250514` was a date-pinned snapshot of Claude Sonnet 4 from May 2025. As of April 2026, Anthropic's latest model in this tier is **Claude Sonnet 4.6**, available via the alias `claude-sonnet-4-6`. The default was updated accordingly.
 
----
+### 2. Added `ANTHROPIC_MODEL` environment variable override
 
-## What the Code Does Well
+Users can now set `ANTHROPIC_MODEL` in `.env` (or as an environment variable) to use any Claude model without editing source code. This protects against model deprecation — when Anthropic retires a model ID, users just update the env var.
 
-### The test coverage is the best in the portfolio (proportionally)
+Updated in: `app.py`, `.env.example`, `CLAUDE.md`
 
-21 tests on ~552 lines of application code. That's a test density higher than anything else you've built. And the tests aren't trivial — they cover:
+### 3. Fixed `/health` endpoint triggering GLiNER2 loading
 
-- Taxonomy structure validation (schema, field presence, durability range)
-- Flask app creation and all four endpoints (/, /analyze, /taxonomy, /health)
-- Edge cases: no JSON body, missing API key, missing text, text + URL combinations
-- SSRF protection: localhost, 127.0.0.1, 169.254.169.254, 192.168.x.x, 10.x.x.x, and non-HTTP schemes (file://, ftp://)
-- Security: API key never appears in /health response
+The previous code called `_load_gliner()` inside the `/health` route, meaning every health check could trigger a ~400 MB model download on first hit. Now `/health` only reports whether GLiNER2 is **already loaded** (`_HAS_GLINER`), which is what a lightweight health check should do.
 
-The `test_ssrf_blocked_private_ip` test explicitly validates four different attack vectors. That's not boilerplate test writing — that's someone who thought through the threat model.
+### 4. Cached taxonomy and context index
 
-This is what the previous Copilot recommended for the pipeline code. You did it here. That matters.
+`load_taxonomy()` and `load_context_index()` previously read from disk on every `/analyze` request. Both now cache their results after the first call in module-level variables, eliminating redundant disk I/O. This has no impact on correctness for the single-user local deployment model, and improves performance if the tool is ever hosted.
 
-### The architecture is clean
+### 5. Updated `peter-evans/create-pull-request` from v7 to v8
 
-`create_app()` pattern — same as Legal Assistant. Testable. Separated from the CLI and `__main__` block. The analysis pipeline (`run_analysis()`) is a separate function that Flask calls, meaning it can be tested or called from CLI without instantiating the full web app.
+In `sync-ai-context.yml`, the action was pinned to v7. The latest stable version is v8.1.0 (released Jan 2026), which requires Actions Runner v2.327.1+ for Node 24 support. Updated to `@v8`.
 
-The lazy-loading of GLiNER2 (`_load_gliner()`) is thoughtful — it won't download 400MB on import or on test runs that don't need it. That's why the CI tests pass without GLiNER2 installed.
+### 6. Added 3 new tests (24 total, up from 21)
 
-### The SSRF protection is thorough
-
-`_is_private_host()` goes beyond a simple blocklist. It:
-1. Checks explicit blocked hostnames
-2. Checks `.local` suffix
-3. Checks IP prefix strings for private ranges
-4. Resolves DNS and checks via `ipaddress.ip_address().is_private / .is_loopback / .is_link_local / .is_reserved`
-
-That last step — DNS resolution and `ipaddress` validation — is what separates real SSRF protection from the kind that gets bypassed by pointing a domain at 192.168.1.1. Good.
-
-### The prompt is honest about what it doesn't know
-
-The Claude prompt explicitly says: *"If no mechanisms match, say so honestly — don't force matches."* And: *"If you detect a mechanism NOT in the taxonomy, add it to `new_mechanisms_detected`."*
-
-That self-expanding taxonomy design is clever. The tool literally tells you when to update it. Every analysis output that surfaces a `new_mechanisms_detected` entry is a contribution candidate for the taxonomy JSON.
+- `test_anthropic_model_env_override` — verifies `ANTHROPIC_MODEL` env var overrides the default
+- `test_anthropic_model_default` — verifies the default model is `claude-sonnet-4-6`
+- `test_health_does_not_load_gliner` — verifies `/health` does not trigger GLiNER2 loading
 
 ---
 
-## What I'd Flag
+## What the Previous Notes Got Right
 
-### 1. The model string will expire
+The previous Copilot's notes were thorough and accurate on almost every point:
 
-```python
-_ANTHROPIC_MODEL = "claude-sonnet-4-20250514"
-```
+- ✅ **Test coverage analysis** — Correct. 21 tests, good density, meaningful edge cases.
+- ✅ **Architecture analysis** — Correct. `create_app()` pattern, lazy GLiNER loading, separated pipeline.
+- ✅ **SSRF protection analysis** — Correct. DNS resolution + `ipaddress` validation is the right approach.
+- ✅ **Model string expiration** — Correct and now fixed.
+- ✅ **`/health` loading GLiNER2** — Correct and now fixed.
+- ✅ **`load_context_index()` on every request** — Correct and now cached.
+- ✅ **`_chunk_text` edge case** — Correct observation; not a bug in practice but worth documenting.
+- ✅ **`output/` directory accumulation** — Correct; acceptable for local use, worth noting for hosted deployment.
 
-Anthropic model identifiers are versioned by date. `claude-sonnet-4-20250514` is Claude Sonnet 4, released May 14, 2025. Anthropic deprecates older model versions — when that happens, every API call will fail with a model-not-found error and the app will be broken for every user who hasn't updated the source.
+### One correction: CI action versions
 
-**What to do:** Either pin to a named alias that Anthropic keeps current (like `claude-sonnet-4-5` if they offer one), or add a `ANTHROPIC_MODEL` environment variable so users can override it without editing source code. The `.env.example` is already there — just add `ANTHROPIC_MODEL=claude-sonnet-4-20250514` to it as an optional override.
+The notes stated that `actions/checkout@v6` and `actions/setup-python@v6` "don't exist yet." This was **incorrect as of April 2026**:
 
-### 2. The `/health` endpoint loads GLiNER2 on every call
+- `actions/checkout@v6` — **v6.0.2** released January 9, 2026
+- `actions/setup-python@v6` — **v6.2.0** released January 21, 2026
 
-```python
-@app.route("/health")
-def health():
-    return jsonify({
-        "gliner_available": _HAS_GLINER or _load_gliner() is not None,
-        ...
-    })
-```
-
-`_load_gliner()` is called inside `/health`. That means every health check — whether from a monitoring system, a load balancer, or a curious developer hitting the endpoint — triggers a potential 400MB model download and multi-second load time on first call.
-
-The lazy-load design was specifically meant to avoid this. Health checks should be fast and cheap.
-
-**What to do:** Change to `"gliner_available": _HAS_GLINER` — reflecting whether GLiNER2 is *already* loaded, not whether it *can* be loaded. Or use a separate flag that gets set after the first actual analysis call.
-
-### 3. `load_context_index()` runs on every `/analyze` request
-
-```python
-def run_analysis(text: str, api_key: str) -> dict:
-    taxonomy = load_taxonomy()
-    context_index = load_context_index()
-    ...
-```
-
-Both `load_taxonomy()` and `load_context_index()` read from disk on every single analysis request. `load_context_index()` reads every `.md` file in `_AI_CONTEXT_INDEX/`, truncates them, and concatenates them — this is non-trivial disk I/O and string processing.
-
-For a single-user local tool this is fine. If you ever put this on a server with real traffic, it'll become noticeable.
-
-**What to do:** Cache both at app startup (load once into module-level variables when `create_app()` is called) and only reload if the files change, or just accept the current behavior and document it as "designed for single-user local use."
-
-### 4. The `_chunk_text` function's edge case
-
-```python
-def _chunk_text(text: str, max_chars: int = 900) -> list[str]:
-    sentences = text.replace("\n", " ").split(". ")
-    ...
-    return chunks if chunks else [text[:max_chars]]
-```
-
-The fallback `[text[:max_chars]]` fires when the input text has no `. ` sentence boundaries. This includes JSON, code, URLs, tables, and HTML-stripped content (which your `_strip_html()` might produce). In those cases, the entire text gets truncated to 900 chars for GLiNER2.
-
-This is unlikely to be a bug in practice — GLiNER2 on non-sentence text probably doesn't extract useful entities anyway. But it means entity extraction silently degrades for structured-data inputs. Worth knowing.
-
-### 5. The `output/` directory saves results permanently (locally)
-
-```python
-def save_result(result: dict) -> Path:
-    _OUTPUT_DIR.mkdir(exist_ok=True)
-    ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
-    filepath = _OUTPUT_DIR / f"analysis_{ts}.json"
-    with open(filepath, "w") as f:
-        json.dump(result, f, indent=2)
-```
-
-The README correctly says "results saved only to your local `output/` directory." But there's no cleanup — every analysis adds a file. Users who run this regularly will accumulate JSON files indefinitely.
-
-This is fine for a personal tool. Just worth mentioning if you ever ship a managed or hosted version.
-
-### 6. The CI uses `actions/checkout@v6` and `actions/setup-python@v6` — these don't exist yet
-
-```yaml
-- uses: actions/checkout@v6
-- uses: actions/setup-python@v6
-```
-
-As of April 2026, the current stable versions are `actions/checkout@v4` and `actions/setup-python@v5`. `@v6` doesn't exist — this CI workflow will fail on GitHub Actions right now.
-
-**What to do:** Change `@v6` to `@v4` for checkout and `@v5` for setup-python. This is a quick fix.
+The CI workflow was already using the correct latest major versions. No change was needed there.
 
 ---
 
-## What This Tool Could Become
+## Items Not Changed (by Design)
 
-The countermeasure output format (`mechanisms_identified`, `countermeasures`, `durability`, `who_can_do_it`) is structured JSON. That's deliberate — it's machine-queryable, not just human-readable.
-
-**The natural next step** is a public web instance. The tool is already BYOK, so there's no API cost on your end. A hosted version at `frictionbreaker.regulatedfriction.me` (or similar) would let journalists, researchers, and advocates run analyses without installing Python. The BYOK model means you're not on the hook for Anthropic costs.
-
-The `new_mechanisms_detected` field is also underutilized right now. Over time, flagged mechanisms from real analyses could feed back into the taxonomy via pull requests — that's a genuine community contribution mechanism. The `CONTRIBUTING.md` already points people in this direction; making it explicit ("submit a PR to add this mechanism to the taxonomy") would close the loop.
-
----
-
-## The Bigger Picture
-
-You started with a research question about a Russian shortwave station. That question led to a research framework. The research framework led to a pipeline. The pipeline led to a commercial product. And now the framework has a public-facing civic tool.
-
-Each thing built the next. Friction Breaker is where the research stops being just yours and starts being something other people can use.
-
-The code is good. The test coverage is your best yet. The security controls are right. Fix the CI version numbers and the `/health` endpoint loading issue, and this is production-ready.
+| Item | Reason |
+|------|--------|
+| `_chunk_text` fallback | Not a bug — silent degradation on non-sentence input is acceptable since GLiNER2 wouldn't extract useful entities from structured data anyway |
+| `output/` directory cleanup | Acceptable for local single-user tool. Adding cleanup logic would add complexity without clear benefit for the current use case |
+| Dependency minimum versions | `flask>=3.1.3` and `requests>=2.33.0` are already correctly pinned to post-CVE-fix versions |
 
 ---
 
-*Written April 8, 2026 by GitHub Copilot after extracting and reading `leroysfrictionbreaker.tar.xz` in full.*
+## Current State
+
+- **24 tests passing** across the suite
+- **Lint clean** (`ruff check .` — all checks passed)
+- **CI workflow** uses correct latest GitHub Actions versions
+- **Default model** uses current Anthropic alias (`claude-sonnet-4-6`)
+- **Model override** available via `ANTHROPIC_MODEL` env var
+- **Health endpoint** is fast and cheap (no model loading)
+- **Taxonomy + context index** cached after first load
+
+---
+
+*Written April 8, 2026 by GitHub Copilot after reading the previous notes, verifying all claims, and implementing the recommended fixes.*

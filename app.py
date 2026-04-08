@@ -79,11 +79,15 @@ def _load_gliner():
 
 
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
-_ANTHROPIC_MODEL = "claude-sonnet-4-20250514"
+_ANTHROPIC_MODEL = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-6")
 _MAX_INPUT_CHARS = 50000
 _TAXONOMY_FILE = Path("mechanism_classifier_taxonomy.json")
 _CONTEXT_DIR = Path("_AI_CONTEXT_INDEX")
 _OUTPUT_DIR = Path("output")
+
+# ─── Cached data (loaded once, reused across requests) ───────────────────────
+_cached_taxonomy: dict | None = None
+_cached_context_index: str | None = None
 
 # Entity labels for GLiNER2 — tuned for mechanism detection
 _GLINER_LABELS = [
@@ -101,16 +105,23 @@ _GLINER_LABELS = [
 
 # ─── Load taxonomy ────────────────────────────────────────────────────────────
 def load_taxonomy() -> dict:
-    """Load the mechanism classifier taxonomy."""
+    """Load the mechanism classifier taxonomy (cached after first call)."""
+    global _cached_taxonomy
+    if _cached_taxonomy is not None:
+        return _cached_taxonomy
     if not _TAXONOMY_FILE.exists():
         logger.error(f"Taxonomy file not found: {_TAXONOMY_FILE}")
         return {"mechanisms": [], "categories": []}
     with open(_TAXONOMY_FILE) as f:
-        return json.load(f)
+        _cached_taxonomy = json.load(f)
+    return _cached_taxonomy
 
 
 def load_context_index() -> str:
-    """Load all markdown files from _AI_CONTEXT_INDEX into a single string."""
+    """Load all markdown files from _AI_CONTEXT_INDEX into a single string (cached after first call)."""
+    global _cached_context_index
+    if _cached_context_index is not None:
+        return _cached_context_index
     if not _CONTEXT_DIR.exists():
         return ""
     parts = []
@@ -127,7 +138,8 @@ def load_context_index() -> str:
     # Hard cap on total context
     if len(combined) > 60000:
         combined = combined[:60000] + "\n\n[... truncated ...]"
-    return combined
+    _cached_context_index = combined
+    return _cached_context_index
 
 
 # ─── GLiNER2 entity extraction ────────────────────────────────────────────────
@@ -503,7 +515,7 @@ def create_app():
     def health():
         return jsonify({
             "status": "ok",
-            "gliner_available": _HAS_GLINER or _load_gliner() is not None,
+            "gliner_available": _HAS_GLINER,
             "anthropic_available": _HAS_ANTHROPIC,
             "taxonomy_loaded": _TAXONOMY_FILE.exists(),
             "context_index_loaded": _CONTEXT_DIR.exists()

@@ -244,3 +244,56 @@ def test_api_key_not_in_health_response():
             assert "sk-ant" not in resp.get_data(as_text=True)
     finally:
         os.environ.pop("ANTHROPIC_API_KEY", None)
+
+
+def test_anthropic_model_env_override(monkeypatch):
+    """The ANTHROPIC_MODEL env var must override the default model."""
+    import importlib
+
+    import app
+
+    monkeypatch.setenv("ANTHROPIC_MODEL", "claude-test-model")
+    importlib.reload(app)
+    try:
+        assert app._ANTHROPIC_MODEL == "claude-test-model"
+    finally:
+        monkeypatch.delenv("ANTHROPIC_MODEL", raising=False)
+        importlib.reload(app)
+
+
+def test_anthropic_model_default(monkeypatch):
+    """Without ANTHROPIC_MODEL env var, the default model must be set."""
+    import importlib
+
+    import app
+
+    monkeypatch.delenv("ANTHROPIC_MODEL", raising=False)
+    importlib.reload(app)
+    try:
+        assert app._ANTHROPIC_MODEL == "claude-sonnet-4-6"
+    finally:
+        importlib.reload(app)
+
+
+def test_health_does_not_load_gliner():
+    """The /health endpoint must NOT trigger GLiNER2 model loading."""
+    import app
+
+    # Reset global state to simulate fresh start
+    original_model = app._gliner_model
+    original_flag = app._HAS_GLINER
+    app._gliner_model = None
+    app._HAS_GLINER = False
+    try:
+        flask_app = app.create_app()
+        with flask_app.test_client() as client:
+            resp = client.get("/health")
+            assert resp.status_code == 200
+            data = resp.get_json()
+            # gliner_available should be False since we haven't loaded it
+            assert data["gliner_available"] is False
+            # The model should still be None (not loaded by health check)
+            assert app._gliner_model is None
+    finally:
+        app._gliner_model = original_model
+        app._HAS_GLINER = original_flag
