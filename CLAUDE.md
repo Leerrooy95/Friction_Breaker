@@ -65,6 +65,13 @@ requirements.txt                    # Pip requirements (mirrors pyproject.toml)
 - **No data persistence**: analysis results only saved to local `output/` directory.
 - **SSRF protection**: URL fetching blocks private/internal addresses, non-HTTP schemes, and follows no redirects.
 
+## Environment Variables
+
+| Variable           | Required | Default              | Description                              |
+|--------------------|----------|----------------------|------------------------------------------|
+| `ANTHROPIC_API_KEY`| Yes      | —                    | Your Anthropic API key                   |
+| `ANTHROPIC_MODEL`  | No       | `claude-sonnet-4-6`  | Override the Claude model used for analysis |
+
 ## Dependencies
 
 | Package         | Purpose                                  |
