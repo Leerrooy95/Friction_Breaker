@@ -176,3 +176,71 @@ def test_analyze_no_text():
         assert resp.status_code == 400
         data = resp.get_json()
         assert "text" in data.get("error", "").lower() or "url" in data.get("error", "").lower()
+
+
+# ---------------------------------------------------------------------------
+# Security tests
+# ---------------------------------------------------------------------------
+
+def test_ssrf_blocked_localhost():
+    """SSRF: requests to localhost must be blocked."""
+    import app
+    result = app.fetch_url("http://localhost/secret")
+    assert result == ""
+
+
+def test_ssrf_blocked_private_ip():
+    """SSRF: requests to private IPs must be blocked."""
+    import app
+    for url in [
+        "http://127.0.0.1/admin",
+        "http://169.254.169.254/latest/meta-data/",
+        "http://192.168.1.1/config",
+        "http://10.0.0.1/internal",
+    ]:
+        result = app.fetch_url(url)
+        assert result == "", f"SSRF not blocked for {url}"
+
+
+def test_ssrf_blocked_non_http_scheme():
+    """SSRF: non-HTTP schemes (file://, ftp://) must be blocked."""
+    import app
+    for url in ["file:///etc/passwd", "ftp://evil.com/data", "gopher://evil.com/"]:
+        result = app.fetch_url(url)
+        assert result == "", f"Non-HTTP scheme not blocked for {url}"
+
+
+def test_input_text_truncation():
+    """Input text longer than _MAX_INPUT_CHARS must be truncated by the endpoint."""
+    import app
+    flask_app = app.create_app()
+    long_text = "A" * 60000
+    with flask_app.test_client() as client:
+        resp = client.post(
+            "/analyze",
+            json={"api_key": "sk-ant-fake-key", "text": long_text},
+            content_type="application/json",
+        )
+        # The endpoint should accept this (truncate internally) — it won't
+        # succeed without a real API key, but it should NOT return 400 for
+        # text-too-long.  The response will be 400 only if no key, or an
+        # API error (which we can't test without a live key), so just
+        # confirm the server didn't crash (status != 500).
+        assert resp.status_code != 500
+
+
+def test_api_key_not_in_health_response():
+    """The /health endpoint must never expose API keys."""
+    import os
+
+    import app
+
+    os.environ["ANTHROPIC_API_KEY"] = "sk-ant-super-secret-key-12345"
+    try:
+        flask_app = app.create_app()
+        with flask_app.test_client() as client:
+            resp = client.get("/health")
+            assert resp.status_code == 200
+            assert "sk-ant" not in resp.get_data(as_text=True)
+    finally:
+        os.environ.pop("ANTHROPIC_API_KEY", None)

@@ -2,12 +2,20 @@
 
 **Mechanism Classifier + Countermeasure Engine**
 
+[![CI](https://github.com/Leerrooy95/Friction_Breaker/actions/workflows/ci.yml/badge.svg)](https://github.com/Leerrooy95/Friction_Breaker/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 An open-source tool that identifies legal, regulatory, and procedural mechanisms used to bypass democratic accountability — and generates ranked countermeasures that citizens, legislators, and courts can implement.
 
 Powered by [The Regulated Friction Project](https://github.com/Leerrooy95/The_Regulated_Friction_Project).
 
-[![CI](https://github.com/Leerrooy95/Friction_Breaker/actions/workflows/ci.yml/badge.svg)](https://github.com/Leerrooy95/Friction_Breaker/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+---
+
+## Why This Exists
+
+Governments and institutions use complex legal, regulatory, personnel, and financial mechanisms to concentrate power and reduce public oversight. These mechanisms are often buried in dense legislation, regulatory filings, and executive orders that most people never read — and wouldn't understand if they did.
+
+Friction Breaker makes these mechanisms visible. It reads any text you give it, identifies the specific accountability-bypassing mechanisms at play, and explains in plain English what they mean and what can be done about them — ranked by how durable each countermeasure is (hardest to undo first).
 
 ---
 
@@ -15,8 +23,14 @@ Powered by [The Regulated Friction Project](https://github.com/Leerrooy95/The_Re
 
 1. **You paste text** — a news article, executive order, bill text, regulatory action, or anything else.
 2. **GLiNER2 extracts entities** locally (zero-cost, no API needed, runs on CPU).
-3. **The Mechanism Classifier** matches what it finds against a taxonomy of 54 documented mechanisms extracted from The Regulated Friction Project.
+3. **The Mechanism Classifier** matches what it finds against a taxonomy of **54 documented mechanisms** across 8 categories, extracted from The Regulated Friction Project.
 4. **Claude generates countermeasure analysis** — ranked by durability (hardest to reverse first) — in plain English anyone can understand.
+
+Every analysis includes:
+- **Which mechanisms** are being used and how they work
+- **Specific countermeasures** for each mechanism, ranked by durability
+- **Who can act** — citizens, state legislatures, Congress, or courts
+- **A plain-English summary** written at an 8th-grade reading level
 
 **No data is stored on any server. Your API key goes directly to Anthropic. This tool is fully open source.**
 
@@ -135,6 +149,7 @@ Friction_Breaker/
 ├── requirements.txt                    # Python dependencies
 ├── pyproject.toml                      # Modern Python project metadata
 ├── .env.example                        # API key template
+├── CLAUDE.md                           # Developer quick-start guide
 ├── .github/
 │   ├── workflows/ci.yml                # CI pipeline (lint + test + security audit)
 │   └── dependabot.yml                  # Automated dependency updates
@@ -186,7 +201,13 @@ The most impactful contribution is **adding new mechanisms to the taxonomy**. Th
 
 ## Security
 
-See [SECURITY.md](SECURITY.md) for the vulnerability reporting policy and the project's security design principles.
+- **BYOK (Bring Your Own Key)**: Your API key is never stored or logged. In the web UI it stays in your browser; the backend sends it directly to Anthropic per-request.
+- **No data persistence**: Results are saved only to your local `output/` directory. Nothing is sent to third parties beyond the Anthropic API.
+- **Local entity extraction**: GLiNER2 runs entirely on your machine — no text leaves your computer for entity extraction.
+- **SSRF protection**: The URL-fetching feature blocks requests to private/internal addresses, metadata endpoints, and non-HTTP schemes.
+- **Minimal dependencies**: The project uses a small, well-known set of packages with automated vulnerability monitoring via Dependabot and pip-audit.
+
+See [SECURITY.md](SECURITY.md) for the vulnerability reporting policy.
 
 ---
 
