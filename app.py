@@ -41,6 +41,13 @@ except ImportError:
     logger.warning("Flask not installed. CLI mode only. Run: pip install flask")
 
 try:
+    from flask_limiter import Limiter
+    from flask_limiter.util import get_remote_address
+    _HAS_LIMITER = True
+except ImportError:
+    _HAS_LIMITER = False
+
+try:
     import anthropic
     _HAS_ANTHROPIC = True
 except ImportError:
@@ -81,9 +88,10 @@ def _load_gliner():
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
 _ANTHROPIC_MODEL = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-6")
 _MAX_INPUT_CHARS = 50000
-_TAXONOMY_FILE = Path("mechanism_classifier_taxonomy.json")
-_CONTEXT_DIR = Path("_AI_CONTEXT_INDEX")
-_OUTPUT_DIR = Path("output")
+_BASE_DIR = Path(__file__).resolve().parent
+_TAXONOMY_FILE = _BASE_DIR / "mechanism_classifier_taxonomy.json"
+_CONTEXT_DIR = _BASE_DIR / "_AI_CONTEXT_INDEX"
+_OUTPUT_DIR = _BASE_DIR / "output"
 
 # ─── Cached data (loaded once, reused across requests) ───────────────────────
 _cached_taxonomy: dict | None = None
@@ -125,7 +133,7 @@ def load_context_index() -> str:
     if not _CONTEXT_DIR.exists():
         return ""
     parts = []
-    for md_file in sorted(_CONTEXT_DIR.glob("*.md")):
+    for md_file in sorted(_CONTEXT_DIR.rglob("*.md")):
         try:
             content = md_file.read_text(errors="replace")
             # Truncate individual files to keep total context manageable
@@ -327,7 +335,7 @@ IMPORTANT:
 
 
 # ─── URL fetching ─────────────────────────────────────────────────────────────
-_BLOCKED_HOSTS = {"localhost", "127.0.0.1", "0.0.0.0", "[::1]", "metadata.google.internal", "169.254.169.254"}
+_BLOCKED_HOSTS = {"localhost", "127.0.0.1", "0.0.0.0", "::1", "metadata.google.internal", "169.254.169.254"}
 
 _RE_WHITESPACE = re.compile(r"\s+")
 
@@ -387,30 +395,58 @@ def _strip_html(text: str) -> str:
     return _RE_WHITESPACE.sub(" ", combined).strip()
 
 
+_MAX_REDIRECTS = 5
+
+
+def _validate_url(url: str) -> str | None:
+    """Validate a URL's scheme and hostname. Returns the safe URL or None."""
+    parsed = urlparse(url)
+    hostname = (parsed.hostname or "").lower()
+    if _is_private_host(hostname):
+        logger.warning("Blocked request to private/internal address")
+        return None
+    if parsed.scheme not in ("http", "https"):
+        logger.warning("Blocked request with non-HTTP scheme")
+        return None
+    safe_url = f"{parsed.scheme}://{parsed.netloc}{parsed.path}"
+    if parsed.query:
+        safe_url += f"?{parsed.query}"
+    return safe_url
+
+
 def fetch_url(url: str) -> str:
-    """Fetch text content from a URL. Blocks private/internal addresses."""
+    """Fetch text content from a URL. Blocks private/internal addresses.
+
+    Follows redirects (up to ``_MAX_REDIRECTS`` hops) while re-validating
+    each intermediate destination against the SSRF blocklist.
+    """
     if not _HAS_REQUESTS:
         return ""
     try:
-        parsed = urlparse(url)
-        hostname = (parsed.hostname or "").lower()
-        if _is_private_host(hostname):
-            logger.warning("Blocked request to private/internal address")
-            return ""
-        if parsed.scheme not in ("http", "https"):
-            logger.warning("Blocked request with non-HTTP scheme")
-            return ""
+        current_url = url
+        for _hop in range(_MAX_REDIRECTS + 1):
+            safe_url = _validate_url(current_url)
+            if safe_url is None:
+                return ""
 
-        safe_url = f"{parsed.scheme}://{parsed.netloc}{parsed.path}"
-        if parsed.query:
-            safe_url += f"?{parsed.query}"
+            resp = req_lib.get(safe_url, timeout=15, allow_redirects=False, headers={
+                "User-Agent": "FrictionBreaker/1.0 (OSINT research tool)"
+            })
 
-        resp = req_lib.get(safe_url, timeout=15, allow_redirects=False, headers={
-            "User-Agent": "FrictionBreaker/1.0 (OSINT research tool)"
-        })
-        resp.raise_for_status()
-        text = _strip_html(resp.text)
-        return text[:_MAX_INPUT_CHARS]
+            if resp.status_code in (301, 302, 303, 307, 308):
+                location = resp.headers.get("Location", "")
+                if not location:
+                    logger.warning("Redirect with no Location header")
+                    return ""
+                current_url = location
+                continue
+
+            resp.raise_for_status()
+            text = _strip_html(resp.text)
+            return text[:_MAX_INPUT_CHARS]
+
+        logger.warning("Too many redirects")
+        return ""
     except Exception as e:
         logger.warning(f"URL fetch failed: {e}")
         return ""
@@ -418,14 +454,91 @@ def fetch_url(url: str) -> str:
 
 # ─── Save results ─────────────────────────────────────────────────────────────
 def save_result(result: dict) -> Path:
-    """Save analysis result to output/ directory."""
+    """Save analysis result to output/ directory as JSON and Markdown."""
     _OUTPUT_DIR.mkdir(exist_ok=True)
     ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
-    filepath = _OUTPUT_DIR / f"analysis_{ts}.json"
-    with open(filepath, "w") as f:
+
+    # Save JSON
+    json_path = _OUTPUT_DIR / f"analysis_{ts}.json"
+    with open(json_path, "w") as f:
         json.dump(result, f, indent=2)
-    logger.info(f"Result saved: {filepath}")
-    return filepath
+    logger.info(f"Result saved: {json_path}")
+
+    # Save Markdown report
+    md_path = _OUTPUT_DIR / f"analysis_{ts}.md"
+    md_path.write_text(_result_to_markdown(result))
+    logger.info(f"Markdown report saved: {md_path}")
+
+    return json_path
+
+
+def _result_to_markdown(result: dict) -> str:
+    """Convert an analysis result dict to a human-readable Markdown report."""
+    lines: list[str] = []
+    meta = result.get("_meta", {})
+    ts = meta.get("timestamp", datetime.now(timezone.utc).isoformat())
+    lines.append("# Friction Breaker — Countermeasure Report\n")
+    lines.append(f"*Generated {ts}*\n")
+
+    # Input summary
+    if result.get("input_summary"):
+        lines.append("## Input Summary\n")
+        lines.append(f"{result['input_summary']}\n")
+
+    # Plain-English summary
+    if result.get("political_translator_summary"):
+        lines.append("## What This Means (Plain English)\n")
+        lines.append(f"{result['political_translator_summary']}\n")
+
+    # Mechanisms identified
+    mechanisms = result.get("mechanisms_identified", [])
+    if mechanisms:
+        lines.append("## Mechanisms Identified\n")
+        for m in mechanisms:
+            conf = m.get("confidence", "?")
+            dur = m.get("durability", "?")
+            lines.append(f"### {m.get('taxonomy_id', '?')} — {m.get('name', 'Unknown')}\n")
+            lines.append(f"**Confidence:** {conf} · **Durability:** {dur}/10\n")
+            if m.get("what_it_does"):
+                lines.append(f"{m['what_it_does']}\n")
+            if m.get("evidence"):
+                lines.append(f"> *Evidence:* {m['evidence']}\n")
+            cms = m.get("countermeasures", [])
+            if cms:
+                lines.append("#### Countermeasures\n")
+                for c in cms:
+                    lines.append(
+                        f"- **{c.get('action', '')}** "
+                        f"(durability {c.get('durability_score', '?')}/10, "
+                        f"feasibility {c.get('feasibility', '?')})\n"
+                        f"  - *Who can do it:* {c.get('who_can_do_it', '?')}\n"
+                        f"  - {c.get('plain_english', '')}\n"
+                    )
+
+    # New mechanisms
+    new_mechs = result.get("new_mechanisms_detected", [])
+    if new_mechs:
+        lines.append("## New Mechanisms Detected (Not in Taxonomy)\n")
+        for nm in new_mechs:
+            lines.append(
+                f"- **{nm.get('name', '')}** "
+                f"(category {nm.get('suggested_category', '?')}, "
+                f"durability {nm.get('suggested_durability', '?')}/10)\n"
+                f"  - {nm.get('description', '')}\n"
+                f"  - *Why it matters:* {nm.get('why_it_matters', '')}\n"
+            )
+
+    # Metadata footer
+    if meta:
+        lines.append("---\n")
+        lines.append(
+            f"*Entities extracted: {meta.get('gliner_entities_extracted', 0)} · "
+            f"Taxonomy: {meta.get('taxonomy_mechanisms_available', 0)} mechanisms · "
+            f"Model: {meta.get('model', '?')} · "
+            f"Processing time: {meta.get('processing_time_seconds', '?')}s*\n"
+        )
+
+    return "\n".join(lines)
 
 
 # ─── Full analysis pipeline ───────────────────────────────────────────────────
@@ -471,12 +584,27 @@ def run_analysis(text: str, api_key: str) -> dict:
 def create_app():
     app = Flask(__name__)
 
+    # Rate limiting — protects against quota exhaustion on /analyze
+    if _HAS_LIMITER:
+        limiter = Limiter(
+            get_remote_address,
+            app=app,
+            default_limits=[],
+            storage_uri="memory://",
+        )
+
+        @app.errorhandler(429)
+        def rate_limit_handler(e):
+            return jsonify({"error": "Rate limit exceeded. Please wait before trying again."}), 429
+    else:
+        limiter = None
+
     @app.route("/")
     def index():
         return render_template("index.html")
 
     @app.route("/analyze", methods=["POST"])
-    def analyze():
+    def analyze():  # Rate-limited to 10/min per IP when flask-limiter is available (applied below)
         data = request.get_json()
         if not data:
             return jsonify({"error": "No JSON body"}), 400
@@ -505,6 +633,10 @@ def create_app():
 
         result = run_analysis(text, api_key)
         return jsonify(result)
+
+    # Apply rate limit to /analyze only (avoids interfering with health/taxonomy/index)
+    if limiter is not None:
+        analyze = limiter.limit("10 per minute")(analyze)
 
     @app.route("/taxonomy")
     def taxonomy_view():
@@ -536,7 +668,8 @@ def cli_analyze(text: str):
 
 
 # ─── Main ─────────────────────────────────────────────────────────────────────
-if __name__ == "__main__":
+def main():
+    """Entry point for both ``python app.py`` and the ``friction-breaker`` console script."""
     parser = argparse.ArgumentParser(description="Friction Breaker — Countermeasure Engine")
     parser.add_argument("--port", type=int, default=5000, help="Flask server port")
     parser.add_argument("--analyze", type=str, help="Analyze text directly (CLI mode)")
@@ -561,3 +694,7 @@ if __name__ == "__main__":
         print(f"   GLiNER2: {'available' if _load_gliner() else 'not available (Claude-only mode)'}")
         print("   BYOK: Enter your ANTHROPIC_API_KEY in the web interface\n")
         app.run(host="0.0.0.0", port=args.port, debug=False)
+
+
+if __name__ == "__main__":
+    main()
