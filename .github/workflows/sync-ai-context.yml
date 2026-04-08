@@ -1,0 +1,44 @@
+name: Sync AI Context Index
+
+on:
+  schedule:
+    - cron: "0 8 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Friction_Breaker
+        uses: actions/checkout@v4
+        with:
+          path: target
+
+      - name: Checkout The_Regulated_Friction_Project
+        uses: actions/checkout@v4
+        with:
+          repository: Leerrooy95/The_Regulated_Friction_Project
+          path: source
+
+      - name: Replace _AI_CONTEXT_INDEX
+        run: |
+          rm -rf target/_AI_CONTEXT_INDEX
+          cp -r source/_AI_CONTEXT_INDEX target/_AI_CONTEXT_INDEX
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: target
+          branch: sync/ai-context-index
+          title: "chore: sync _AI_CONTEXT_INDEX from The_Regulated_Friction_Project"
+          body: |
+            Automated daily sync of `_AI_CONTEXT_INDEX` from
+            [The_Regulated_Friction_Project](https://github.com/Leerrooy95/The_Regulated_Friction_Project).
+          commit-message: "chore: sync _AI_CONTEXT_INDEX from The_Regulated_Friction_Project"
+          labels: automated
+          delete-branch: true
