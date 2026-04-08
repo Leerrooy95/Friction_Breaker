@@ -232,6 +232,7 @@ def test_input_text_truncation():
 def test_api_key_not_in_health_response():
     """The /health endpoint must never expose API keys."""
     import os
+
     import app
 
     os.environ["ANTHROPIC_API_KEY"] = "sk-ant-super-secret-key-12345"
