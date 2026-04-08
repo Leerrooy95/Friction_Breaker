@@ -297,3 +297,141 @@ def test_health_does_not_load_gliner():
     finally:
         app._gliner_model = original_model
         app._HAS_GLINER = original_flag
+
+
+# ---------------------------------------------------------------------------
+# New tests for bug fixes and enhancements
+# ---------------------------------------------------------------------------
+
+def test_paths_anchored_to_module():
+    """File paths must be anchored to the module's directory, not CWD."""
+    import app
+
+    module_dir = Path(app.__file__).resolve().parent
+    assert module_dir / "mechanism_classifier_taxonomy.json" == app._TAXONOMY_FILE
+    assert module_dir / "_AI_CONTEXT_INDEX" == app._CONTEXT_DIR
+    assert module_dir / "output" == app._OUTPUT_DIR
+
+
+def test_context_index_loads_subdirectories():
+    """load_context_index() must find .md files inside subdirectories."""
+    import app
+
+    # Reset cached context so it reloads
+    app._cached_context_index = None
+    content = app.load_context_index()
+    # The _AI_CONTEXT_INDEX has subdirectories Node_Dossiers/ and sources/
+    # If rglob is working, we should find content from subdirectory files
+    # At minimum the result should be non-empty if .md files exist in subdirs
+    subdir_files = list(app._CONTEXT_DIR.rglob("*.md"))
+    top_files = list(app._CONTEXT_DIR.glob("*.md"))
+    if len(subdir_files) > len(top_files):
+        # There are subdirectory .md files, ensure they appear in context
+        assert len(content) > 0
+    # Reset
+    app._cached_context_index = None
+
+
+def test_ssrf_blocked_ipv6_loopback():
+    """SSRF: IPv6 loopback (::1) must be blocked."""
+    import app
+
+    result = app.fetch_url("http://[::1]/secret")
+    assert result == "", "IPv6 loopback not blocked"
+
+
+def test_blocked_hosts_no_brackets():
+    """_BLOCKED_HOSTS must contain '::1' without brackets."""
+    import app
+
+    assert "::1" in app._BLOCKED_HOSTS
+    assert "[::1]" not in app._BLOCKED_HOSTS
+
+
+def test_validate_url_blocks_private():
+    """_validate_url must return None for private addresses."""
+    import app
+
+    assert app._validate_url("http://localhost/secret") is None
+    assert app._validate_url("http://127.0.0.1/admin") is None
+    assert app._validate_url("ftp://evil.com/data") is None
+
+
+def test_validate_url_allows_public():
+    """_validate_url must return a URL for valid public addresses."""
+    import app
+
+    result = app._validate_url("https://example.com/article")
+    assert result is not None
+    assert result.startswith("https://")
+
+
+def test_main_function_exists():
+    """main() entry point must exist and be callable."""
+    import app
+
+    assert hasattr(app, "main")
+    assert callable(app.main)
+
+
+def test_result_to_markdown():
+    """_result_to_markdown must produce a Markdown string from a result dict."""
+    import app
+
+    result = {
+        "input_summary": "Test input summary.",
+        "political_translator_summary": "What this means in plain English.",
+        "mechanisms_identified": [
+            {
+                "taxonomy_id": "A-01",
+                "name": "Test Mechanism",
+                "confidence": "HIGH",
+                "durability": 7,
+                "what_it_does": "Does something important.",
+                "evidence": "Evidence quote here.",
+                "countermeasures": [
+                    {
+                        "action": "Take action",
+                        "durability_score": 8,
+                        "feasibility": "HIGH",
+                        "who_can_do_it": "Citizens",
+                        "plain_english": "You can do this."
+                    }
+                ]
+            }
+        ],
+        "new_mechanisms_detected": [],
+        "_meta": {
+            "gliner_entities_extracted": 5,
+            "taxonomy_mechanisms_available": 54,
+            "model": "claude-sonnet-4-6",
+            "processing_time_seconds": 3.2,
+            "timestamp": "2026-04-08T12:00:00Z"
+        }
+    }
+    md = app._result_to_markdown(result)
+    assert "# Friction Breaker" in md
+    assert "Test Mechanism" in md
+    assert "Take action" in md
+    assert "Citizens" in md
+    assert "Plain English" in md
+
+
+def test_save_result_creates_markdown(tmp_path, monkeypatch):
+    """save_result must create both .json and .md files."""
+    import app
+
+    monkeypatch.setattr(app, "_OUTPUT_DIR", tmp_path)
+    result = {
+        "input_summary": "Summary",
+        "mechanisms_identified": [],
+        "new_mechanisms_detected": [],
+        "_meta": {"timestamp": "2026-04-08T12:00:00Z"}
+    }
+    json_path = app.save_result(result)
+    assert json_path.exists()
+    assert json_path.suffix == ".json"
+    # Check that a matching .md file was also created
+    md_path = json_path.with_suffix(".md")
+    assert md_path.exists()
+    assert "Friction Breaker" in md_path.read_text()

@@ -36,3 +36,13 @@ This project follows these security principles:
 - **No data persistence**: Analysis results are saved only to the local filesystem (`output/` directory). No data is sent to third parties other than the Anthropic API for analysis.
 - **Local entity extraction**: GLiNER2 runs entirely locally — no data leaves the machine for entity extraction.
 - **Minimal dependencies**: The project uses a small, well-known set of dependencies to reduce supply chain risk.
+- **SSRF protection**: URL fetching blocks private/internal addresses, non-HTTP schemes, and re-validates the destination IP at every redirect hop before following it. Redirects are limited to 5 hops.
+- **Rate limiting**: The `/analyze` endpoint is rate-limited (10 requests per minute per IP) to prevent quota exhaustion.
+
+## Known Limitations
+
+### DNS Rebinding (TOCTOU)
+
+The SSRF protection resolves DNS and validates the resulting IP *before* each request. However, the underlying `requests` library performs its own independent DNS resolution when opening the connection. A malicious DNS server with a TTL-0 record could theoretically return a public IP for the validation step and a private IP for the connection step. This is a classic DNS time-of-check/time-of-use (TOCTOU) gap.
+
+**Practical impact:** Exploitation requires a controlled DNS server and precise timing. The risk is negligible for local/single-user usage. If you intend to deploy Friction Breaker as a shared or public-facing service, consider adding a custom `requests` transport adapter that pins the resolved IP, or run the application behind a network-layer firewall that blocks outbound traffic to RFC 1918 addresses.
