@@ -1052,6 +1052,13 @@ def create_app():
     def index():
         return render_template("index.html")
 
+    @app.after_request
+    def add_security_headers(response):
+        response.headers.setdefault("X-Content-Type-Options", "nosniff")
+        response.headers.setdefault("X-Frame-Options", "DENY")
+        response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+        return response
+
     @app.errorhandler(500)
     def internal_error(e):
         logger.error(f"Internal server error: {e}")

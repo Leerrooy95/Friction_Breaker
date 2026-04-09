@@ -123,6 +123,8 @@
 </div>
 
 <script>
+function escHtml(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+
 let _lastResult = null;
 
 async function runAnalysis() {
@@ -172,7 +174,7 @@ async function runAnalysis() {
                 fileStatus.textContent = `✓ Extracted text from ${file.name}`;
             }
         } catch (e) {
-            status.innerHTML = `<span style="color:var(--red)">File error: ${e.message}</span>`;
+            status.innerHTML = `<span style="color:var(--red)">File error: ${escHtml(e.message)}</span>`;
             return;
         }
     }
@@ -203,7 +205,7 @@ async function runAnalysis() {
             throw new Error(data.error || `Server error (${resp.status}).`);
         }
         if (data.error) {
-            resultsDiv.innerHTML = `<div class="error">${data.error}</div>`;
+            resultsDiv.innerHTML = `<div class="error">${escHtml(data.error)}</div>`;
             resultsDiv.style.display = 'block';
             status.textContent = '';
             btn.disabled = false;
@@ -212,7 +214,7 @@ async function runAnalysis() {
 
         jobId = data.job_id;
     } catch (e) {
-        resultsDiv.innerHTML = `<div class="error">Request failed: ${e.message}</div>`;
+        resultsDiv.innerHTML = `<div class="error">Request failed: ${escHtml(e.message)}</div>`;
         resultsDiv.style.display = 'block';
         status.textContent = '';
         btn.disabled = false;
@@ -241,7 +243,7 @@ async function runAnalysis() {
         if (pollData.status === 'done') {
             const result = pollData.result;
             if (result.error) {
-                resultsDiv.innerHTML = `<div class="error">${result.error}</div>`;
+                resultsDiv.innerHTML = `<div class="error">${escHtml(result.error)}</div>`;
                 resultsDiv.style.display = 'block';
                 status.textContent = '';
             } else {
@@ -255,7 +257,7 @@ async function runAnalysis() {
             break;
         } else if (pollData.status === 'error') {
             const msg = (pollData.result && pollData.result.error) || 'Analysis failed. Please try again.';
-            resultsDiv.innerHTML = `<div class="error">${msg}</div>`;
+            resultsDiv.innerHTML = `<div class="error">${escHtml(msg)}</div>`;
             resultsDiv.style.display = 'block';
             status.textContent = '';
             break;
@@ -365,15 +367,13 @@ function renderResults(data) {
         html += `<div class="meta">
             GLiNER entities: ${data._meta.gliner_entities_extracted || 0} ·
             Taxonomy: ${data._meta.taxonomy_mechanisms_available || 0} mechanisms ·
-            Model: ${data._meta.model || '?'} ·
+            Model: ${escHtml(String(data._meta.model || '?'))} ·
             Time: ${data._meta.processing_time_seconds || '?'}s
         </div>`;
     }
 
     r.innerHTML = html;
 }
-
-function escHtml(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
 </script>
 </body>
 </html>
