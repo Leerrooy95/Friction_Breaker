@@ -83,6 +83,8 @@ requirements.txt                    # Pip requirements (mirrors pyproject.toml)
 | `gliner`        | Local entity extraction (GLiNER2 model)  |
 | `python-dotenv` | Load `.env` file for API key config      |
 | `requests`      | URL fetching for article analysis        |
+| `python-docx`   | DOCX report export                       |
+| `reportlab`     | PDF report export                        |
 | `pytest`        | Test runner (dev)                        |
 | `ruff`          | Linter (dev)                             |
 

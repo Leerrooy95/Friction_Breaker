@@ -32,6 +32,8 @@ dependencies = [
     "gliner>=0.2.20",
     "python-dotenv>=1.0",
     "requests>=2.33.0",
+    "python-docx>=1.2.0",
+    "reportlab>=4.4.10",
 ]
 
 [project.optional-dependencies]
