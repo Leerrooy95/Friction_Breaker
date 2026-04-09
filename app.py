@@ -341,10 +341,20 @@ IMPORTANT:
     try:
         response = client.messages.create(
             model=_ANTHROPIC_MODEL,
-            max_tokens=8000,
+            max_tokens=16000,
             messages=[{"role": "user", "content": prompt}]
         )
-        raw = response.content[0].text.strip()
+
+        # Extract text from response content blocks.
+        # claude-sonnet-4-6 uses adaptive thinking by default, so the
+        # response may contain ThinkingBlock(s) before the TextBlock.
+        # We iterate to find the first TextBlock instead of assuming
+        # response.content[0] is always a TextBlock.
+        raw = next((block.text.strip() for block in response.content if block.type == "text"), "")
+
+        if not raw:
+            logger.error("Claude response contained no text block")
+            return {"error": "Claude returned an empty response. Please try again."}
 
         # Clean potential markdown fences
         if raw.startswith("```"):
@@ -360,11 +370,15 @@ IMPORTANT:
 
     except json.JSONDecodeError as e:
         logger.error(f"Claude returned invalid JSON: {e}")
+        logger.debug(f"Raw response: {raw[:500]}")
         return {"error": "Claude returned an invalid response. Please try again."}
     except anthropic.AuthenticationError:
         return {"error": "Invalid API key. Check your ANTHROPIC_API_KEY."}
     except anthropic.RateLimitError:
         return {"error": "Rate limited. Wait a moment and try again."}
+    except anthropic.BadRequestError as e:
+        logger.error(f"Claude API bad request: {e}")
+        return {"error": f"Claude API error: {e.message}"}
     except Exception as e:
         logger.error(f"Claude API error: {e}")
         return {"error": "An error occurred during analysis. Please try again."}
