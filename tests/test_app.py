@@ -1090,9 +1090,9 @@ def test_resolve_safe_ip_blocks_metadata():
     """_resolve_safe_ip must return None for cloud metadata and .local addresses."""
     import app
 
-    assert app._resolve_safe_ip("169.254.169.254") is None
-    assert app._resolve_safe_ip("metadata.google.internal") is None
-    assert app._resolve_safe_ip("myhost.local") is None
+    assert app._resolve_safe_ip("169.254.169.254") is None  # AWS/Azure IMDS (link-local)
+    assert app._resolve_safe_ip("metadata.google.internal") is None  # GCP metadata service
+    assert app._resolve_safe_ip("myhost.local") is None  # mDNS local
 
 
 def test_flask_host_default():
@@ -1182,4 +1182,43 @@ def test_run_job_thread_tolerates_missing_job_id():
         with app._jobs_lock:
             del app._jobs["ghost-job"]
         # Calling the thread function directly must not raise
-        app._run_job_thread("ghost-job", "text", "sk-ant-fake")  # Should not raise
+        try:
+            app._run_job_thread("ghost-job", "text", "sk-ant-fake")
+        except KeyError:
+            raise AssertionError("_run_job_thread raised KeyError for missing job_id")
+
+
+def test_make_pinned_request_uses_pinned_ip():
+    """_make_pinned_request must pin socket.getaddrinfo to the pre-resolved IP.
+
+    Verifies that during the req_lib.get() call, any getaddrinfo lookup for the
+    target hostname returns the pre-validated IP (not a fresh DNS resolution).
+    This is the DNS-rebinding defence (CWE-918).
+    """
+    import socket
+    from unittest.mock import MagicMock, patch
+
+    import app
+
+    observed: dict = {}
+
+    def capture_getaddrinfo_call(url, **kwargs):
+        """Spy: record what getaddrinfo returns for 'example.com' during the request."""
+        observed["getaddrinfo_result"] = socket.getaddrinfo("example.com", 443)
+        resp = MagicMock()
+        resp.status_code = 200
+        resp.text = ""
+        return resp
+
+    with patch.object(app.req_lib, "get", side_effect=capture_getaddrinfo_call):
+        app._make_pinned_request(
+            "https://example.com/article",
+            resolved_ip="1.2.3.4",
+            hostname="example.com",
+        )
+
+    assert "getaddrinfo_result" in observed, "getaddrinfo was never called during request"
+    resolved_ips = [sockaddr[0] for (_, _, _, _, sockaddr) in observed["getaddrinfo_result"]]
+    assert "1.2.3.4" in resolved_ips, (
+        f"Expected pinned IP '1.2.3.4' in getaddrinfo result, got: {resolved_ips}"
+    )

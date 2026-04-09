@@ -533,7 +533,7 @@ def _make_pinned_request(url: str, resolved_ip: str, hostname: str, timeout: int
     with _dns_pin_lock:
         _orig_getaddrinfo = socket.getaddrinfo
 
-        def _pinned_getaddrinfo(host, port, *args, **kwargs):  # pragma: no cover
+        def _pinned_getaddrinfo(host, port, *args, **kwargs):
             if host == hostname:
                 family = socket.AF_INET6 if ":" in resolved_ip else socket.AF_INET
                 return [(family, socket.SOCK_STREAM, 0, "", (resolved_ip, port or 0))]
