@@ -1184,8 +1184,8 @@ def test_run_job_thread_tolerates_missing_job_id():
         # Calling the thread function directly must not raise
         try:
             app._run_job_thread("ghost-job", "text", "sk-ant-fake")
-        except KeyError:
-            raise AssertionError("_run_job_thread raised KeyError for missing job_id")
+        except KeyError as err:
+            raise AssertionError("_run_job_thread raised KeyError for missing job_id") from err
 
 
 def test_make_pinned_request_uses_pinned_ip():
