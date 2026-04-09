@@ -22,7 +22,9 @@ import logging
 import os
 import re
 import sys
+import threading
 import time
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlparse
@@ -116,6 +118,37 @@ _BASE_DIR = Path(__file__).resolve().parent
 _TAXONOMY_FILE = _BASE_DIR / "mechanism_classifier_taxonomy.json"
 _CONTEXT_DIR = _BASE_DIR / "_AI_CONTEXT_INDEX"
 _OUTPUT_DIR = _BASE_DIR / "output"
+
+# ─── Async job queue (avoids proxy/CDN 60-second timeout) ────────────────────
+_jobs: dict = {}
+_jobs_lock = threading.Lock()
+_JOB_TTL_SECONDS = 1800  # Expire completed jobs after 30 minutes
+
+
+def _cleanup_old_jobs() -> None:
+    """Remove completed/errored jobs older than _JOB_TTL_SECONDS."""
+    cutoff = time.time() - _JOB_TTL_SECONDS
+    with _jobs_lock:
+        expired = [jid for jid, job in _jobs.items() if job.get("created_at", 0) < cutoff]
+        for jid in expired:
+            del _jobs[jid]
+
+
+def _run_job_thread(job_id: str, text: str, api_key: str) -> None:
+    """Worker thread: run the analysis pipeline and store the result."""
+    with _jobs_lock:
+        _jobs[job_id]["status"] = "running"
+    try:
+        result = run_analysis(text, api_key)
+        with _jobs_lock:
+            _jobs[job_id].update({"status": "done", "result": result})
+    except Exception as exc:
+        logger.error(f"Job {job_id} failed: {exc}")
+        with _jobs_lock:
+            _jobs[job_id].update({
+                "status": "error",
+                "result": {"error": "Analysis failed unexpectedly. Please try again."},
+            })
 
 # ─── Cached data (loaded once, reused across requests) ───────────────────────
 _cached_taxonomy: dict | None = None
@@ -341,7 +374,7 @@ IMPORTANT:
     try:
         response = client.messages.create(
             model=_ANTHROPIC_MODEL,
-            max_tokens=16000,
+            max_tokens=8192,
             messages=[{"role": "user", "content": prompt}]
         )
 
@@ -1052,16 +1085,62 @@ def create_app():
         if len(text) > _MAX_INPUT_CHARS:
             text = text[:_MAX_INPUT_CHARS]
 
-        try:
-            result = run_analysis(text, api_key)
-        except Exception as exc:
-            logger.error(f"Analysis pipeline error: {exc}")
-            return jsonify({"error": "An error occurred during analysis. Please try again."}), 500
-        return jsonify(result)
+        # Kick off analysis in a background thread so long-running Claude API
+        # calls don't hit the 60-second reverse-proxy timeout in Codespaces /
+        # other hosted environments.  The client polls /status/<job_id>.
+        job_id = str(uuid.uuid4())
+        with _jobs_lock:
+            _jobs[job_id] = {"status": "pending", "result": None, "created_at": time.time()}
+        thread = threading.Thread(target=_run_job_thread, args=(job_id, text, api_key), daemon=True)
+        thread.start()
+        return jsonify({"job_id": job_id, "status": "pending"}), 202
 
     # Apply rate limit to /analyze only (avoids interfering with health/taxonomy/index)
     if limiter is not None:
         analyze = limiter.limit(_RATE_LIMIT)(analyze)
+
+    @app.route("/status/<job_id>", methods=["GET"])
+    def job_status(job_id):
+        """Poll the status of an async analysis job."""
+        _cleanup_old_jobs()
+        with _jobs_lock:
+            job = _jobs.get(job_id)
+        if not job:
+            return jsonify({"error": "Job not found or expired."}), 404
+        return jsonify({"status": job["status"], "result": job.get("result")})
+
+    @app.route("/upload", methods=["POST"])
+    def upload():
+        """Extract plain text from an uploaded file (.txt, .md, .docx).
+
+        Accepts multipart/form-data with a single 'file' field.
+        Returns ``{"text": "<extracted content>"}`` on success.
+        """
+        uploaded = request.files.get("file")
+        if not uploaded or not uploaded.filename:
+            return jsonify({"error": "No file provided."}), 400
+
+        filename = uploaded.filename.lower()
+        try:
+            if filename.endswith(".docx"):
+                if not _HAS_DOCX:
+                    return jsonify({"error": "DOCX support not available on this server."}), 501
+                doc = DocxDocument(uploaded)
+                text = "\n".join(para.text for para in doc.paragraphs)
+            elif filename.endswith((".txt", ".md", ".csv")):
+                text = uploaded.read().decode("utf-8", errors="replace")
+            else:
+                return jsonify({"error": "Unsupported file type. Upload .txt, .md, or .docx files."}), 400
+        except Exception as exc:
+            logger.error(f"File upload extraction failed: {exc}")
+            return jsonify({"error": "Could not extract text from the uploaded file."}), 500
+
+        text = text.strip()
+        if not text:
+            return jsonify({"error": "The uploaded file appears to be empty."}), 400
+        if len(text) > _MAX_INPUT_CHARS:
+            text = text[:_MAX_INPUT_CHARS]
+        return jsonify({"text": text})
 
     @app.route("/taxonomy")
     def taxonomy_view():
