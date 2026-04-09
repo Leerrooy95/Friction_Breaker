@@ -26,6 +26,7 @@ import threading
 import time
 import uuid
 from datetime import datetime, timezone
+from html import escape
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -956,6 +957,28 @@ _EXPORT_FORMATS = {
 }
 
 
+def _escape_strings_deep(value):
+    """Recursively HTML-escape string values in nested data structures.
+
+    Args:
+        value: A str, dict, list, or any other type.
+            - str  → HTML-escaped string (``&``, ``<``, ``>``, ``"`` are escaped)
+            - dict → new dict with all values recursively escaped (keys unchanged)
+            - list → new list with all elements recursively escaped
+            - other types (int, float, bool, None, …) → returned unchanged
+
+    Returns:
+        The sanitized value in the same structural shape as the input.
+    """
+    if isinstance(value, str):
+        return escape(value, quote=True)
+    if isinstance(value, dict):
+        return {k: _escape_strings_deep(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_escape_strings_deep(v) for v in value]
+    return value
+
+
 def export_result(result: dict, fmt: str) -> tuple[bytes, str, str]:
     """Export an analysis result in the requested format.
 
@@ -971,18 +994,20 @@ def export_result(result: dict, fmt: str) -> tuple[bytes, str, str]:
     safe_ts = ts.replace(":", "").replace("-", "").replace("T", "_").split(".")[0]
     filename = f"friction_breaker_report_{safe_ts}{info['ext']}"
 
+    safe_result = _escape_strings_deep(result)
+
     if fmt == "pdf":
         data = _result_to_pdf(result)
     elif fmt == "docx":
         data = _result_to_docx(result)
     elif fmt == "markdown":
-        data = _result_to_markdown(result).encode("utf-8")
+        data = _result_to_markdown(safe_result).encode("utf-8")
     elif fmt == "csv":
-        data = _result_to_csv(result).encode("utf-8")
+        data = _result_to_csv(safe_result).encode("utf-8")
     elif fmt == "json":
-        data = json.dumps(result, indent=2).encode("utf-8")
+        data = json.dumps(safe_result, indent=2).encode("utf-8")
     elif fmt == "text":
-        data = _result_to_text(result).encode("utf-8")
+        data = _result_to_text(safe_result).encode("utf-8")
     else:
         raise ValueError(f"Unsupported export format: {fmt}")
 
