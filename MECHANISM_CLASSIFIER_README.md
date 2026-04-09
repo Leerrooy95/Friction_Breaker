@@ -1,6 +1,6 @@
 # Mechanism Classifier Taxonomy — Documentation
 
-**Version**: 2.1
+**Version**: 2.2.0
 **Source**: The Regulated Friction Project (v12.3)
 **Generated**: April 2026
 **Authors**: Austin Smith + Claude (Opus 4.6)
@@ -11,8 +11,17 @@
 
 This taxonomy is the foundation layer for the countermeasure engine. It extracts every legal, regulatory, personnel, financial, and procedural mechanism documented in The Regulated Friction Project and classifies them into a machine-queryable structure.
 
-**Total mechanisms cataloged**: 54
+**Total mechanisms cataloged**: 56
 **Categories**: 8
+
+> **Future: Mechanism Dependency Graph** — Some mechanisms enable or depend on
+> others (e.g., capital opacity mechanisms may depend on beneficial-ownership
+> concealment).  Optional `depends_on` and `enables` fields are planned for a
+> future taxonomy version so the engine can surface cascading effects.  See the
+> JSON schema convention: each mechanism would gain an optional array of
+> taxonomy IDs it depends on or enables, following the node-and-edge pattern
+> used in SPDX/CycloneDX dependency graphs.
+> <!-- TODO: Implement depends_on / enables fields in taxonomy v2.3+ -->
 
 ---
 

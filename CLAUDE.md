@@ -35,13 +35,14 @@ python app.py
 | Auto-fix lint    | `ruff check . --fix` |
 | CLI analysis     | `python app.py --analyze "text here"` |
 | Analyze a URL    | `python app.py --url "https://..."` |
+| Batch analysis   | `python app.py --batch inputs.txt` |
 | Custom port      | `python app.py --port 8080` |
 
 ## Project Layout
 
 ```
 app.py                              # Flask app + CLI + full analysis pipeline
-mechanism_classifier_taxonomy.json  # 54 mechanisms, 8 categories
+mechanism_classifier_taxonomy.json  # 56 mechanisms, 8 categories
 templates/index.html                # Web UI (single-page)
 tests/test_app.py                   # Test suite (pytest)
 _AI_CONTEXT_INDEX/                  # Background research context files
@@ -53,7 +54,7 @@ requirements.txt                    # Pip requirements (mirrors pyproject.toml)
 
 1. **User inputs text** (paste, URL, or CLI)
 2. **GLiNER2** extracts entities locally (zero-cost, runs on CPU, ~400 MB model)
-3. **Mechanism Classifier** matches entities against the 54-mechanism taxonomy
+3. **Mechanism Classifier** matches entities against the 56-mechanism taxonomy
 4. **Claude API** generates countermeasure analysis (uses the user's own key)
 5. **Results** are returned as JSON and displayed in the web UI
 
@@ -71,6 +72,7 @@ requirements.txt                    # Pip requirements (mirrors pyproject.toml)
 |--------------------|----------|----------------------|------------------------------------------|
 | `ANTHROPIC_API_KEY`| Yes      | —                    | Your Anthropic API key                   |
 | `ANTHROPIC_MODEL`  | No       | `claude-sonnet-4-6`  | Override the Claude model used for analysis |
+| `RATE_LIMIT`       | No       | `10 per minute`      | Flask rate limit for /analyze endpoint   |
 
 ## Dependencies
 

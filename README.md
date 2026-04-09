@@ -23,7 +23,7 @@ Friction Breaker makes these mechanisms visible. It reads any text you give it, 
 
 1. **You paste text** — a news article, executive order, bill text, regulatory action, or anything else.
 2. **GLiNER2 extracts entities** locally (zero-cost, no API needed, runs on CPU).
-3. **The Mechanism Classifier** matches what it finds against a taxonomy of **54 documented mechanisms** across 8 categories, extracted from The Regulated Friction Project.
+3. **The Mechanism Classifier** matches what it finds against a taxonomy of **56 documented mechanisms** across 8 categories, extracted from The Regulated Friction Project.
 4. **Claude generates countermeasure analysis** — ranked by durability (hardest to reverse first) — in plain English anyone can understand.
 
 Every analysis includes:
@@ -75,6 +75,9 @@ python app.py --analyze "The Arkansas PSC approved Entergy's application despite
 # Analyze a URL
 python app.py --url "https://example.com/article-about-new-regulation"
 
+# Batch mode: process a file of URLs/texts (one per line)
+python app.py --batch inputs.txt
+
 # Custom port
 python app.py --port 8080
 ```
@@ -119,7 +122,7 @@ Each mechanism in the taxonomy has:
 | **Reversal Pathways** | Specific countermeasures ranked by durability                         |
 | **Real Examples**   | Verified instances from the research                                    |
 
-**8 categories, 54 mechanisms.** See [`MECHANISM_CLASSIFIER_README.md`](MECHANISM_CLASSIFIER_README.md) for full documentation.
+**8 categories, 56 mechanisms.** See [`MECHANISM_CLASSIFIER_README.md`](MECHANISM_CLASSIFIER_README.md) for full documentation.
 
 ---
 
@@ -130,7 +133,7 @@ Each mechanism in the taxonomy has:
 | **GLiNER2**            | Local entity extraction (205M params, runs on CPU)    | Free  |
 | **Claude API**         | Mechanism classification + countermeasure analysis     | BYOK  |
 | **Flask**              | Web interface + REST API                               | Free  |
-| **Mechanism Taxonomy** | 54 mechanisms from The Regulated Friction Project      | Free  |
+| **Mechanism Taxonomy** | 56 mechanisms from The Regulated Friction Project      | Free  |
 
 ---
 
@@ -139,7 +142,7 @@ Each mechanism in the taxonomy has:
 ```
 Friction_Breaker/
 ├── app.py                              # Flask app + CLI + analysis pipeline
-├── mechanism_classifier_taxonomy.json  # Mechanism taxonomy (54 mechanisms, 8 categories)
+├── mechanism_classifier_taxonomy.json  # Mechanism taxonomy (56 mechanisms, 8 categories)
 ├── MECHANISM_CLASSIFIER_README.md      # Taxonomy documentation
 ├── templates/
 │   └── index.html                      # Web UI
@@ -214,6 +217,17 @@ See [SECURITY.md](SECURITY.md) for the vulnerability reporting policy.
 ## License
 
 [MIT License](LICENSE) — same as [The Regulated Friction Project](https://github.com/Leerrooy95/The_Regulated_Friction_Project).
+
+---
+
+## Changelog
+
+### v1.1.0 (April 2026)
+- **Batch mode**: `--batch` CLI flag processes a file of URLs/texts (one per line), saving all results to `output/`
+- **Configurable rate limiting**: `RATE_LIMIT` environment variable (default: `10 per minute`)
+- **Context index in Claude prompt**: Background research from `_AI_CONTEXT_INDEX/` is now included in analysis prompts (capped at 8K chars)
+- **Taxonomy version tracking**: `/health` endpoint and analysis metadata now include `taxonomy_version`
+- **Taxonomy v2.2.0**: 56 mechanisms across 8 categories (docs updated to match)
 
 ---
 
