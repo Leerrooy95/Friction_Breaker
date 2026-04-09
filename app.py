@@ -17,10 +17,12 @@ Requires: ANTHROPIC_API_KEY in .env or environment.
 import argparse
 import csv
 import io
+import ipaddress
 import json
 import logging
 import os
 import re
+import socket
 import sys
 import threading
 import time
@@ -36,6 +38,16 @@ load_dotenv()
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
+
+
+def _sanitize_for_log(msg: object) -> str:
+    """Strip newline characters from log messages to prevent log injection (CWE-117).
+
+    Any carriage-return or newline in user-controlled data would allow an
+    attacker to forge additional log entries.  Replace them with a space.
+    """
+    return str(msg).replace("\r\n", " ").replace("\r", " ").replace("\n", " ")
+
 
 # ─── Dependency checks ────────────────────────────────────────────────────────
 try:
@@ -106,13 +118,14 @@ def _load_gliner():
         logger.warning("GLiNER not installed. Entity extraction will use Claude only.")
         return None
     except Exception as e:
-        logger.warning(f"GLiNER load failed: {e}. Entity extraction will use Claude only.")
+        logger.warning(f"GLiNER load failed: {_sanitize_for_log(e)}. Entity extraction will use Claude only.")
         return None
 
 
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
 _ANTHROPIC_MODEL = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-6")
 _RATE_LIMIT = os.getenv("RATE_LIMIT", "10 per minute")
+_FLASK_HOST = os.getenv("FLASK_HOST", "127.0.0.1")  # Bind to loopback by default (CWE-605)
 _MAX_INPUT_CHARS = 50000
 _MAX_CONTEXT_CHARS = 8000  # Cap for context index injected into Claude prompt
 _BASE_DIR = Path(__file__).resolve().parent
@@ -138,18 +151,21 @@ def _cleanup_old_jobs() -> None:
 def _run_job_thread(job_id: str, text: str, api_key: str) -> None:
     """Worker thread: run the analysis pipeline and store the result."""
     with _jobs_lock:
-        _jobs[job_id]["status"] = "running"
+        if job_id in _jobs:
+            _jobs[job_id]["status"] = "running"
     try:
         result = run_analysis(text, api_key)
         with _jobs_lock:
-            _jobs[job_id].update({"status": "done", "result": result})
+            if job_id in _jobs:
+                _jobs[job_id].update({"status": "done", "result": result})
     except Exception as exc:
-        logger.error(f"Job {job_id} failed: {exc}")
+        logger.error(f"Job {job_id} failed: {_sanitize_for_log(exc)}")
         with _jobs_lock:
-            _jobs[job_id].update({
-                "status": "error",
-                "result": {"error": "Analysis failed unexpectedly. Please try again."},
-            })
+            if job_id in _jobs:
+                _jobs[job_id].update({
+                    "status": "error",
+                    "result": {"error": "Analysis failed unexpectedly. Please try again."},
+                })
 
 # ─── Cached data (loaded once, reused across requests) ───────────────────────
 _cached_taxonomy: dict | None = None
@@ -233,7 +249,7 @@ def extract_entities_gliner(text: str) -> list[dict]:
                         "score": round(ent["score"], 3)
                     })
         except Exception as e:
-            logger.warning(f"GLiNER extraction error on chunk: {e}")
+            logger.warning(f"GLiNER extraction error on chunk: {_sanitize_for_log(e)}")
 
     # Sort by confidence
     all_entities.sort(key=lambda x: x["score"], reverse=True)
@@ -411,10 +427,10 @@ IMPORTANT:
     except anthropic.RateLimitError:
         return {"error": "Rate limited. Wait a moment and try again."}
     except anthropic.BadRequestError as e:
-        logger.error(f"Claude API bad request: {e}")
+        logger.error(f"Claude API bad request: {_sanitize_for_log(e)}")
         return {"error": f"Claude API error: {e.message}"}
     except Exception as e:
-        logger.error(f"Claude API error: {e}")
+        logger.error(f"Claude API error: {_sanitize_for_log(e)}")
         return {"error": "An error occurred during analysis. Please try again."}
 
 
@@ -423,32 +439,113 @@ _BLOCKED_HOSTS = {"localhost", "127.0.0.1", "0.0.0.0", "::1", "metadata.google.i
 
 _RE_WHITESPACE = re.compile(r"\s+")
 
+# Serialises all outbound URL fetches so the temporary socket.getaddrinfo
+# override in _make_pinned_request() never races with another thread.
+_dns_pin_lock = threading.Lock()
+
 
 def _is_private_host(hostname: str) -> bool:
     """Check if a hostname resolves to a private/internal address."""
-    import ipaddress
-    import socket
-
     if hostname in _BLOCKED_HOSTS:
         return True
     if hostname.endswith(".local"):
         return True
-    # Block common private IP ranges by prefix
+    # Block common private IP ranges by prefix (fast path before DNS lookup)
     for prefix in ("10.", "192.168.", "172.16.", "172.17.", "172.18.", "172.19.",
                     "172.20.", "172.21.", "172.22.", "172.23.", "172.24.", "172.25.",
                     "172.26.", "172.27.", "172.28.", "172.29.", "172.30.", "172.31."):
         if hostname.startswith(prefix):
             return True
-    # Resolve DNS and check if the IP is private
+    # Resolve DNS and check ALL returned IPs (prevents DNS rebinding via
+    # split-horizon or short-TTL trickery at the initial validation stage)
     try:
         addr_info = socket.getaddrinfo(hostname, None, socket.AF_UNSPEC, socket.SOCK_STREAM)
         for _family, _type, _proto, _canonname, sockaddr in addr_info:
             ip = ipaddress.ip_address(sockaddr[0])
-            if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved:
+            if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved or ip.is_multicast:
                 return True
     except (socket.gaierror, ValueError):
         pass
     return False
+
+
+def _resolve_safe_ip(hostname: str) -> str | None:
+    """Resolve *hostname* to a validated public IP address.
+
+    Resolves ALL A/AAAA records and rejects the hostname if **any** record
+    points to a private, loopback, link-local, reserved, or multicast address.
+    This is the second DNS-validation step recommended by the OWASP SSRF
+    Prevention Cheat Sheet (Application Layer / Case 2) to close the
+    DNS-rebinding window that exists when validation and connection use
+    separate lookups.
+
+    Returns the first resolved IP string on success, or ``None`` if the host
+    is blocked or DNS resolution fails.
+    """
+    # Fast-path: explicit blocklist and prefix checks (no DNS query needed)
+    if hostname in _BLOCKED_HOSTS or hostname.endswith(".local"):
+        return None
+    for prefix in ("10.", "192.168.", "172.16.", "172.17.", "172.18.", "172.19.",
+                    "172.20.", "172.21.", "172.22.", "172.23.", "172.24.", "172.25.",
+                    "172.26.", "172.27.", "172.28.", "172.29.", "172.30.", "172.31."):
+        if hostname.startswith(prefix):
+            return None
+
+    try:
+        addr_info = socket.getaddrinfo(hostname, None, socket.AF_UNSPEC, socket.SOCK_STREAM)
+    except socket.gaierror:
+        return None
+
+    if not addr_info:
+        return None
+
+    first_safe_ip: str | None = None
+    for _family, _type, _proto, _canonname, sockaddr in addr_info:
+        ip_str = sockaddr[0]
+        try:
+            ip = ipaddress.ip_address(ip_str)
+        except ValueError:
+            return None  # Malformed address — reject entirely
+        if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved or ip.is_multicast:
+            return None  # Any private record → block the whole hostname
+        if first_safe_ip is None:
+            first_safe_ip = ip_str
+
+    return first_safe_ip
+
+
+def _make_pinned_request(url: str, resolved_ip: str, hostname: str, timeout: int = 15):
+    """Make an HTTP request with DNS **pinned** to *resolved_ip*.
+
+    Temporarily overrides ``socket.getaddrinfo`` for *hostname* so that the
+    underlying TCP connection goes to the already-validated IP address rather
+    than performing a fresh DNS lookup.  This closes the DNS-rebinding attack
+    window (CWE-918) that would otherwise exist between ``_resolve_safe_ip``
+    and the actual ``requests.get`` call.
+
+    For HTTPS the original *hostname* remains in the URL, so TLS certificate
+    verification and SNI still use the correct hostname — only the OS-level
+    address resolution is pinned.
+
+    The ``_dns_pin_lock`` serialises all URL fetches so the global
+    ``socket.getaddrinfo`` override is never visible to other threads.
+    """
+    with _dns_pin_lock:
+        _orig_getaddrinfo = socket.getaddrinfo
+
+        def _pinned_getaddrinfo(host, port, *args, **kwargs):
+            if host == hostname:
+                family = socket.AF_INET6 if ":" in resolved_ip else socket.AF_INET
+                return [(family, socket.SOCK_STREAM, 0, "", (resolved_ip, port or 0))]
+            return _orig_getaddrinfo(host, port, *args, **kwargs)
+
+        socket.getaddrinfo = _pinned_getaddrinfo
+        try:
+            return req_lib.get(url, timeout=timeout, allow_redirects=False, headers={
+                "User-Agent": "FrictionBreaker/1.0 (OSINT research tool)"
+            })
+        finally:
+            socket.getaddrinfo = _orig_getaddrinfo
 
 
 def _strip_html(text: str) -> str:
@@ -503,6 +600,13 @@ def fetch_url(url: str) -> str:
 
     Follows redirects (up to ``_MAX_REDIRECTS`` hops) while re-validating
     each intermediate destination against the SSRF blocklist.
+
+    DNS-rebinding defence (OWASP SSRF Prevention, Application Layer, Case 2):
+    After the blocklist check, ``_resolve_safe_ip`` resolves *all* DNS records
+    and validates every IP before the request is dispatched.
+    ``_make_pinned_request`` then pins the underlying TCP connection to that
+    validated IP so a racing DNS response change cannot redirect traffic to an
+    internal host.
     """
     if not _HAS_REQUESTS:
         return ""
@@ -513,9 +617,16 @@ def fetch_url(url: str) -> str:
             if safe_url is None:
                 return ""
 
-            resp = req_lib.get(safe_url, timeout=15, allow_redirects=False, headers={
-                "User-Agent": "FrictionBreaker/1.0 (OSINT research tool)"
-            })
+            # Second-pass DNS resolution: validate all records and obtain the
+            # IP that will be pinned for the actual TCP connection.
+            parsed = urlparse(safe_url)
+            hostname = (parsed.hostname or "").lower()
+            safe_ip = _resolve_safe_ip(hostname)
+            if safe_ip is None:
+                logger.warning("Blocked request: no safe IP resolved for host")
+                return ""
+
+            resp = _make_pinned_request(safe_url, safe_ip, hostname)
 
             if resp.status_code in (301, 302, 303, 307, 308):
                 location = resp.headers.get("Location", "")
@@ -532,7 +643,7 @@ def fetch_url(url: str) -> str:
         logger.warning("Too many redirects")
         return ""
     except Exception as e:
-        logger.warning(f"URL fetch failed: {e}")
+        logger.warning(f"URL fetch failed: {_sanitize_for_log(e)}")
         return ""
 
 
@@ -1067,6 +1178,34 @@ def create_app():
         response.headers.setdefault("X-Content-Type-Options", "nosniff")
         response.headers.setdefault("X-Frame-Options", "DENY")
         response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+        # Cross-origin isolation (OWASP HTTP Headers Cheat Sheet, 2026)
+        response.headers.setdefault("Cross-Origin-Opener-Policy", "same-origin")
+        response.headers.setdefault("Cross-Origin-Resource-Policy", "same-site")
+        # Restrict access to browser features (Permissions-Policy replaces Feature-Policy)
+        response.headers.setdefault(
+            "Permissions-Policy",
+            "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+        )
+        # Content-Security-Policy for HTML responses only.
+        # The /export endpoint sets its own sandbox CSP; skip HTML pages if
+        # CSP is already present (e.g. set by export_result).
+        content_type = response.headers.get("Content-Type", "")
+        if "text/html" in content_type and "Content-Security-Policy" not in response.headers:
+            # All scripts and styles are inline; no external resources are loaded.
+            # 'unsafe-inline' is required because the single-page app embeds
+            # <script> and <style> blocks directly in index.html.
+            response.headers["Content-Security-Policy"] = (
+                "default-src 'self'; "
+                "script-src 'self' 'unsafe-inline'; "
+                "style-src 'self' 'unsafe-inline'; "
+                "img-src 'self' data:; "
+                "connect-src 'self'; "
+                "font-src 'self'; "
+                "object-src 'none'; "
+                "base-uri 'self'; "
+                "form-action 'self'; "
+                "frame-ancestors 'none'"
+            )
         return response
 
     @app.errorhandler(500)
@@ -1306,11 +1445,11 @@ def main():
             logger.error("Flask not installed. Install it: pip install flask")
             sys.exit(1)
         app = create_app()
-        print(f"\n🔧 Friction Breaker running on http://localhost:{args.port}")
+        print(f"\n🔧 Friction Breaker running on http://{_FLASK_HOST}:{args.port}")
         print(f"   Taxonomy: {len(load_taxonomy().get('mechanisms', []))} mechanisms loaded")
         print(f"   GLiNER2: {'available' if _load_gliner() else 'not available (Claude-only mode)'}")
         print("   BYOK: Enter your ANTHROPIC_API_KEY in the web interface\n")
-        app.run(host="0.0.0.0", port=args.port, debug=False)
+        app.run(host=_FLASK_HOST, port=args.port, debug=False)
 
 
 if __name__ == "__main__":

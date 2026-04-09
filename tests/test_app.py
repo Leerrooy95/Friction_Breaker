@@ -1052,3 +1052,173 @@ def test_export_endpoint_security_headers():
         assert resp.headers.get("Cross-Origin-Opener-Policy") == "same-origin"
         # IE/Edge legacy hardening
         assert resp.headers.get("X-Download-Options") == "noopen"
+
+
+# ---------------------------------------------------------------------------
+# 2026 security hardening tests
+# ---------------------------------------------------------------------------
+
+def test_sanitize_for_log_removes_newlines():
+    """_sanitize_for_log must strip CR, LF, and CRLF (CWE-117 / log injection)."""
+    import app
+
+    assert "\n" not in app._sanitize_for_log("line1\nline2")
+    assert "\r" not in app._sanitize_for_log("line1\rline2")
+    assert "\r\n" not in app._sanitize_for_log("line1\r\nline2")
+    assert app._sanitize_for_log("safe message") == "safe message"
+
+
+def test_resolve_safe_ip_blocks_localhost():
+    """_resolve_safe_ip must return None for localhost and loopback IPs."""
+    import app
+
+    assert app._resolve_safe_ip("localhost") is None
+    assert app._resolve_safe_ip("127.0.0.1") is None
+    assert app._resolve_safe_ip("::1") is None
+
+
+def test_resolve_safe_ip_blocks_private_ranges():
+    """_resolve_safe_ip must return None for RFC-1918 private IP strings."""
+    import app
+
+    assert app._resolve_safe_ip("10.0.0.1") is None
+    assert app._resolve_safe_ip("192.168.1.1") is None
+    assert app._resolve_safe_ip("172.16.0.1") is None
+
+
+def test_resolve_safe_ip_blocks_metadata():
+    """_resolve_safe_ip must return None for cloud metadata and .local addresses."""
+    import app
+
+    assert app._resolve_safe_ip("169.254.169.254") is None  # AWS/Azure IMDS (link-local)
+    assert app._resolve_safe_ip("metadata.google.internal") is None  # GCP metadata service
+    assert app._resolve_safe_ip("myhost.local") is None  # mDNS local
+
+
+def test_flask_host_default():
+    """_FLASK_HOST must default to 127.0.0.1 (not 0.0.0.0) when FLASK_HOST is unset."""
+    import importlib
+    import os
+
+    import app as app_module
+
+    old = os.environ.pop("FLASK_HOST", None)
+    try:
+        importlib.reload(app_module)
+        assert app_module._FLASK_HOST == "127.0.0.1"
+    finally:
+        if old is not None:
+            os.environ["FLASK_HOST"] = old
+        else:
+            os.environ.pop("FLASK_HOST", None)
+        importlib.reload(app_module)
+
+
+def test_flask_host_env_override(monkeypatch):
+    """FLASK_HOST env var must override the default binding address."""
+    import importlib
+
+    import app as app_module
+
+    monkeypatch.setenv("FLASK_HOST", "0.0.0.0")
+    importlib.reload(app_module)
+    try:
+        assert app_module._FLASK_HOST == "0.0.0.0"
+    finally:
+        monkeypatch.delenv("FLASK_HOST", raising=False)
+        importlib.reload(app_module)
+
+
+def test_html_response_has_csp_header():
+    """HTML responses must include a Content-Security-Policy header."""
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.get("/")
+        assert resp.status_code == 200
+        csp = resp.headers.get("Content-Security-Policy", "")
+        assert "default-src" in csp
+        assert "frame-ancestors" in csp
+
+
+def test_html_response_has_coop_corp_permissions():
+    """HTML responses must include COOP, CORP and Permissions-Policy headers."""
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.get("/")
+        assert resp.headers.get("Cross-Origin-Opener-Policy") == "same-origin"
+        assert resp.headers.get("Cross-Origin-Resource-Policy") == "same-site"
+        assert "camera=()" in resp.headers.get("Permissions-Policy", "")
+
+
+def test_json_api_response_has_coop_corp():
+    """JSON API responses must also receive COOP and CORP headers."""
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.get("/health")
+        assert resp.headers.get("Cross-Origin-Opener-Policy") == "same-origin"
+        assert resp.headers.get("Cross-Origin-Resource-Policy") == "same-site"
+
+
+def test_run_job_thread_tolerates_missing_job_id():
+    """_run_job_thread must not raise KeyError when _jobs is cleared mid-flight."""
+    import time
+    from unittest.mock import patch
+
+    import app
+
+    # Inject the job manually then immediately remove it to simulate a reload
+    with app._jobs_lock:
+        app._jobs["ghost-job"] = {"status": "pending", "created_at": time.time()}
+
+    # Patch run_analysis to do nothing (returns quickly)
+    with patch.object(app, "run_analysis", return_value={"mechanisms_identified": []}):
+        # Remove the job BEFORE the thread can update it
+        with app._jobs_lock:
+            del app._jobs["ghost-job"]
+        # Calling the thread function directly must not raise
+        try:
+            app._run_job_thread("ghost-job", "text", "sk-ant-fake")
+        except KeyError as err:
+            raise AssertionError("_run_job_thread raised KeyError for missing job_id") from err
+
+
+def test_make_pinned_request_uses_pinned_ip():
+    """_make_pinned_request must pin socket.getaddrinfo to the pre-resolved IP.
+
+    Verifies that during the req_lib.get() call, any getaddrinfo lookup for the
+    target hostname returns the pre-validated IP (not a fresh DNS resolution).
+    This is the DNS-rebinding defence (CWE-918).
+    """
+    import socket
+    from unittest.mock import MagicMock, patch
+
+    import app
+
+    observed: dict = {}
+
+    def capture_getaddrinfo_call(url, **kwargs):
+        """Spy: record what getaddrinfo returns for 'example.com' during the request."""
+        observed["getaddrinfo_result"] = socket.getaddrinfo("example.com", 443)
+        resp = MagicMock()
+        resp.status_code = 200
+        resp.text = ""
+        return resp
+
+    with patch.object(app.req_lib, "get", side_effect=capture_getaddrinfo_call):
+        app._make_pinned_request(
+            "https://example.com/article",
+            resolved_ip="1.2.3.4",
+            hostname="example.com",
+        )
+
+    assert "getaddrinfo_result" in observed, "getaddrinfo was never called during request"
+    resolved_ips = [sockaddr[0] for (_, _, _, _, sockaddr) in observed["getaddrinfo_result"]]
+    assert "1.2.3.4" in resolved_ips, (
+        f"Expected pinned IP '1.2.3.4' in getaddrinfo result, got: {resolved_ips}"
+    )
