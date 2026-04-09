@@ -14,12 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Friction_Breaker
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: target
 
       - name: Checkout The_Regulated_Friction_Project
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: Leerrooy95/The_Regulated_Friction_Project
           path: source
