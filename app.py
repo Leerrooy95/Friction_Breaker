@@ -1111,7 +1111,7 @@ def create_app():
 
     @app.route("/upload", methods=["POST"])
     def upload():
-        """Extract plain text from an uploaded file (.txt, .md, .docx).
+        """Extract plain text from an uploaded file (.txt, .md, .csv, .docx).
 
         Accepts multipart/form-data with a single 'file' field.
         Returns ``{"text": "<extracted content>"}`` on success.
@@ -1121,16 +1121,19 @@ def create_app():
             return jsonify({"error": "No file provided."}), 400
 
         filename = uploaded.filename.lower()
+
+        # Validate file type before reading content
+        if not filename.endswith((".txt", ".md", ".csv", ".docx")):
+            return jsonify({"error": "Unsupported file type. Upload .txt, .md, .csv, or .docx files."}), 400
+
         try:
             if filename.endswith(".docx"):
                 if not _HAS_DOCX:
                     return jsonify({"error": "DOCX support not available on this server."}), 501
                 doc = DocxDocument(uploaded)
                 text = "\n".join(para.text for para in doc.paragraphs)
-            elif filename.endswith((".txt", ".md", ".csv")):
-                text = uploaded.read().decode("utf-8", errors="replace")
             else:
-                return jsonify({"error": "Unsupported file type. Upload .txt, .md, or .docx files."}), 400
+                text = uploaded.read().decode("utf-8", errors="replace")
         except Exception as exc:
             logger.error(f"File upload extraction failed: {exc}")
             return jsonify({"error": "Could not extract text from the uploaded file."}), 500

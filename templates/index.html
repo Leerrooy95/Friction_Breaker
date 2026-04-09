@@ -143,6 +143,11 @@ async function runAnalysis() {
     if (!text && fileInput.files.length > 0) {
         const file = fileInput.files[0];
         const lower = file.name.toLowerCase();
+        const supported = lower.endsWith('.txt') || lower.endsWith('.md') || lower.endsWith('.docx');
+        if (!supported) {
+            status.innerHTML = '<span style="color:var(--red)">Unsupported file type. Upload .txt, .md, or .docx files.</span>';
+            return;
+        }
         try {
             if (lower.endsWith('.txt') || lower.endsWith('.md')) {
                 // Read plain-text files entirely in the browser
