@@ -850,6 +850,25 @@ def test_export_result_all_formats():
         assert filename.startswith("friction_breaker_report_")
 
 
+def test_export_result_xss_escaped_in_text_formats():
+    """XSS payloads in result strings must be HTML-escaped in text-based exports."""
+    import app
+
+    xss_result = {
+        "input_summary": '<script>alert("xss")</script>',
+        "political_translator_summary": "<img src=x onerror=alert(1)>",
+        "mechanisms_identified": [],
+        "new_mechanisms_detected": [],
+        "_meta": {"timestamp": "2026-01-01T00:00:00Z"},
+    }
+    for fmt in ("markdown", "csv", "json", "text"):
+        file_bytes, _, _ = app.export_result(xss_result, fmt)
+        text = file_bytes.decode("utf-8")
+        assert "<script>" not in text, f"Unescaped <script> found in {fmt} export"
+        assert "<img" not in text, f"Unescaped <img found in {fmt} export"
+
+
+
 def test_export_result_unsupported_format():
     """export_result must raise ValueError for unsupported formats."""
     import app
