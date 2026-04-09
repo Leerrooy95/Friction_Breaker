@@ -857,7 +857,17 @@ def test_export_result_xss_escaped_in_text_formats():
     xss_result = {
         "input_summary": '<script>alert("xss")</script>',
         "political_translator_summary": "<img src=x onerror=alert(1)>",
-        "mechanisms_identified": [],
+        "mechanisms_identified": [
+            {
+                "taxonomy_id": "X-01",
+                "name": '<script>alert("xss")</script>',
+                "confidence": "HIGH",
+                "durability": 5,
+                "what_it_does": "<img src=x onerror=alert(1)>",
+                "evidence": "<script>evil()</script>",
+                "countermeasures": [],
+            }
+        ],
         "new_mechanisms_detected": [],
         "_meta": {"timestamp": "2026-01-01T00:00:00Z"},
     }
@@ -865,8 +875,9 @@ def test_export_result_xss_escaped_in_text_formats():
         file_bytes, _, _ = app.export_result(xss_result, fmt)
         text = file_bytes.decode("utf-8")
         assert "<script>" not in text, f"Unescaped <script> found in {fmt} export"
+        assert "&lt;script&gt;" in text, f"Escaped &lt;script&gt; missing from {fmt} export"
         assert "<img" not in text, f"Unescaped <img found in {fmt} export"
-
+        assert "&lt;img" in text, f"Escaped &lt;img missing from {fmt} export"
 
 
 def test_export_result_unsupported_format():

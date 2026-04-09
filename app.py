@@ -958,7 +958,18 @@ _EXPORT_FORMATS = {
 
 
 def _escape_strings_deep(value):
-    """Recursively HTML-escape string values in nested data structures."""
+    """Recursively HTML-escape string values in nested data structures.
+
+    Args:
+        value: A str, dict, list, or any other type.
+            - str  → HTML-escaped string (``&``, ``<``, ``>``, ``"`` are escaped)
+            - dict → new dict with all values recursively escaped (keys unchanged)
+            - list → new list with all elements recursively escaped
+            - other types (int, float, bool, None, …) → returned unchanged
+
+    Returns:
+        The sanitized value in the same structural shape as the input.
+    """
     if isinstance(value, str):
         return escape(value, quote=True)
     if isinstance(value, dict):
