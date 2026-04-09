@@ -141,7 +141,17 @@ async function runAnalysis() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ api_key: apiKey, text: text, url: url })
         });
-        const data = await resp.json();
+
+        let data;
+        try {
+            data = await resp.json();
+        } catch (_jsonErr) {
+            throw new Error('Server returned an invalid response. Please try again.');
+        }
+
+        if (!resp.ok && !data.error) {
+            throw new Error(data.error || `Server error (${resp.status}). Please try again.`);
+        }
 
         if (data.error) {
             resultsDiv.innerHTML = `<div class="error">${data.error}</div>`;

@@ -1005,6 +1005,11 @@ def create_app():
     def index():
         return render_template("index.html")
 
+    @app.errorhandler(500)
+    def internal_error(e):
+        logger.error(f"Internal server error: {e}")
+        return jsonify({"error": "An unexpected server error occurred. Please try again."}), 500
+
     @app.route("/analyze", methods=["POST"])
     def analyze():  # Rate-limited to 10/min per IP when flask-limiter is available (applied below)
         data = request.get_json()
@@ -1033,7 +1038,11 @@ def create_app():
         if len(text) > _MAX_INPUT_CHARS:
             text = text[:_MAX_INPUT_CHARS]
 
-        result = run_analysis(text, api_key)
+        try:
+            result = run_analysis(text, api_key)
+        except Exception as exc:
+            logger.error(f"Analysis pipeline error: {exc}")
+            return jsonify({"error": "An error occurred during analysis. Please try again."}), 500
         return jsonify(result)
 
     # Apply rate limit to /analyze only (avoids interfering with health/taxonomy/index)

@@ -181,6 +181,43 @@ def test_analyze_no_text():
         assert "text" in data.get("error", "").lower() or "url" in data.get("error", "").lower()
 
 
+def test_analyze_pipeline_exception_returns_json():
+    """POST /analyze must return JSON even when run_analysis() throws an unhandled exception."""
+    from unittest.mock import patch
+
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client, patch.object(app, "run_analysis", side_effect=RuntimeError("boom")):
+            resp = client.post(
+                "/analyze",
+                json={"api_key": "sk-ant-fake-key", "text": "test input"},
+                content_type="application/json",
+            )
+            assert resp.status_code == 500
+            data = resp.get_json()
+            assert data is not None, "Response body must be valid JSON"
+            assert "error" in data
+
+
+def test_500_error_handler_returns_json():
+    """The generic 500 error handler must return a JSON body (not HTML)."""
+    import app
+
+    flask_app = app.create_app()
+
+    @flask_app.route("/_test_500")
+    def _boom():
+        raise RuntimeError("Simulated crash")
+
+    with flask_app.test_client() as client:
+        resp = client.get("/_test_500")
+        assert resp.status_code == 500
+        data = resp.get_json()
+        assert data is not None, "500 response must be JSON, not HTML"
+        assert "error" in data
+
+
 # ---------------------------------------------------------------------------
 # Security tests
 # ---------------------------------------------------------------------------
