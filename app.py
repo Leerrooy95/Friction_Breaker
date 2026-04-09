@@ -28,6 +28,7 @@ import uuid
 from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
+from urllib.parse import quote as urlquote
 from urllib.parse import urlparse
 
 from dotenv import load_dotenv
@@ -1213,9 +1214,9 @@ def create_app():
 
         resp = make_response(file_bytes)
         resp.headers["Content-Type"] = content_type
-        resp.headers["Content-Disposition"] = f'attachment; filename="{escape(filename, quote=True)}"'
+        resp.headers["Content-Disposition"] = f'attachment; filename="{urlquote(filename, safe="")}"; filename*=UTF-8\'\'{urlquote(filename, safe="")}'
         resp.headers["X-Content-Type-Options"] = "nosniff"
-        resp.headers["Content-Security-Policy"] = "default-src 'none'; sandbox"
+        resp.headers["Content-Security-Policy"] = "default-src 'none'"
         resp.headers["X-Frame-Options"] = "DENY"
         resp.headers["Referrer-Policy"] = "no-referrer"
         return resp
