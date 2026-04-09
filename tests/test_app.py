@@ -3,6 +3,7 @@ Tests for the Friction Breaker application.
 """
 
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -454,7 +455,6 @@ def test_taxonomy_version_in_json():
     version = data.get("metadata", {}).get("version")
     assert version is not None, "Taxonomy metadata.version is missing"
     # Validate semver-ish format (MAJOR.MINOR.PATCH)
-    import re
     assert re.match(r"^\d+\.\d+\.\d+$", version), f"Version '{version}' is not semver"
 
 
