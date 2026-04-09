@@ -28,6 +28,7 @@ import uuid
 from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
+from urllib.parse import quote as urlquote
 from urllib.parse import urlparse
 
 from dotenv import load_dotenv
@@ -1213,8 +1214,13 @@ def create_app():
 
         resp = make_response(file_bytes)
         resp.headers["Content-Type"] = content_type
-        resp.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+        # Use RFC 5987 dual-param encoding: ASCII fallback + full UTF-8 encoded name
+        ascii_name = urlquote(filename, safe="-_.")
+        utf8_name = urlquote(filename, safe="")
+        resp.headers["Content-Disposition"] = f"attachment; filename=\"{ascii_name}\"; filename*=UTF-8''{utf8_name}"
         resp.headers["X-Content-Type-Options"] = "nosniff"
+        resp.headers["X-Frame-Options"] = "DENY"
+        resp.headers["Referrer-Policy"] = "no-referrer"
         return resp
 
     @app.route("/health")
