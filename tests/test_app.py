@@ -850,21 +850,27 @@ def test_export_result_all_formats():
         assert filename.startswith("friction_breaker_report_")
 
 
-def test_export_result_xss_escaped_in_text_formats():
-    """XSS payloads in result strings must be HTML-escaped in text-based exports."""
+def test_export_result_preserves_original_content():
+    """Export must preserve original content without HTML-escaping.
+
+    HTML escaping is inappropriate for non-HTML formats (JSON, CSV, TXT,
+    Markdown, PDF, DOCX). Security is enforced by response headers
+    (Content-Disposition: attachment, Content-Security-Policy: sandbox,
+    X-Content-Type-Options: nosniff, etc.) rather than content mangling.
+    """
     import app
 
-    xss_result = {
-        "input_summary": '<script>alert("xss")</script>',
-        "political_translator_summary": "<img src=x onerror=alert(1)>",
+    special_result = {
+        "input_summary": "Tom & Jerry <together>",
+        "political_translator_summary": 'Quotes "here" & ampersands',
         "mechanisms_identified": [
             {
                 "taxonomy_id": "X-01",
-                "name": '<script>alert("xss")</script>',
+                "name": "Mechanism <A>",
                 "confidence": "HIGH",
                 "durability": 5,
-                "what_it_does": "<img src=x onerror=alert(1)>",
-                "evidence": "<script>evil()</script>",
+                "what_it_does": "Something with <angle> brackets & symbols",
+                "evidence": "Evidence with 'quotes' and \"doubles\"",
                 "countermeasures": [],
             }
         ],
@@ -872,12 +878,13 @@ def test_export_result_xss_escaped_in_text_formats():
         "_meta": {"timestamp": "2026-01-01T00:00:00Z"},
     }
     for fmt in ("markdown", "csv", "json", "text"):
-        file_bytes, _, _ = app.export_result(xss_result, fmt)
+        file_bytes, _, _ = app.export_result(special_result, fmt)
         text = file_bytes.decode("utf-8")
-        assert "<script>" not in text, f"Unescaped <script> found in {fmt} export"
-        assert "&lt;script&gt;" in text, f"Escaped &lt;script&gt; missing from {fmt} export"
-        assert "<img" not in text, f"Unescaped <img found in {fmt} export"
-        assert "&lt;img" in text, f"Escaped &lt;img missing from {fmt} export"
+        # Content must NOT be HTML-escaped — these are non-HTML formats
+        assert "&lt;" not in text, f"HTML entity &lt; found in {fmt} export — content should not be HTML-escaped"
+        assert "&amp;" not in text, f"HTML entity &amp; found in {fmt} export — content should not be HTML-escaped"
+        assert "&gt;" not in text, f"HTML entity &gt; found in {fmt} export — content should not be HTML-escaped"
+        assert "&quot;" not in text, f"HTML entity &quot; found in {fmt} export — content should not be HTML-escaped"
 
 
 def test_export_result_unsupported_format():
@@ -1018,3 +1025,25 @@ def test_export_endpoint_text():
         assert "text/plain" in resp.content_type
         assert b"FRICTION BREAKER" in resp.data
         assert "attachment" in resp.headers.get("Content-Disposition", "")
+
+
+def test_export_endpoint_security_headers():
+    """POST /export must include all anti-execution security headers."""
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.post("/export", json={"format": "json", "result": _SAMPLE_RESULT})
+        assert resp.status_code == 200
+        # Core anti-execution headers
+        assert resp.headers.get("X-Content-Type-Options") == "nosniff"
+        assert resp.headers.get("X-Frame-Options") == "DENY"
+        assert resp.headers.get("Referrer-Policy") == "no-referrer"
+        assert "attachment" in resp.headers.get("Content-Disposition", "")
+        # Sandbox CSP blocks all script execution if content is opened in-browser
+        assert resp.headers.get("Content-Security-Policy") == "sandbox; default-src 'none'"
+        # Cross-origin isolation
+        assert resp.headers.get("Cross-Origin-Resource-Policy") == "same-origin"
+        assert resp.headers.get("Cross-Origin-Opener-Policy") == "same-origin"
+        # IE/Edge legacy hardening
+        assert resp.headers.get("X-Download-Options") == "noopen"
