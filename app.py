@@ -1221,6 +1221,10 @@ def create_app():
         resp.headers["X-Content-Type-Options"] = "nosniff"
         resp.headers["X-Frame-Options"] = "DENY"
         resp.headers["Referrer-Policy"] = "no-referrer"
+        # Defense-in-depth for reflected user-controlled export payloads.
+        # If a browser attempts to render the response, sandbox it to block script execution.
+        resp.headers["Content-Security-Policy"] = "sandbox"
+        resp.headers["Cross-Origin-Resource-Policy"] = "same-origin"
         return resp
 
     @app.route("/health")
