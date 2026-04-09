@@ -3,7 +3,10 @@ Tests for the Friction Breaker application.
 """
 
 import json
+import re
 from pathlib import Path
+
+import pytest
 
 # ---------------------------------------------------------------------------
 # Taxonomy loading
@@ -438,3 +441,104 @@ def test_save_result_creates_markdown(tmp_path, monkeypatch):
     md_path = json_path.with_suffix(".md")
     assert md_path.exists()
     assert "Friction Breaker" in md_path.read_text()
+
+
+# ---------------------------------------------------------------------------
+# New feature tests
+# ---------------------------------------------------------------------------
+
+def test_taxonomy_version_in_json():
+    """The taxonomy JSON must have a metadata.version field (semver string)."""
+    taxonomy_path = Path(__file__).resolve().parent.parent / "mechanism_classifier_taxonomy.json"
+    with open(taxonomy_path) as f:
+        data = json.load(f)
+    version = data.get("metadata", {}).get("version")
+    assert version is not None, "Taxonomy metadata.version is missing"
+    # Validate semver-ish format (MAJOR.MINOR.PATCH)
+    assert re.match(r"^\d+\.\d+\.\d+$", version), f"Version '{version}' is not semver"
+
+
+def test_health_endpoint_includes_taxonomy_version():
+    """The /health endpoint must include taxonomy_version."""
+    import app
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.get("/health")
+        assert resp.status_code == 200
+        data = resp.get_json()
+        assert "taxonomy_version" in data
+        assert data["taxonomy_version"] is not None
+
+
+def test_rate_limit_env_var(monkeypatch):
+    """The RATE_LIMIT env var must be read at module level."""
+    import importlib
+
+    import app
+
+    monkeypatch.setenv("RATE_LIMIT", "50 per hour")
+    importlib.reload(app)
+    try:
+        assert app._RATE_LIMIT == "50 per hour"
+    finally:
+        monkeypatch.delenv("RATE_LIMIT", raising=False)
+        importlib.reload(app)
+
+
+def test_rate_limit_default(monkeypatch):
+    """Without RATE_LIMIT env var, the default must be '10 per minute'."""
+    import importlib
+
+    import app
+
+    monkeypatch.delenv("RATE_LIMIT", raising=False)
+    importlib.reload(app)
+    try:
+        assert app._RATE_LIMIT == "10 per minute"
+    finally:
+        importlib.reload(app)
+
+
+def test_cli_batch_function_exists():
+    """cli_batch() must exist and be callable."""
+    import app
+
+    assert hasattr(app, "cli_batch")
+    assert callable(app.cli_batch)
+
+
+def test_cli_batch_missing_file():
+    """cli_batch must exit with error for a non-existent file."""
+    import app
+
+    with pytest.raises(SystemExit):
+        app.cli_batch("/tmp/nonexistent_batch_file_12345.txt")
+
+
+def test_cli_batch_empty_file(tmp_path):
+    """cli_batch must exit with error for an empty batch file."""
+    import app
+
+    empty_file = tmp_path / "empty.txt"
+    empty_file.write_text("")
+    with pytest.raises(SystemExit):
+        app.cli_batch(str(empty_file))
+
+
+def test_cli_batch_skips_comments(tmp_path):
+    """cli_batch must skip comment lines (starting with #)."""
+    import app
+
+    batch_file = tmp_path / "comments_only.txt"
+    batch_file.write_text("# This is a comment\n# Another comment\n")
+    with pytest.raises(SystemExit):
+        app.cli_batch(str(batch_file))
+
+
+def test_max_context_chars_config():
+    """_MAX_CONTEXT_CHARS must be set as a module-level config."""
+    import app
+
+    assert hasattr(app, "_MAX_CONTEXT_CHARS")
+    assert isinstance(app._MAX_CONTEXT_CHARS, int)
+    assert app._MAX_CONTEXT_CHARS > 0

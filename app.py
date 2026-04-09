@@ -87,7 +87,9 @@ def _load_gliner():
 
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
 _ANTHROPIC_MODEL = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-6")
+_RATE_LIMIT = os.getenv("RATE_LIMIT", "10 per minute")
 _MAX_INPUT_CHARS = 50000
+_MAX_CONTEXT_CHARS = 8000  # Cap for context index injected into Claude prompt
 _BASE_DIR = Path(__file__).resolve().parent
 _TAXONOMY_FILE = _BASE_DIR / "mechanism_classifier_taxonomy.json"
 _CONTEXT_DIR = _BASE_DIR / "_AI_CONTEXT_INDEX"
@@ -236,6 +238,15 @@ def analyze_with_claude(
     # Truncate input text for prompt
     input_text = text[:12000] if len(text) > 12000 else text
 
+    # Include context index (capped to _MAX_CONTEXT_CHARS to manage token usage).
+    # This gives Claude background research from The Regulated Friction Project
+    # to improve mechanism identification and countermeasure quality.
+    context_snippet = ""
+    if context_index:
+        context_snippet = context_index[:_MAX_CONTEXT_CHARS]
+        if len(context_index) > _MAX_CONTEXT_CHARS:
+            context_snippet += "\n\n[... truncated for context window ...]"
+
     prompt = f"""You are the Friction Breaker — a countermeasure analysis engine.
 
 You have two knowledge sources:
@@ -250,6 +261,9 @@ Your job:
 
 ## MECHANISM TAXONOMY
 {taxonomy_summary}
+
+## BACKGROUND KNOWLEDGE BASE
+{context_snippet if context_snippet else "No background context available."}
 
 ## EXTRACTED ENTITIES (from GLiNER2, local extraction)
 {entity_summary}
@@ -567,6 +581,7 @@ def run_analysis(text: str, api_key: str) -> dict:
     result["_meta"] = {
         "gliner_entities_extracted": len(entities),
         "gliner_entities": entities[:20],
+        "taxonomy_version": taxonomy.get("metadata", {}).get("version"),
         "taxonomy_mechanisms_available": len(taxonomy.get("mechanisms", [])),
         "context_index_loaded": bool(context_index),
         "processing_time_seconds": round(time.time() - start, 2),
@@ -636,7 +651,7 @@ def create_app():
 
     # Apply rate limit to /analyze only (avoids interfering with health/taxonomy/index)
     if limiter is not None:
-        analyze = limiter.limit("10 per minute")(analyze)
+        analyze = limiter.limit(_RATE_LIMIT)(analyze)
 
     @app.route("/taxonomy")
     def taxonomy_view():
@@ -645,11 +660,13 @@ def create_app():
 
     @app.route("/health")
     def health():
+        taxonomy = load_taxonomy()
         return jsonify({
             "status": "ok",
             "gliner_available": _HAS_GLINER,
             "anthropic_available": _HAS_ANTHROPIC,
             "taxonomy_loaded": _TAXONOMY_FILE.exists(),
+            "taxonomy_version": taxonomy.get("metadata", {}).get("version"),
             "context_index_loaded": _CONTEXT_DIR.exists()
         })
 
@@ -667,6 +684,41 @@ def cli_analyze(text: str):
     print(json.dumps(result, indent=2))
 
 
+def cli_batch(batch_path: str):
+    """Process a batch file containing one URL or text per line."""
+    api_key = os.getenv("ANTHROPIC_API_KEY", "")
+    if not api_key:
+        logger.error("ANTHROPIC_API_KEY not set. Add it to .env or export it.")
+        sys.exit(1)
+
+    path = Path(batch_path)
+    if not path.exists():
+        logger.error(f"Batch file not found: {batch_path}")
+        sys.exit(1)
+
+    lines = [ln.strip() for ln in path.read_text().splitlines() if ln.strip() and not ln.strip().startswith("#")]
+    if not lines:
+        logger.error("Batch file is empty or contains only comments.")
+        sys.exit(1)
+
+    logger.info(f"Batch mode: {len(lines)} items to process.")
+    for idx, line in enumerate(lines, 1):
+        logger.info(f"[{idx}/{len(lines)}] Processing: {line[:80]}{'...' if len(line) > 80 else ''}")
+        # Determine if the line is a URL or raw text
+        text = line
+        if line.startswith("http://") or line.startswith("https://"):
+            text = fetch_url(line)
+            if not text:
+                logger.warning(f"[{idx}/{len(lines)}] Could not fetch URL, skipping: {line}")
+                continue
+        result = run_analysis(text, api_key)
+        if "error" in result:
+            logger.warning(f"[{idx}/{len(lines)}] Analysis error: {result['error']}")
+        else:
+            logger.info(f"[{idx}/{len(lines)}] Done.")
+    logger.info("Batch processing complete. Results saved to output/.")
+
+
 # ─── Main ─────────────────────────────────────────────────────────────────────
 def main():
     """Entry point for both ``python app.py`` and the ``friction-breaker`` console script."""
@@ -674,9 +726,16 @@ def main():
     parser.add_argument("--port", type=int, default=5000, help="Flask server port")
     parser.add_argument("--analyze", type=str, help="Analyze text directly (CLI mode)")
     parser.add_argument("--url", type=str, help="Fetch and analyze a URL (CLI mode)")
+    parser.add_argument(
+        "--batch",
+        type=str,
+        help="Path to a file containing one URL or text per line. Results saved to output/.",
+    )
     args = parser.parse_args()
 
-    if args.analyze:
+    if args.batch:
+        cli_batch(args.batch)
+    elif args.analyze:
         cli_analyze(args.analyze)
     elif args.url:
         text = fetch_url(args.url)

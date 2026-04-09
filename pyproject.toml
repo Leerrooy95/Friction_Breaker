@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "friction-breaker"
-version = "1.0.0"
+version = "1.1.0"
 description = "Mechanism Classifier + Countermeasure Engine — identifies legal, regulatory, and procedural mechanisms that bypass democratic accountability and generates ranked countermeasures."
 readme = "README.md"
 license = {file = "LICENSE"}
