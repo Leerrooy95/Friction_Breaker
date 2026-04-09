@@ -150,7 +150,7 @@ async function runAnalysis() {
         }
 
         if (!resp.ok && !data.error) {
-            throw new Error(data.error || `Server error (${resp.status}). Please try again.`);
+            throw new Error(`Server error (${resp.status}). Please try again.`);
         }
 
         if (data.error) {
