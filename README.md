@@ -54,8 +54,8 @@ cd Friction_Breaker
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-# Install dependencies
-pip install -r requirements.txt
+# Install all dependencies
+pip install -e ".[dev]"
 
 # Set your API key
 cp .env.example .env
@@ -65,6 +65,16 @@ cp .env.example .env
 python app.py
 # Open http://localhost:5000
 ```
+
+### Using the Web UI
+
+1. Open **http://localhost:5000** in your browser.
+2. Paste your **Anthropic API key** into the key field (stays in your browser — never stored).
+3. Choose your input — paste text, enter a URL, or upload a `.txt`, `.md`, or `.docx` file.
+4. Click **Analyze → Identify Mechanisms → Generate Countermeasures**.
+5. Wait ~30–60 seconds while GLiNER2 extracts entities locally and Claude classifies mechanisms.
+6. Read the plain-English summary and the ranked countermeasures.
+7. Download your report in any format with the **📥 Download Report** buttons: PDF, DOCX, Markdown, CSV, JSON, or plain text.
 
 ### CLI Mode
 
@@ -103,7 +113,7 @@ New text input (news article, executive order, legislative text, etc.)
     ↓
 GLiNER2 entity extraction (local, zero-cost)
     ↓
-Mechanism Classifier (matches against 54-mechanism taxonomy)
+Mechanism Classifier (matches against 56-mechanism taxonomy)
     ↓
 Claude API analysis (user's own key)
     ↓
@@ -123,6 +133,39 @@ Each mechanism in the taxonomy has:
 | **Real Examples**   | Verified instances from the research                                    |
 
 **8 categories, 56 mechanisms.** See [`MECHANISM_CLASSIFIER_README.md`](MECHANISM_CLASSIFIER_README.md) for full documentation.
+
+---
+
+## Example Output
+
+After analysis, you'll see a report like this (in the web UI or via CLI):
+
+```
+📋 What This Means (Plain English)
+────────────────────────────────────────────────────────────
+This executive order delegates rule-making authority to an independent
+board while exempting its decisions from standard notice-and-comment
+requirements. That means the public loses its legal right to weigh in
+before rules go into effect — and the rules are much harder to reverse
+later. Here's what can be done about it…
+
+🔍 Mechanisms Identified
+────────────────────────────────────────────────────────────
+[B-04] Delegated Rule-Making with Comment Exemption
+  Confidence: HIGH · Durability: 8/10
+  Evidence: "…shall take effect immediately without prior public notice…"
+  Countermeasures:
+    * Congressional Review Act (CRA) resolution of disapproval
+      Durability: 9/10 · Feasibility: MEDIUM
+      Who: Congress
+      A simple majority in both chambers can void any rule within 60 days.
+    * State AG coalition challenge under APA § 553
+      Durability: 7/10 · Feasibility: HIGH
+      Who: State attorneys general, advocacy organizations
+      Courts have vacated rules for procedural shortcuts under this doctrine.
+```
+
+Reports can be downloaded in **PDF, DOCX, Markdown, CSV, JSON, or plain text** — ready to share with legislators, journalists, or legal teams.
 
 ---
 
@@ -204,10 +247,12 @@ The most impactful contribution is **adding new mechanisms to the taxonomy**. Th
 
 ## Security
 
-- **BYOK (Bring Your Own Key)**: Your API key is never stored or logged. In the web UI it stays in your browser; the backend sends it directly to Anthropic per-request.
+- **BYOK (Bring Your Own Key)**: Your API key is never stored or logged. In the web UI it stays in your browser; the backend sends it directly to Anthropic per-request and is discarded immediately after — it is never written to disk, memory store, or logs.
 - **No data persistence**: Results are saved only to your local `output/` directory. Nothing is sent to third parties beyond the Anthropic API.
 - **Local entity extraction**: GLiNER2 runs entirely on your machine — no text leaves your computer for entity extraction.
-- **SSRF protection**: The URL-fetching feature blocks requests to private/internal addresses, metadata endpoints, and non-HTTP schemes.
+- **SSRF protection**: The URL-fetching feature blocks requests to private/internal addresses, metadata endpoints, and non-HTTP schemes. Every redirect hop is re-validated before following.
+- **Security headers**: All responses include `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, and `Referrer-Policy: strict-origin-when-cross-origin`.
+- **XSS protection**: All user-facing output in the web UI is HTML-escaped before rendering.
 - **Minimal dependencies**: The project uses a small, well-known set of packages with automated vulnerability monitoring via Dependabot and pip-audit.
 
 See [SECURITY.md](SECURITY.md) for the vulnerability reporting policy.
