@@ -542,3 +542,280 @@ def test_max_context_chars_config():
     assert hasattr(app, "_MAX_CONTEXT_CHARS")
     assert isinstance(app._MAX_CONTEXT_CHARS, int)
     assert app._MAX_CONTEXT_CHARS > 0
+
+
+# ---------------------------------------------------------------------------
+# Export tests
+# ---------------------------------------------------------------------------
+
+_SAMPLE_RESULT = {
+    "input_summary": "Test input summary.",
+    "political_translator_summary": "What this means in plain English.",
+    "mechanisms_identified": [
+        {
+            "taxonomy_id": "A-01",
+            "name": "Test Mechanism",
+            "confidence": "HIGH",
+            "durability": 7,
+            "what_it_does": "Does something important.",
+            "evidence": "Evidence quote here.",
+            "countermeasures": [
+                {
+                    "action": "Take action",
+                    "durability_score": 8,
+                    "feasibility": "HIGH",
+                    "who_can_do_it": "Citizens",
+                    "plain_english": "You can do this."
+                }
+            ]
+        }
+    ],
+    "new_mechanisms_detected": [
+        {
+            "name": "New Mechanism",
+            "description": "A novel mechanism.",
+            "suggested_category": "B",
+            "suggested_durability": 6,
+            "why_it_matters": "It matters a lot."
+        }
+    ],
+    "_meta": {
+        "gliner_entities_extracted": 5,
+        "taxonomy_mechanisms_available": 54,
+        "model": "claude-sonnet-4-6",
+        "processing_time_seconds": 3.2,
+        "timestamp": "2026-04-08T12:00:00Z"
+    }
+}
+
+
+def test_result_to_text():
+    """_result_to_text must produce a plain text report."""
+    import app
+
+    text = app._result_to_text(_SAMPLE_RESULT)
+    assert "FRICTION BREAKER" in text
+    assert "Test Mechanism" in text
+    assert "Take action" in text
+    assert "Citizens" in text
+    assert "Test input summary." in text
+    assert "NEW MECHANISMS DETECTED" in text
+    assert "New Mechanism" in text
+
+
+def test_result_to_csv():
+    """_result_to_csv must produce a CSV with mechanism rows."""
+    import app
+
+    csv_text = app._result_to_csv(_SAMPLE_RESULT)
+    assert "Taxonomy ID" in csv_text
+    assert "A-01" in csv_text
+    assert "Test Mechanism" in csv_text
+    assert "Take action" in csv_text
+    assert "Citizens" in csv_text
+
+
+def test_result_to_csv_no_countermeasures():
+    """_result_to_csv must handle mechanisms without countermeasures."""
+    import app
+
+    result = {
+        "mechanisms_identified": [
+            {
+                "taxonomy_id": "B-02",
+                "name": "No CM Mechanism",
+                "confidence": "LOW",
+                "durability": 3,
+                "what_it_does": "Something.",
+                "evidence": "Evidence.",
+                "countermeasures": []
+            }
+        ],
+        "new_mechanisms_detected": [],
+        "_meta": {}
+    }
+    csv_text = app._result_to_csv(result)
+    assert "B-02" in csv_text
+    assert "No CM Mechanism" in csv_text
+
+
+def test_result_to_docx():
+    """_result_to_docx must produce a DOCX byte string."""
+    import app
+
+    if not app._HAS_DOCX:
+        pytest.skip("python-docx not installed")
+    data = app._result_to_docx(_SAMPLE_RESULT)
+    assert isinstance(data, bytes)
+    assert len(data) > 0
+    # DOCX files are ZIP archives starting with PK
+    assert data[:2] == b"PK"
+
+
+def test_result_to_pdf():
+    """_result_to_pdf must produce a PDF byte string."""
+    import app
+
+    if not app._HAS_REPORTLAB:
+        pytest.skip("reportlab not installed")
+    data = app._result_to_pdf(_SAMPLE_RESULT)
+    assert isinstance(data, bytes)
+    assert len(data) > 0
+    # PDF files start with %PDF
+    assert data[:5] == b"%PDF-"
+
+
+def test_export_result_all_formats():
+    """export_result must work for every supported format."""
+    import app
+
+    for fmt in app._EXPORT_FORMATS:
+        if fmt == "pdf" and not app._HAS_REPORTLAB:
+            continue
+        if fmt == "docx" and not app._HAS_DOCX:
+            continue
+        file_bytes, content_type, filename = app.export_result(_SAMPLE_RESULT, fmt)
+        assert isinstance(file_bytes, bytes)
+        assert len(file_bytes) > 0
+        assert content_type
+        assert filename.startswith("friction_breaker_report_")
+
+
+def test_export_result_unsupported_format():
+    """export_result must raise ValueError for unsupported formats."""
+    import app
+
+    with pytest.raises(ValueError, match="Unsupported export format"):
+        app.export_result(_SAMPLE_RESULT, "xlsx")
+
+
+def test_export_formats_dict():
+    """_EXPORT_FORMATS must contain all six supported formats."""
+    import app
+
+    expected = {"pdf", "docx", "markdown", "csv", "json", "text"}
+    assert set(app._EXPORT_FORMATS.keys()) == expected
+
+
+def test_export_endpoint_missing_format():
+    """POST /export with no format must return 400."""
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.post("/export", json={"result": _SAMPLE_RESULT})
+        assert resp.status_code == 400
+        assert "format" in resp.get_json()["error"].lower()
+
+
+def test_export_endpoint_invalid_format():
+    """POST /export with unsupported format must return 400."""
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.post("/export", json={"format": "xlsx", "result": _SAMPLE_RESULT})
+        assert resp.status_code == 400
+        assert "Unsupported" in resp.get_json()["error"]
+
+
+def test_export_endpoint_missing_result():
+    """POST /export without result must return 400."""
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.post("/export", json={"format": "json"})
+        assert resp.status_code == 400
+        assert "result" in resp.get_json()["error"].lower()
+
+
+def test_export_endpoint_no_body():
+    """POST /export with no body must return 400."""
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.post("/export", content_type="application/json")
+        assert resp.status_code == 400
+
+
+def test_export_endpoint_pdf():
+    """POST /export with format=pdf must return a PDF file."""
+    import app
+
+    if not app._HAS_REPORTLAB:
+        pytest.skip("reportlab not installed")
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.post("/export", json={"format": "pdf", "result": _SAMPLE_RESULT})
+        assert resp.status_code == 200
+        assert resp.content_type == "application/pdf"
+        assert resp.data[:5] == b"%PDF-"
+        assert "attachment" in resp.headers.get("Content-Disposition", "")
+
+
+def test_export_endpoint_docx():
+    """POST /export with format=docx must return a DOCX file."""
+    import app
+
+    if not app._HAS_DOCX:
+        pytest.skip("python-docx not installed")
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.post("/export", json={"format": "docx", "result": _SAMPLE_RESULT})
+        assert resp.status_code == 200
+        assert "wordprocessingml" in resp.content_type
+        assert resp.data[:2] == b"PK"
+        assert "attachment" in resp.headers.get("Content-Disposition", "")
+
+
+def test_export_endpoint_markdown():
+    """POST /export with format=markdown must return a Markdown file."""
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.post("/export", json={"format": "markdown", "result": _SAMPLE_RESULT})
+        assert resp.status_code == 200
+        assert "text/markdown" in resp.content_type
+        assert b"Friction Breaker" in resp.data
+        assert "attachment" in resp.headers.get("Content-Disposition", "")
+
+
+def test_export_endpoint_csv():
+    """POST /export with format=csv must return a CSV file."""
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.post("/export", json={"format": "csv", "result": _SAMPLE_RESULT})
+        assert resp.status_code == 200
+        assert "text/csv" in resp.content_type
+        assert b"Taxonomy ID" in resp.data
+        assert "attachment" in resp.headers.get("Content-Disposition", "")
+
+
+def test_export_endpoint_json():
+    """POST /export with format=json must return a JSON file."""
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.post("/export", json={"format": "json", "result": _SAMPLE_RESULT})
+        assert resp.status_code == 200
+        assert "application/json" in resp.content_type
+        assert "attachment" in resp.headers.get("Content-Disposition", "")
+
+
+def test_export_endpoint_text():
+    """POST /export with format=text must return a text file."""
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.post("/export", json={"format": "text", "result": _SAMPLE_RESULT})
+        assert resp.status_code == 200
+        assert "text/plain" in resp.content_type
+        assert b"FRICTION BREAKER" in resp.data
+        assert "attachment" in resp.headers.get("Content-Disposition", "")

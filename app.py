@@ -15,6 +15,8 @@ Requires: ANTHROPIC_API_KEY in .env or environment.
 """
 
 import argparse
+import csv
+import io
 import json
 import logging
 import os
@@ -34,7 +36,7 @@ logger = logging.getLogger(__name__)
 
 # ─── Dependency checks ────────────────────────────────────────────────────────
 try:
-    from flask import Flask, jsonify, render_template, request
+    from flask import Flask, jsonify, make_response, render_template, request
     _HAS_FLASK = True
 except ImportError:
     _HAS_FLASK = False
@@ -60,6 +62,26 @@ try:
 except ImportError:
     _HAS_REQUESTS = False
     logger.warning("requests not installed. URL fetching disabled.")
+
+try:
+    from docx import Document as DocxDocument
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+    from docx.shared import Pt, RGBColor
+    _HAS_DOCX = True
+except ImportError:
+    _HAS_DOCX = False
+    logger.warning("python-docx not installed. DOCX export disabled.")
+
+try:
+    from reportlab.lib import colors
+    from reportlab.lib.pagesizes import letter
+    from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+    from reportlab.lib.units import inch
+    from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
+    _HAS_REPORTLAB = True
+except ImportError:
+    _HAS_REPORTLAB = False
+    logger.warning("reportlab not installed. PDF export disabled.")
 
 # ─── GLiNER2 (local, zero-cost entity extraction) ────────────────────────────
 _HAS_GLINER = False
@@ -555,6 +577,371 @@ def _result_to_markdown(result: dict) -> str:
     return "\n".join(lines)
 
 
+# ─── Export: Plain Text ───────────────────────────────────────────────────────
+def _result_to_text(result: dict) -> str:
+    """Convert an analysis result dict to a plain-text report."""
+    lines: list[str] = []
+    meta = result.get("_meta", {})
+    ts = meta.get("timestamp", datetime.now(timezone.utc).isoformat())
+    lines.append("FRICTION BREAKER — COUNTERMEASURE REPORT")
+    lines.append(f"Generated {ts}")
+    lines.append("=" * 60)
+
+    if result.get("input_summary"):
+        lines.append("")
+        lines.append("INPUT SUMMARY")
+        lines.append("-" * 40)
+        lines.append(result["input_summary"])
+
+    if result.get("political_translator_summary"):
+        lines.append("")
+        lines.append("WHAT THIS MEANS (PLAIN ENGLISH)")
+        lines.append("-" * 40)
+        lines.append(result["political_translator_summary"])
+
+    mechanisms = result.get("mechanisms_identified", [])
+    if mechanisms:
+        lines.append("")
+        lines.append("MECHANISMS IDENTIFIED")
+        lines.append("-" * 40)
+        for m in mechanisms:
+            lines.append("")
+            lines.append(f"  [{m.get('taxonomy_id', '?')}] {m.get('name', 'Unknown')}")
+            lines.append(f"  Confidence: {m.get('confidence', '?')}  |  Durability: {m.get('durability', '?')}/10")
+            if m.get("what_it_does"):
+                lines.append(f"  {m['what_it_does']}")
+            if m.get("evidence"):
+                lines.append(f"  Evidence: {m['evidence']}")
+            cms = m.get("countermeasures", [])
+            if cms:
+                lines.append("  Countermeasures:")
+                for c in cms:
+                    lines.append(f"    * {c.get('action', '')}")
+                    lines.append(f"      Durability: {c.get('durability_score', '?')}/10  "
+                                 f"Feasibility: {c.get('feasibility', '?')}")
+                    lines.append(f"      Who: {c.get('who_can_do_it', '?')}")
+                    lines.append(f"      {c.get('plain_english', '')}")
+
+    new_mechs = result.get("new_mechanisms_detected", [])
+    if new_mechs:
+        lines.append("")
+        lines.append("NEW MECHANISMS DETECTED (NOT IN TAXONOMY)")
+        lines.append("-" * 40)
+        for nm in new_mechs:
+            lines.append(f"  * {nm.get('name', '')} "
+                         f"(category {nm.get('suggested_category', '?')}, "
+                         f"durability {nm.get('suggested_durability', '?')}/10)")
+            lines.append(f"    {nm.get('description', '')}")
+            lines.append(f"    Why it matters: {nm.get('why_it_matters', '')}")
+
+    if meta:
+        lines.append("")
+        lines.append("-" * 60)
+        lines.append(f"Entities extracted: {meta.get('gliner_entities_extracted', 0)} | "
+                     f"Taxonomy: {meta.get('taxonomy_mechanisms_available', 0)} mechanisms | "
+                     f"Model: {meta.get('model', '?')} | "
+                     f"Processing time: {meta.get('processing_time_seconds', '?')}s")
+
+    return "\n".join(lines)
+
+
+# ─── Export: CSV ──────────────────────────────────────────────────────────────
+def _result_to_csv(result: dict) -> str:
+    """Convert mechanisms from an analysis result to CSV format."""
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        "Taxonomy ID", "Mechanism Name", "Confidence", "Durability",
+        "What It Does", "Evidence",
+        "Countermeasure", "CM Durability", "CM Feasibility",
+        "Who Can Do It", "Plain English",
+    ])
+    for m in result.get("mechanisms_identified", []):
+        cms = m.get("countermeasures", [])
+        if cms:
+            for c in cms:
+                writer.writerow([
+                    m.get("taxonomy_id", ""),
+                    m.get("name", ""),
+                    m.get("confidence", ""),
+                    m.get("durability", ""),
+                    m.get("what_it_does", ""),
+                    m.get("evidence", ""),
+                    c.get("action", ""),
+                    c.get("durability_score", ""),
+                    c.get("feasibility", ""),
+                    c.get("who_can_do_it", ""),
+                    c.get("plain_english", ""),
+                ])
+        else:
+            writer.writerow([
+                m.get("taxonomy_id", ""),
+                m.get("name", ""),
+                m.get("confidence", ""),
+                m.get("durability", ""),
+                m.get("what_it_does", ""),
+                m.get("evidence", ""),
+                "", "", "", "", "",
+            ])
+    return output.getvalue()
+
+
+# ─── Export: DOCX ─────────────────────────────────────────────────────────────
+def _result_to_docx(result: dict) -> bytes:
+    """Convert an analysis result dict to a DOCX document (returned as bytes)."""
+    if not _HAS_DOCX:
+        raise RuntimeError("python-docx is not installed")
+
+    doc = DocxDocument()
+
+    # Title
+    title = doc.add_heading("Friction Breaker — Countermeasure Report", level=0)
+    title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    meta = result.get("_meta", {})
+    ts = meta.get("timestamp", datetime.now(timezone.utc).isoformat())
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = p.add_run(f"Generated {ts}")
+    run.font.size = Pt(9)
+    run.font.color.rgb = RGBColor(0x66, 0x66, 0x66)
+
+    # Input summary
+    if result.get("input_summary"):
+        doc.add_heading("Input Summary", level=1)
+        doc.add_paragraph(result["input_summary"])
+
+    # Plain-English summary
+    if result.get("political_translator_summary"):
+        doc.add_heading("What This Means (Plain English)", level=1)
+        doc.add_paragraph(result["political_translator_summary"])
+
+    # Mechanisms
+    mechanisms = result.get("mechanisms_identified", [])
+    if mechanisms:
+        doc.add_heading("Mechanisms Identified", level=1)
+        for m in mechanisms:
+            doc.add_heading(
+                f"{m.get('taxonomy_id', '?')} — {m.get('name', 'Unknown')}", level=2
+            )
+            p = doc.add_paragraph()
+            p.add_run("Confidence: ").bold = True
+            p.add_run(f"{m.get('confidence', '?')}  |  ")
+            p.add_run("Durability: ").bold = True
+            p.add_run(f"{m.get('durability', '?')}/10")
+
+            if m.get("what_it_does"):
+                doc.add_paragraph(m["what_it_does"])
+            if m.get("evidence"):
+                p = doc.add_paragraph()
+                p.add_run("Evidence: ").bold = True
+                p.add_run(m["evidence"]).italic = True
+
+            cms = m.get("countermeasures", [])
+            if cms:
+                doc.add_heading("Countermeasures", level=3)
+                for c in cms:
+                    p = doc.add_paragraph(style="List Bullet")
+                    p.add_run(c.get("action", "")).bold = True
+                    p.add_run(f"  (durability {c.get('durability_score', '?')}/10, "
+                              f"feasibility {c.get('feasibility', '?')})")
+                    sub = doc.add_paragraph(style="List Bullet 2")
+                    sub.add_run("Who can do it: ").bold = True
+                    sub.add_run(c.get("who_can_do_it", "?"))
+                    sub2 = doc.add_paragraph(style="List Bullet 2")
+                    sub2.add_run(c.get("plain_english", ""))
+
+    # New mechanisms
+    new_mechs = result.get("new_mechanisms_detected", [])
+    if new_mechs:
+        doc.add_heading("New Mechanisms Detected (Not in Taxonomy)", level=1)
+        for nm in new_mechs:
+            p = doc.add_paragraph(style="List Bullet")
+            p.add_run(nm.get("name", "")).bold = True
+            p.add_run(f"  (category {nm.get('suggested_category', '?')}, "
+                      f"durability {nm.get('suggested_durability', '?')}/10)")
+            doc.add_paragraph(nm.get("description", ""))
+            p = doc.add_paragraph()
+            p.add_run("Why it matters: ").italic = True
+            p.add_run(nm.get("why_it_matters", ""))
+
+    # Metadata footer
+    if meta:
+        doc.add_paragraph("")  # spacer
+        p = doc.add_paragraph()
+        run = p.add_run(
+            f"Entities extracted: {meta.get('gliner_entities_extracted', 0)} · "
+            f"Taxonomy: {meta.get('taxonomy_mechanisms_available', 0)} mechanisms · "
+            f"Model: {meta.get('model', '?')} · "
+            f"Processing time: {meta.get('processing_time_seconds', '?')}s"
+        )
+        run.font.size = Pt(8)
+        run.font.color.rgb = RGBColor(0x99, 0x99, 0x99)
+
+    buf = io.BytesIO()
+    doc.save(buf)
+    return buf.getvalue()
+
+
+# ─── Export: PDF ──────────────────────────────────────────────────────────────
+def _result_to_pdf(result: dict) -> bytes:
+    """Convert an analysis result dict to a PDF document (returned as bytes)."""
+    if not _HAS_REPORTLAB:
+        raise RuntimeError("reportlab is not installed")
+
+    buf = io.BytesIO()
+    doc = SimpleDocTemplate(buf, pagesize=letter,
+                            leftMargin=0.75 * inch, rightMargin=0.75 * inch,
+                            topMargin=0.75 * inch, bottomMargin=0.75 * inch)
+    styles = getSampleStyleSheet()
+
+    # Custom styles
+    title_style = ParagraphStyle("ReportTitle", parent=styles["Title"], fontSize=20,
+                                 spaceAfter=4, textColor=colors.HexColor("#1a1a2e"))
+    subtitle_style = ParagraphStyle("ReportSubtitle", parent=styles["Normal"], fontSize=9,
+                                    textColor=colors.grey, alignment=1, spaceAfter=16)
+    heading1_style = ParagraphStyle("H1", parent=styles["Heading1"], fontSize=14,
+                                    textColor=colors.HexColor("#2d3436"), spaceBefore=16, spaceAfter=8)
+    heading2_style = ParagraphStyle("H2", parent=styles["Heading2"], fontSize=12,
+                                    textColor=colors.HexColor("#0984e3"), spaceBefore=12, spaceAfter=6)
+    heading3_style = ParagraphStyle("H3", parent=styles["Heading3"], fontSize=10,
+                                    textColor=colors.HexColor("#00b894"), spaceBefore=8, spaceAfter=4)
+    body_style = ParagraphStyle("Body", parent=styles["Normal"], fontSize=10,
+                                leading=14, spaceAfter=6)
+    evidence_style = ParagraphStyle("Evidence", parent=styles["Normal"], fontSize=9,
+                                    leftIndent=20, textColor=colors.HexColor("#636e72"),
+                                    fontName="Helvetica-Oblique", spaceAfter=6)
+    bullet_style = ParagraphStyle("Bullet", parent=styles["Normal"], fontSize=10,
+                                  leftIndent=24, bulletIndent=12, spaceAfter=4, leading=13)
+    meta_style = ParagraphStyle("Meta", parent=styles["Normal"], fontSize=8,
+                                textColor=colors.grey, spaceBefore=20)
+
+    story: list = []
+    meta = result.get("_meta", {})
+    ts = meta.get("timestamp", datetime.now(timezone.utc).isoformat())
+
+    story.append(Paragraph("Friction Breaker — Countermeasure Report", title_style))
+    story.append(Paragraph(f"Generated {ts}", subtitle_style))
+
+    if result.get("input_summary"):
+        story.append(Paragraph("Input Summary", heading1_style))
+        story.append(Paragraph(result["input_summary"], body_style))
+
+    if result.get("political_translator_summary"):
+        story.append(Paragraph("What This Means (Plain English)", heading1_style))
+        # Split paragraphs for readability
+        for para in result["political_translator_summary"].split("\n"):
+            if para.strip():
+                story.append(Paragraph(para.strip(), body_style))
+
+    mechanisms = result.get("mechanisms_identified", [])
+    if mechanisms:
+        story.append(Paragraph("Mechanisms Identified", heading1_style))
+        for m in mechanisms:
+            tid = m.get("taxonomy_id", "?")
+            name = m.get("name", "Unknown")
+            story.append(Paragraph(f"{tid} — {name}", heading2_style))
+            story.append(Paragraph(
+                f"<b>Confidence:</b> {m.get('confidence', '?')} · "
+                f"<b>Durability:</b> {m.get('durability', '?')}/10",
+                body_style
+            ))
+            if m.get("what_it_does"):
+                story.append(Paragraph(m["what_it_does"], body_style))
+            if m.get("evidence"):
+                story.append(Paragraph(f"Evidence: {m['evidence']}", evidence_style))
+
+            cms = m.get("countermeasures", [])
+            if cms:
+                story.append(Paragraph("Countermeasures", heading3_style))
+                for c in cms:
+                    action = c.get("action", "")
+                    story.append(Paragraph(
+                        f"<b>• {action}</b>  "
+                        f"(durability {c.get('durability_score', '?')}/10, "
+                        f"feasibility {c.get('feasibility', '?')})",
+                        bullet_style
+                    ))
+                    story.append(Paragraph(
+                        f"<b>Who:</b> {c.get('who_can_do_it', '?')} — "
+                        f"{c.get('plain_english', '')}",
+                        bullet_style
+                    ))
+
+    new_mechs = result.get("new_mechanisms_detected", [])
+    if new_mechs:
+        story.append(Paragraph("New Mechanisms Detected (Not in Taxonomy)", heading1_style))
+        for nm in new_mechs:
+            story.append(Paragraph(
+                f"<b>{nm.get('name', '')}</b>  "
+                f"(category {nm.get('suggested_category', '?')}, "
+                f"durability {nm.get('suggested_durability', '?')}/10)",
+                body_style
+            ))
+            story.append(Paragraph(nm.get("description", ""), body_style))
+            if nm.get("why_it_matters"):
+                story.append(Paragraph(
+                    f"<i>Why it matters:</i> {nm['why_it_matters']}", body_style
+                ))
+
+    if meta:
+        story.append(Spacer(1, 20))
+        story.append(Paragraph(
+            f"Entities extracted: {meta.get('gliner_entities_extracted', 0)} · "
+            f"Taxonomy: {meta.get('taxonomy_mechanisms_available', 0)} mechanisms · "
+            f"Model: {meta.get('model', '?')} · "
+            f"Processing time: {meta.get('processing_time_seconds', '?')}s",
+            meta_style
+        ))
+
+    doc.build(story)
+    return buf.getvalue()
+
+
+# ─── Export dispatcher ────────────────────────────────────────────────────────
+_EXPORT_FORMATS = {
+    "pdf": {"content_type": "application/pdf", "ext": ".pdf"},
+    "docx": {"content_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "ext": ".docx"},
+    "markdown": {"content_type": "text/markdown; charset=utf-8", "ext": ".md"},
+    "csv": {"content_type": "text/csv; charset=utf-8", "ext": ".csv"},
+    "json": {"content_type": "application/json; charset=utf-8", "ext": ".json"},
+    "text": {"content_type": "text/plain; charset=utf-8", "ext": ".txt"},
+}
+
+
+def export_result(result: dict, fmt: str) -> tuple[bytes, str, str]:
+    """Export an analysis result in the requested format.
+
+    Returns ``(file_bytes, content_type, filename)``.
+    Raises ``ValueError`` for unsupported formats and ``RuntimeError`` when
+    a required library is missing.
+    """
+    if fmt not in _EXPORT_FORMATS:
+        raise ValueError(f"Unsupported export format: {fmt}")
+
+    info = _EXPORT_FORMATS[fmt]
+    ts = (result.get("_meta", {}).get("timestamp") or datetime.now(timezone.utc).isoformat())
+    safe_ts = ts.replace(":", "").replace("-", "").replace("T", "_").split(".")[0]
+    filename = f"friction_breaker_report_{safe_ts}{info['ext']}"
+
+    if fmt == "pdf":
+        data = _result_to_pdf(result)
+    elif fmt == "docx":
+        data = _result_to_docx(result)
+    elif fmt == "markdown":
+        data = _result_to_markdown(result).encode("utf-8")
+    elif fmt == "csv":
+        data = _result_to_csv(result).encode("utf-8")
+    elif fmt == "json":
+        data = json.dumps(result, indent=2).encode("utf-8")
+    elif fmt == "text":
+        data = _result_to_text(result).encode("utf-8")
+    else:
+        raise ValueError(f"Unsupported export format: {fmt}")
+
+    return data, info["content_type"], filename
+
+
 # ─── Full analysis pipeline ───────────────────────────────────────────────────
 def run_analysis(text: str, api_key: str) -> dict:
     """Run the full Friction Breaker pipeline on input text."""
@@ -657,6 +1044,38 @@ def create_app():
     def taxonomy_view():
         taxonomy = load_taxonomy()
         return jsonify(taxonomy)
+
+    @app.route("/export", methods=["POST"])
+    def export():
+        """Export analysis results in the requested format (pdf, docx, markdown, csv, json, text)."""
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No JSON body"}), 400
+
+        fmt = data.get("format", "").strip().lower()
+        result = data.get("result")
+
+        if not fmt:
+            return jsonify({"error": "Missing 'format' parameter."}), 400
+        if fmt not in _EXPORT_FORMATS:
+            return jsonify({
+                "error": f"Unsupported format: {fmt}. Supported: {', '.join(sorted(_EXPORT_FORMATS))}",
+            }), 400
+        if not result or not isinstance(result, dict):
+            return jsonify({"error": "Missing or invalid 'result' object."}), 400
+
+        try:
+            file_bytes, content_type, filename = export_result(result, fmt)
+        except RuntimeError as exc:
+            return jsonify({"error": str(exc)}), 501
+        except Exception as exc:
+            logger.error(f"Export error: {exc}")
+            return jsonify({"error": "An error occurred while generating the export."}), 500
+
+        resp = make_response(file_bytes)
+        resp.headers["Content-Type"] = content_type
+        resp.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+        return resp
 
     @app.route("/health")
     def health():

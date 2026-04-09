@@ -46,6 +46,14 @@
         .new-mechanism { background: #2d2000; border-left: 3px solid var(--yellow); padding: 8px 12px; margin: 6px 0; border-radius: 0 4px 4px 0; }
         footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8em; text-align: center; }
         a { color: var(--accent); text-decoration: none; }
+        /* Export bar */
+        .export-bar { display: none; margin-top: 16px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+        .export-bar h3 { font-size: 0.9em; color: var(--muted); margin-bottom: 8px; }
+        .export-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+        .export-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: transparent; border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.85em; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+        .export-btn:hover { border-color: var(--accent); background: rgba(88, 166, 255, 0.08); }
+        .export-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .export-btn .icon { font-size: 1.1em; }
     </style>
 </head>
 <body>
@@ -75,6 +83,30 @@
 
     <div id="results"></div>
 
+    <div id="exportBar" class="export-bar">
+        <h3>📥 Download Report</h3>
+        <div class="export-buttons">
+            <button class="export-btn" onclick="downloadReport('pdf')" title="Professional PDF report">
+                <span class="icon">📄</span> PDF
+            </button>
+            <button class="export-btn" onclick="downloadReport('docx')" title="Editable Word document">
+                <span class="icon">📝</span> DOCX
+            </button>
+            <button class="export-btn" onclick="downloadReport('markdown')" title="Markdown report">
+                <span class="icon">📋</span> Markdown
+            </button>
+            <button class="export-btn" onclick="downloadReport('csv')" title="Spreadsheet-friendly CSV">
+                <span class="icon">📊</span> CSV
+            </button>
+            <button class="export-btn" onclick="downloadReport('json')" title="Raw JSON data">
+                <span class="icon">🔧</span> JSON
+            </button>
+            <button class="export-btn" onclick="downloadReport('text')" title="Plain text report">
+                <span class="icon">📃</span> Text
+            </button>
+        </div>
+    </div>
+
     <footer>
         Open source. No data stored. Your API key is sent directly to Anthropic — it never touches our servers.<br>
         Built by <a href="https://github.com/Leerrooy95" target="_blank">Austin Smith</a> · <a href="https://github.com/Leerrooy95/The_Regulated_Friction_Project" target="_blank">Source Repository</a>
@@ -82,10 +114,13 @@
 </div>
 
 <script>
+let _lastResult = null;
+
 async function runAnalysis() {
     const btn = document.getElementById('analyzeBtn');
     const status = document.getElementById('status');
     const resultsDiv = document.getElementById('results');
+    const exportBar = document.getElementById('exportBar');
 
     const apiKey = document.getElementById('apiKey').value.trim();
     const text = document.getElementById('inputText').value.trim();
@@ -95,6 +130,8 @@ async function runAnalysis() {
     if (!text && !url) { status.innerHTML = '<span style="color:var(--red)">Paste text or provide a URL.</span>'; return; }
 
     btn.disabled = true;
+    _lastResult = null;
+    exportBar.style.display = 'none';
     status.textContent = 'Extracting entities (GLiNER2, local)... then sending to Claude for analysis...';
     resultsDiv.style.display = 'none';
 
@@ -114,8 +151,10 @@ async function runAnalysis() {
             return;
         }
 
+        _lastResult = data;
         renderResults(data);
         resultsDiv.style.display = 'block';
+        exportBar.style.display = 'block';
         status.textContent = `Done in ${data._meta?.processing_time_seconds || '?'}s · ${data._meta?.gliner_entities_extracted || 0} entities extracted · ${data.mechanisms_identified?.length || 0} mechanisms identified`;
     } catch (e) {
         resultsDiv.innerHTML = `<div class="error">Request failed: ${e.message}</div>`;
@@ -123,6 +162,44 @@ async function runAnalysis() {
         status.textContent = '';
     }
     btn.disabled = false;
+}
+
+async function downloadReport(fmt) {
+    if (!_lastResult) return;
+
+    const btns = document.querySelectorAll('.export-btn');
+    btns.forEach(b => b.disabled = true);
+
+    try {
+        const resp = await fetch('/export', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ format: fmt, result: _lastResult })
+        });
+
+        if (!resp.ok) {
+            const err = await resp.json().catch(() => ({ error: 'Export failed' }));
+            alert(err.error || 'Export failed. Please try again.');
+            return;
+        }
+
+        const disposition = resp.headers.get('Content-Disposition') || '';
+        const match = disposition.match(/filename="(.+)"/);
+        const filename = match ? match[1] : `report.${fmt}`;
+
+        const blob = await resp.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(a.href);
+    } catch (e) {
+        alert('Download failed: ' + e.message);
+    } finally {
+        btns.forEach(b => b.disabled = false);
+    }
 }
 
 function renderResults(data) {
