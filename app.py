@@ -350,11 +350,7 @@ IMPORTANT:
         # response may contain ThinkingBlock(s) before the TextBlock.
         # We iterate to find the first TextBlock instead of assuming
         # response.content[0] is always a TextBlock.
-        raw = ""
-        for block in response.content:
-            if block.type == "text":
-                raw = block.text.strip()
-                break
+        raw = next((block.text.strip() for block in response.content if block.type == "text"), "")
 
         if not raw:
             logger.error("Claude response contained no text block")
