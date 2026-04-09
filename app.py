@@ -1213,8 +1213,11 @@ def create_app():
 
         resp = make_response(file_bytes)
         resp.headers["Content-Type"] = content_type
-        resp.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+        resp.headers["Content-Disposition"] = f'attachment; filename="{escape(filename, quote=True)}"'
         resp.headers["X-Content-Type-Options"] = "nosniff"
+        resp.headers["Content-Security-Policy"] = "default-src 'none'; sandbox"
+        resp.headers["X-Frame-Options"] = "DENY"
+        resp.headers["Referrer-Policy"] = "no-referrer"
         return resp
 
     @app.route("/health")
