@@ -991,15 +991,17 @@ def export_result(result: dict, fmt: str) -> tuple[bytes, str, str]:
 
     info = _EXPORT_FORMATS[fmt]
     ts = (result.get("_meta", {}).get("timestamp") or datetime.now(timezone.utc).isoformat())
-    safe_ts = ts.replace(":", "").replace("-", "").replace("T", "_").split(".")[0]
+    safe_ts = re.sub(r"[^A-Za-z0-9_]", "", ts.replace(":", "").replace("-", "").replace("T", "_").split(".")[0])
+    if not safe_ts:
+        safe_ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     filename = f"friction_breaker_report_{safe_ts}{info['ext']}"
 
     safe_result = _escape_strings_deep(result)
 
     if fmt == "pdf":
-        data = _result_to_pdf(result)
+        data = _result_to_pdf(safe_result)
     elif fmt == "docx":
-        data = _result_to_docx(result)
+        data = _result_to_docx(safe_result)
     elif fmt == "markdown":
         data = _result_to_markdown(safe_result).encode("utf-8")
     elif fmt == "csv":
