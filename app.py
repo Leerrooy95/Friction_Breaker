@@ -1066,8 +1066,8 @@ def create_app():
 
         try:
             file_bytes, content_type, filename = export_result(result, fmt)
-        except RuntimeError as exc:
-            return jsonify({"error": str(exc)}), 501
+        except RuntimeError:
+            return jsonify({"error": "A required export library is not installed on the server."}), 501
         except Exception as exc:
             logger.error(f"Export error: {exc}")
             return jsonify({"error": "An error occurred while generating the export."}), 500
@@ -1075,6 +1075,7 @@ def create_app():
         resp = make_response(file_bytes)
         resp.headers["Content-Type"] = content_type
         resp.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+        resp.headers["X-Content-Type-Options"] = "nosniff"
         return resp
 
     @app.route("/health")
