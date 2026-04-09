@@ -1040,8 +1040,13 @@ def test_export_endpoint_security_headers():
         assert resp.headers.get("X-Frame-Options") == "DENY"
         assert resp.headers.get("Referrer-Policy") == "no-referrer"
         assert "attachment" in resp.headers.get("Content-Disposition", "")
+        # Binary transfer + cache prevention
+        assert resp.headers.get("Content-Transfer-Encoding") == "binary"
+        assert resp.headers.get("Cache-Control") == "no-store, no-cache, must-revalidate, private"
+        assert resp.headers.get("Pragma") == "no-cache"
+        assert resp.headers.get("Expires") == "0"
         # Sandbox CSP blocks all script execution if content is opened in-browser
-        assert resp.headers.get("Content-Security-Policy") == "sandbox; default-src 'none'"
+        assert resp.headers.get("Content-Security-Policy") == "sandbox; default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
         # Cross-origin isolation
         assert resp.headers.get("Cross-Origin-Resource-Policy") == "same-origin"
         assert resp.headers.get("Cross-Origin-Opener-Policy") == "same-origin"

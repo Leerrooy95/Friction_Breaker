@@ -1200,13 +1200,17 @@ def create_app():
         ascii_name = urlquote(filename, safe="-_.")
         utf8_name = urlquote(filename, safe="")
         resp.headers["Content-Disposition"] = f"attachment; filename=\"{ascii_name}\"; filename*=UTF-8''{utf8_name}"
+        resp.headers["Content-Transfer-Encoding"] = "binary"
+        resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, private"
+        resp.headers["Pragma"] = "no-cache"
+        resp.headers["Expires"] = "0"
         resp.headers["X-Content-Type-Options"] = "nosniff"
         resp.headers["X-Frame-Options"] = "DENY"
         resp.headers["Referrer-Policy"] = "no-referrer"
         # Defense-in-depth for reflected user-controlled export payloads.
         # If a browser attempts to render the response, sandbox it completely
         # to block script execution and all active content.
-        resp.headers["Content-Security-Policy"] = "sandbox; default-src 'none'"
+        resp.headers["Content-Security-Policy"] = "sandbox; default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
         resp.headers["Cross-Origin-Resource-Policy"] = "same-origin"
         resp.headers["Cross-Origin-Opener-Policy"] = "same-origin"
         resp.headers["X-Download-Options"] = "noopen"
