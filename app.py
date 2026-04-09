@@ -26,7 +26,6 @@ import threading
 import time
 import uuid
 from datetime import datetime, timezone
-from html import escape
 from pathlib import Path
 from urllib.parse import quote as urlquote
 from urllib.parse import urlparse
@@ -958,34 +957,19 @@ _EXPORT_FORMATS = {
 }
 
 
-def _escape_strings_deep(value):
-    """Recursively HTML-escape string values in nested data structures.
-
-    Args:
-        value: A str, dict, list, or any other type.
-            - str  → HTML-escaped string (``&``, ``<``, ``>``, ``"`` are escaped)
-            - dict → new dict with all values recursively escaped (keys unchanged)
-            - list → new list with all elements recursively escaped
-            - other types (int, float, bool, None, …) → returned unchanged
-
-    Returns:
-        The sanitized value in the same structural shape as the input.
-    """
-    if isinstance(value, str):
-        return escape(value, quote=True)
-    if isinstance(value, dict):
-        return {k: _escape_strings_deep(v) for k, v in value.items()}
-    if isinstance(value, list):
-        return [_escape_strings_deep(v) for v in value]
-    return value
-
-
 def export_result(result: dict, fmt: str) -> tuple[bytes, str, str]:
     """Export an analysis result in the requested format.
 
     Returns ``(file_bytes, content_type, filename)``.
     Raises ``ValueError`` for unsupported formats and ``RuntimeError`` when
     a required library is missing.
+
+    Security note: Export content is user-controlled and must not be
+    HTML-escaped — that transform is only valid in an HTML rendering
+    context and corrupts JSON/CSV/TXT/Markdown/PDF/DOCX output.
+    Anti-execution protection is handled via response headers
+    (Content-Disposition: attachment, Content-Security-Policy: sandbox,
+    X-Content-Type-Options: nosniff, etc.) set by the /export endpoint.
     """
     if fmt not in _EXPORT_FORMATS:
         raise ValueError(f"Unsupported export format: {fmt}")
@@ -997,20 +981,18 @@ def export_result(result: dict, fmt: str) -> tuple[bytes, str, str]:
         safe_ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     filename = f"friction_breaker_report_{safe_ts}{info['ext']}"
 
-    safe_result = _escape_strings_deep(result)
-
     if fmt == "pdf":
-        data = _result_to_pdf(safe_result)
+        data = _result_to_pdf(result)
     elif fmt == "docx":
-        data = _result_to_docx(safe_result)
+        data = _result_to_docx(result)
     elif fmt == "markdown":
-        data = _result_to_markdown(safe_result).encode("utf-8")
+        data = _result_to_markdown(result).encode("utf-8")
     elif fmt == "csv":
-        data = _result_to_csv(safe_result).encode("utf-8")
+        data = _result_to_csv(result).encode("utf-8")
     elif fmt == "json":
-        data = json.dumps(safe_result, indent=2).encode("utf-8")
+        data = json.dumps(result, indent=2).encode("utf-8")
     elif fmt == "text":
-        data = _result_to_text(safe_result).encode("utf-8")
+        data = _result_to_text(result).encode("utf-8")
     else:
         raise ValueError(f"Unsupported export format: {fmt}")
 
@@ -1222,9 +1204,12 @@ def create_app():
         resp.headers["X-Frame-Options"] = "DENY"
         resp.headers["Referrer-Policy"] = "no-referrer"
         # Defense-in-depth for reflected user-controlled export payloads.
-        # If a browser attempts to render the response, sandbox it to block script execution.
-        resp.headers["Content-Security-Policy"] = "sandbox"
+        # If a browser attempts to render the response, sandbox it completely
+        # to block script execution and all active content.
+        resp.headers["Content-Security-Policy"] = "sandbox; default-src 'none'"
         resp.headers["Cross-Origin-Resource-Policy"] = "same-origin"
+        resp.headers["Cross-Origin-Opener-Policy"] = "same-origin"
+        resp.headers["X-Download-Options"] = "noopen"
         return resp
 
     @app.route("/health")
