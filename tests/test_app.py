@@ -182,22 +182,37 @@ def test_analyze_no_text():
 
 
 def test_analyze_pipeline_exception_returns_json():
-    """POST /analyze must return JSON even when run_analysis() throws an unhandled exception."""
+    """POST /analyze returns 202 + job_id; job must record errors from run_analysis()."""
+    import time
     from unittest.mock import patch
 
     import app
 
     flask_app = app.create_app()
     with flask_app.test_client() as client, patch.object(app, "run_analysis", side_effect=RuntimeError("boom")):
-            resp = client.post(
-                "/analyze",
-                json={"api_key": "sk-ant-fake-key", "text": "test input"},
-                content_type="application/json",
-            )
-            assert resp.status_code == 500
-            data = resp.get_json()
-            assert data is not None, "Response body must be valid JSON"
-            assert "error" in data
+        resp = client.post(
+            "/analyze",
+            json={"api_key": "sk-ant-fake-key", "text": "test input"},
+            content_type="application/json",
+        )
+        assert resp.status_code == 202
+        data = resp.get_json()
+        assert data is not None, "Response body must be valid JSON"
+        assert "job_id" in data
+        job_id = data["job_id"]
+
+        # Poll until the background thread records the error (max 5 s)
+        result_data = None
+        for _ in range(50):
+            time.sleep(0.1)
+            poll = client.get(f"/status/{job_id}")
+            result_data = poll.get_json()
+            if result_data and result_data.get("status") in ("done", "error"):
+                break
+
+        assert result_data is not None
+        assert result_data.get("result") is not None
+        assert "error" in result_data["result"]
 
 
 def test_500_error_handler_returns_json():
@@ -216,6 +231,123 @@ def test_500_error_handler_returns_json():
         data = resp.get_json()
         assert data is not None, "500 response must be JSON, not HTML"
         assert "error" in data
+
+
+def test_analyze_returns_202_with_job_id():
+    """POST /analyze with valid inputs must return 202 and a job_id."""
+    from unittest.mock import patch
+
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client, patch.object(app, "run_analysis", return_value={"mechanisms_identified": []}):
+        resp = client.post(
+            "/analyze",
+            json={"api_key": "sk-ant-fake-key", "text": "test input"},
+            content_type="application/json",
+        )
+        assert resp.status_code == 202
+        data = resp.get_json()
+        assert "job_id" in data
+        assert data["status"] == "pending"
+
+
+def test_status_endpoint_unknown_job():
+    """GET /status/<unknown> must return 404."""
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.get("/status/00000000-0000-0000-0000-000000000000")
+        assert resp.status_code == 404
+        data = resp.get_json()
+        assert "error" in data
+
+
+def test_status_endpoint_returns_result():
+    """GET /status/<job_id> must return the result when the job completes."""
+    import time
+    from unittest.mock import patch
+
+    import app
+
+    flask_app = app.create_app()
+    mock_result = {"mechanisms_identified": [], "_meta": {"processing_time_seconds": 1.0}}
+    with flask_app.test_client() as client, patch.object(app, "run_analysis", return_value=mock_result):
+        resp = client.post(
+            "/analyze",
+            json={"api_key": "sk-ant-fake-key", "text": "test input"},
+            content_type="application/json",
+        )
+        job_id = resp.get_json()["job_id"]
+
+        # Poll until done (max 5 s)
+        for _ in range(50):
+            time.sleep(0.1)
+            poll = client.get(f"/status/{job_id}")
+            data = poll.get_json()
+            if data and data.get("status") == "done":
+                break
+
+        assert data["status"] == "done"
+        assert data["result"] == mock_result
+
+
+def test_upload_endpoint_no_file():
+    """POST /upload with no file must return 400."""
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        resp = client.post("/upload", data={}, content_type="multipart/form-data")
+        assert resp.status_code == 400
+        data = resp.get_json()
+        assert "error" in data
+
+
+def test_upload_endpoint_txt():
+    """POST /upload with a .txt file must return extracted text."""
+    import io
+
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        data = {"file": (io.BytesIO(b"Hello world."), "test.txt")}
+        resp = client.post("/upload", data=data, content_type="multipart/form-data")
+        assert resp.status_code == 200
+        result = resp.get_json()
+        assert "text" in result
+        assert "Hello world." in result["text"]
+
+
+def test_upload_endpoint_md():
+    """POST /upload with a .md file must return extracted text."""
+    import io
+
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        data = {"file": (io.BytesIO(b"# Header\n\nSome content."), "notes.md")}
+        resp = client.post("/upload", data=data, content_type="multipart/form-data")
+        assert resp.status_code == 200
+        result = resp.get_json()
+        assert "Header" in result["text"]
+
+
+def test_upload_endpoint_unsupported_type():
+    """POST /upload with an unsupported file type must return 400."""
+    import io
+
+    import app
+
+    flask_app = app.create_app()
+    with flask_app.test_client() as client:
+        data = {"file": (io.BytesIO(b"data"), "report.xlsx")}
+        resp = client.post("/upload", data=data, content_type="multipart/form-data")
+        assert resp.status_code == 400
+        assert "Unsupported" in resp.get_json()["error"]
 
 
 # ---------------------------------------------------------------------------
