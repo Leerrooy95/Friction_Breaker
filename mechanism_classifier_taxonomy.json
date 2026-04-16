@@ -1758,7 +1758,7 @@
       "category": "A",
       "jurisdiction": "federal",
       "jurisdiction_detail": "Executive branch (executive order)",
-      "mechanism_type": "legislative",
+      "mechanism_type": "executive",
       "description": "The executive branch uses official government action — designating an asset class (e.g., Bitcoin) as a 'strategic reserve asset' — to provide official US government legitimacy and price support to an entire asset class in which the president and his family hold significant personal financial stakes. Unlike direct market manipulation, this operates through policy signaling rather than direct trading, making it extremely difficult to prosecute while providing substantial financial benefit.",
       "how_it_works": "1. President holds significant personal positions in an asset class (Bitcoin, ETH, associated crypto). 2. President signs executive order designating that asset class as a 'strategic reserve asset.' 3. Government endorsement provides legitimacy signal to markets. 4. Asset price increases on news of government backing. 5. President's personal holdings increase in value. 6. No individual transaction is fraudulent — the market impact is systemic. 7. Taxpayer-backed government credibility is used to boost personal portfolio. 8. Other asset holders benefit too, providing political cover ('everyone benefited').",
       "durability": 6,
