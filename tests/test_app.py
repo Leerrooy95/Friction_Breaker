@@ -21,7 +21,7 @@ def test_taxonomy_file_exists():
 def test_taxonomy_is_valid_json():
     """The taxonomy file must be valid JSON."""
     taxonomy_path = Path(__file__).resolve().parent.parent / "mechanism_classifier_taxonomy.json"
-    with open(taxonomy_path) as f:
+    with open(taxonomy_path, encoding="utf-8") as f:
         data = json.load(f)
     assert isinstance(data, dict)
 
@@ -29,7 +29,7 @@ def test_taxonomy_is_valid_json():
 def test_taxonomy_has_mechanisms():
     """The taxonomy must contain a 'mechanisms' list with entries."""
     taxonomy_path = Path(__file__).resolve().parent.parent / "mechanism_classifier_taxonomy.json"
-    with open(taxonomy_path) as f:
+    with open(taxonomy_path, encoding="utf-8") as f:
         data = json.load(f)
     mechanisms = data.get("mechanisms", [])
     assert len(mechanisms) > 0, "Taxonomy has no mechanisms"
@@ -38,7 +38,7 @@ def test_taxonomy_has_mechanisms():
 def test_taxonomy_mechanism_fields():
     """Each mechanism must have required fields."""
     taxonomy_path = Path(__file__).resolve().parent.parent / "mechanism_classifier_taxonomy.json"
-    with open(taxonomy_path) as f:
+    with open(taxonomy_path, encoding="utf-8") as f:
         data = json.load(f)
 
     required_fields = {"id", "name", "category", "description", "durability"}
@@ -50,7 +50,7 @@ def test_taxonomy_mechanism_fields():
 def test_taxonomy_durability_range():
     """Durability scores must be between 1 and 10."""
     taxonomy_path = Path(__file__).resolve().parent.parent / "mechanism_classifier_taxonomy.json"
-    with open(taxonomy_path) as f:
+    with open(taxonomy_path, encoding="utf-8") as f:
         data = json.load(f)
 
     for mechanism in data.get("mechanisms", []):
@@ -619,7 +619,7 @@ def test_save_result_creates_markdown(tmp_path, monkeypatch):
 def test_taxonomy_version_in_json():
     """The taxonomy JSON must have a metadata.version field (semver string)."""
     taxonomy_path = Path(__file__).resolve().parent.parent / "mechanism_classifier_taxonomy.json"
-    with open(taxonomy_path) as f:
+    with open(taxonomy_path, encoding="utf-8") as f:
         data = json.load(f)
     version = data.get("metadata", {}).get("version")
     assert version is not None, "Taxonomy metadata.version is missing"
