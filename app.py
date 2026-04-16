@@ -194,7 +194,7 @@ def load_taxonomy() -> dict:
     if not _TAXONOMY_FILE.exists():
         logger.error(f"Taxonomy file not found: {_TAXONOMY_FILE}")
         return {"mechanisms": [], "categories": []}
-    with open(_TAXONOMY_FILE) as f:
+    with open(_TAXONOMY_FILE, encoding="utf-8") as f:
         _cached_taxonomy = json.load(f)
     return _cached_taxonomy
 
