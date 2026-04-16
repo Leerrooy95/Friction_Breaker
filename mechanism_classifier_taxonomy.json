@@ -1,25 +1,25 @@
 {
   "metadata": {
     "name": "Mechanism Classifier Taxonomy",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "source_repo": "github.com/Leerrooy95/The_Regulated_Friction_Project",
     "source_version": "v11.9",
-    "generated": "2026-04-05",
+    "generated": "2026-04-16",
     "author": "Austin Smith + Claude (Opus 4.6)",
     "purpose": "Structured classification of every legal, regulatory, personnel, financial, and procedural mechanism documented in the Regulated Friction Project. Foundation layer for the countermeasure engine.",
-    "total_mechanisms": 56,
+    "total_mechanisms": 63,
     "categories": 8
   },
   "categories": [
     {
       "id": "A",
       "name": "Legislative Architecture",
-      "description": "Laws designed with structural features that guarantee outcomes regardless of regulatory opposition \u2014 auto-approvals, iterative loops, emergency clauses, and bespoke carve-outs."
+      "description": "Laws designed with structural features that guarantee outcomes regardless of regulatory opposition — auto-approvals, iterative loops, emergency clauses, and bespoke carve-outs."
     },
     {
       "id": "B",
       "name": "Regulatory Capture and Override",
-      "description": "Mechanisms that neutralize regulatory bodies' ability to deny, delay, or condition approvals \u2014 including cost-shifting to ratepayers and concealment of beneficial ownership."
+      "description": "Mechanisms that neutralize regulatory bodies' ability to deny, delay, or condition approvals — including cost-shifting to ratepayers and concealment of beneficial ownership."
     },
     {
       "id": "C",
@@ -58,12 +58,12 @@
       "name": "Iterative Resubmission Loop (No Final Denial)",
       "category": "A",
       "jurisdiction": "state",
-      "jurisdiction_detail": "Arkansas (Ark. Code \u00a7 23-3-207(b)(3))",
+      "jurisdiction_detail": "Arkansas (Ark. Code § 23-3-207(b)(3))",
       "mechanism_type": "legislative",
-      "description": "If a regulatory body denies an application, the applicant resubmits with additional evidence. The regulatory body must rule within 30 days. The loop continues until approval, withdrawal, or appeal \u2014 there is no provision for a final, conclusive denial.",
-      "how_it_works": "1. Utility files application. 2. PSC reviews and may deny. 3. If denied, PSC must specify basis and identify insufficient evidence. 4. Utility resubmits with additional evidence. 5. PSC must rule within 30 days. 6. Process repeats \u2014 statute says it 'may continue until' approval. 7. No terminal 'no' exists.",
+      "description": "If a regulatory body denies an application, the applicant resubmits with additional evidence. The regulatory body must rule within 30 days. The loop continues until approval, withdrawal, or appeal — there is no provision for a final, conclusive denial.",
+      "how_it_works": "1. Utility files application. 2. PSC reviews and may deny. 3. If denied, PSC must specify basis and identify insufficient evidence. 4. Utility resubmits with additional evidence. 5. PSC must rule within 30 days. 6. Process repeats — statute says it 'may continue until' approval. 7. No terminal 'no' exists.",
       "durability": 6,
-      "durability_notes": "State statute \u2014 can be repealed by state legislature or overridden by voter-initiated ballot measure (if that mechanism is still functional). Emergency clause makes it effective immediately upon signing.",
+      "durability_notes": "State statute — can be repealed by state legislature or overridden by voter-initiated ballot measure (if that mechanism is still functional). Emergency clause makes it effective immediately upon signing.",
       "reversal_pathways": [
         "State legislative repeal (simple majority)",
         "Citizen ballot initiative adding 'final denial' provision to state constitution",
@@ -76,7 +76,7 @@
         "DAILY_REPORTS/Intelligence_Report.md"
       ],
       "real_examples": [
-        "Jefferson Power Station ($1.5B) \u2014 PSC found cost 'not reasonable' but approved anyway because denial would only delay, not prevent, the project under Act 373"
+        "Jefferson Power Station ($1.5B) — PSC found cost 'not reasonable' but approved anyway because denial would only delay, not prevent, the project under Act 373"
       ],
       "status": "enacted",
       "enacted_date": "2025-03-20",
@@ -87,9 +87,9 @@
       "name": "Auto-Approval by Deadline Lapse",
       "category": "A",
       "jurisdiction": "state",
-      "jurisdiction_detail": "Arkansas (Ark. Code \u00a7 23-4-1304(e)(2)(H))",
+      "jurisdiction_detail": "Arkansas (Ark. Code § 23-4-1304(e)(2)(H))",
       "mechanism_type": "legislative",
-      "description": "If the regulatory body fails to act within statutory deadlines, the filing becomes effective by operation of law \u2014 approval without any affirmative decision.",
+      "description": "If the regulatory body fails to act within statutory deadlines, the filing becomes effective by operation of law — approval without any affirmative decision.",
       "how_it_works": "1. Utility files rider or application. 2. Statutory clock starts (90 days initial, 60 days annual, 10 days amended). 3. If PSC misses deadline, filing takes effect automatically. 4. No hearing, no vote, no record of decision required.",
       "durability": 6,
       "durability_notes": "Same durability as parent statute (Act 373). Vulnerable to repeal or constitutional challenge.",
@@ -102,7 +102,7 @@
         "13_State_and_County_Analysis/arkansas_infrastructure_forensic_audit.md (Section 3)"
       ],
       "real_examples": [
-        "Jefferson Power Station rider \u2014 90-day initial approval timeline, 60-day annual updates"
+        "Jefferson Power Station rider — 90-day initial approval timeline, 60-day annual updates"
       ],
       "status": "enacted",
       "enacted_date": "2025-03-20",
@@ -113,12 +113,12 @@
       "name": "Bespoke Tax Exemption with Aggregation Clause",
       "category": "A",
       "jurisdiction": "state",
-      "jurisdiction_detail": "Arkansas (Ark. Code \u00a7 26-52-456)",
+      "jurisdiction_detail": "Arkansas (Ark. Code § 26-52-456)",
       "mechanism_type": "legislative",
       "description": "Tax exemption framework with a 'two or more nonadjacent physical locations' clause that allows a single entity to aggregate investments across separate, non-contiguous sites statewide into one 'Qualified Large Data Center' for tax purposes.",
       "how_it_works": "1. Entity establishes data center operations at 2+ non-adjacent sites. 2. Sites connected by fiber count as single 'qualified large data center.' 3. $100M threshold (lowered from $500M) for basic exemption. 4. $2B threshold for 'large' exemption with enhanced benefits. 5. Fiber infrastructure connecting sites is itself tax-exempt. 6. Fallback: if $2B aggregate not met, individual sites retain exemptions if they independently meet $100M threshold.",
       "durability": 5,
-      "durability_notes": "State statute \u2014 repealable. But the aggregation clause means investments are already structured to exploit the provision, making repeal politically costly due to sunk commitments.",
+      "durability_notes": "State statute — repealable. But the aggregation clause means investments are already structured to exploit the provision, making repeal politically costly due to sunk commitments.",
       "reversal_pathways": [
         "State legislative repeal or amendment raising thresholds",
         "Citizen ballot initiative (if democratic check mechanism still functional)",
@@ -147,7 +147,7 @@
       "description": "Legislative emergency clause makes a law effective immediately upon signing rather than the standard 90-day delay, bypassing the period during which public review, legal challenge, or ballot initiative response could occur.",
       "how_it_works": "1. Legislature attaches emergency clause to bill. 2. Requires 2/3 vote for emergency declaration. 3. Law takes effect immediately upon governor's signature. 4. Eliminates the standard 90-day window between passage and effect. 5. Public has no opportunity to organize response before law is operative.",
       "durability": 6,
-      "durability_notes": "The clause itself is procedural and constitutional \u2014 it cannot be easily challenged. The resulting law has the same durability as any state statute.",
+      "durability_notes": "The clause itself is procedural and constitutional — it cannot be easily challenged. The resulting law has the same durability as any state statute.",
       "reversal_pathways": [
         "Constitutional amendment restricting emergency clause use to genuine emergencies",
         "Judicial challenge if emergency clause used without genuine emergency"
@@ -156,7 +156,7 @@
         "13_State_and_County_Analysis/arkansas_infrastructure_forensic_audit.md (Section 3)"
       ],
       "real_examples": [
-        "Act 373 \u2014 emergency clause adopted 27-1, effective immediately March 20, 2025"
+        "Act 373 — emergency clause adopted 27-1, effective immediately March 20, 2025"
       ],
       "status": "enacted",
       "enacted_date": "2025-03-20",
@@ -167,9 +167,9 @@
       "name": "Competitor Exclusion Clause",
       "category": "A",
       "jurisdiction": "state",
-      "jurisdiction_detail": "Arkansas (Ark. Code \u00a7 23-4-1303(10)(D))",
+      "jurisdiction_detail": "Arkansas (Ark. Code § 23-4-1303(10)(D))",
       "mechanism_type": "legislative",
-      "description": "Wind resources located in Arkansas are explicitly excluded from the definition of 'strategic investments' \u2014 selectively disadvantaging one energy source while enabling others.",
+      "description": "Wind resources located in Arkansas are explicitly excluded from the definition of 'strategic investments' — selectively disadvantaging one energy source while enabling others.",
       "how_it_works": "1. Strategic Investment Rider allows cost recovery during construction. 2. Definition covers gas, nuclear, solar (implicitly). 3. Wind is explicitly excluded by statutory text. 4. Wind developers cannot use the same financial mechanism as gas/nuclear.",
       "durability": 5,
       "durability_notes": "Simple legislative amendment could remove exclusion. Political difficulty is moderate given utility lobbying.",
@@ -182,7 +182,7 @@
         "13_State_and_County_Analysis/arkansas_infrastructure_forensic_audit.md (Section 3)"
       ],
       "real_examples": [
-        "Act 373 \u00a7 23-4-1303(10)(D) \u2014 wind exclusion benefits Entergy's gas-fired Jefferson Power Station"
+        "Act 373 § 23-4-1303(10)(D) — wind exclusion benefits Entergy's gas-fired Jefferson Power Station"
       ],
       "status": "enacted",
       "enacted_date": "2025-03-20",
@@ -193,12 +193,12 @@
       "name": "Federal Energy Oversight Bypass (CREU Designation)",
       "category": "A",
       "jurisdiction": "federal",
-      "jurisdiction_detail": "Proposed \u2014 DATA Act of 2026",
+      "jurisdiction_detail": "Proposed — DATA Act of 2026",
       "mechanism_type": "legislative",
-      "description": "Creates 'Consumer-Regulated Electric Utility' (CREU) designation that exempts off-grid ('islanded') power systems from FERC jurisdiction, Federal Power Act, PURPA, and PUHCA \u2014 bypassing all federal energy oversight for qualifying facilities.",
+      "description": "Creates 'Consumer-Regulated Electric Utility' (CREU) designation that exempts off-grid ('islanded') power systems from FERC jurisdiction, Federal Power Act, PURPA, and PUHCA — bypassing all federal energy oversight for qualifying facilities.",
       "how_it_works": "1. Data center operator builds independent power generation. 2. System remains 'islanded' from the grid. 3. CREU designation exempts facility from all federal energy regulation. 4. No rate hearings, no transmission planning, no cost allocation requirements. 5. Combined with state-level Acts 373/548, creates fully deregulated energy-compute complex.",
       "durability": 7,
-      "durability_notes": "Federal statute \u2014 requires congressional repeal. If enacted, facilities built under CREU would have sunk investments that make political reversal costly.",
+      "durability_notes": "Federal statute — requires congressional repeal. If enacted, facilities built under CREU would have sunk investments that make political reversal costly.",
       "reversal_pathways": [
         "Congressional repeal of DATA Act",
         "FERC rulemaking asserting jurisdiction over 'islanded' systems that affect grid stability",
@@ -209,7 +209,7 @@
         "_AI_CONTEXT_INDEX/04_CAPITAL_ARCHITECTURE.md (DATA Act / CREU section)"
       ],
       "real_examples": [
-        "DATA Act introduced by Sen. Tom Cotton (R-AR), January 8, 2026 \u2014 not yet enacted"
+        "DATA Act introduced by Sen. Tom Cotton (R-AR), January 8, 2026 — not yet enacted"
       ],
       "status": "proposed",
       "introduced_date": "2026-01-08",
@@ -222,7 +222,7 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "H.R. 3633 (CLARITY Act)",
       "mechanism_type": "legislative",
-      "description": "Comprehensive crypto market structure bill that defines SEC vs CFTC jurisdiction \u2014 simultaneously creating the permanent legal infrastructure for USD1/WLF capital architecture in which the sitting president's family holds financial interests.",
+      "description": "Comprehensive crypto market structure bill that defines SEC vs CFTC jurisdiction — simultaneously creating the permanent legal infrastructure for USD1/WLF capital architecture in which the sitting president's family holds financial interests.",
       "how_it_works": "1. CLARITY Act defines which crypto assets are securities vs commodities. 2. Creates federal framework for exchanges, brokers, custodians. 3. GENIUS Act (signed July 2025) provides stablecoin framework. 4. OCC charter application by WLF enables federal preemption of state oversight. 5. USD1 stablecoin ($4.59B market cap) used to settle $2B MGX foreign sovereign transaction. 6. Ethics amendments (Warren/Merkley) aimed at conflict-of-interest remain unresolved.",
       "durability": 8,
       "durability_notes": "Once enacted as federal statute with industry built on top of it, extremely difficult to repeal without massive market disruption. Creates irreversible structural dependencies.",
@@ -256,13 +256,13 @@
       "description": "Attaching a controversial bill to must-pass legislation, forcing opponents to either accept the rider or kill essential government functions. Creates manufactured lose-lose for opposition.",
       "how_it_works": "1. Controversial bill lacks votes for standalone passage. 2. Proponents threaten to attach it to must-pass legislation (FISA, DHS funding, debt ceiling). 3. Opposition must choose: accept the rider or block essential legislation. 4. During wartime or crisis, blocking essential legislation carries enormous political cost. 5. The coupling itself consumes attention bandwidth regardless of outcome.",
       "durability": 3,
-      "durability_notes": "Procedural \u2014 each Congress can set its own rules. But the resulting enacted law has full statutory durability.",
+      "durability_notes": "Procedural — each Congress can set its own rules. But the resulting enacted law has full statutory durability.",
       "reversal_pathways": [
         "Senate filibuster (60-vote threshold blocks coupled legislation)",
         "House discharge petition to force standalone vote",
         "Constitutional challenge if rider is unrelated to base bill (germaneness)",
         "Presidential veto (if president opposes rider)",
-        "Clean bill strategy \u2014 leadership forces standalone vote first"
+        "Clean bill strategy — leadership forces standalone vote first"
       ],
       "repo_references": [
         "10_Real-Time_Updates_and_Tasks/2026_March/SAVE_America_Act_Election_Infrastructure.md"
@@ -272,19 +272,19 @@
         "SAVE attached to DHS funding bill"
       ],
       "status": "active_threat",
-      "legislation": "SAVE America Act (H.R. 7296) \u2192 FISA Section 702 coupling"
+      "legislation": "SAVE America Act (H.R. 7296) → FISA Section 702 coupling"
     },
     {
       "id": "A-09",
       "name": "Construction-Phase Cost Recovery (Strategic Investment Rider)",
       "category": "A",
       "jurisdiction": "state",
-      "jurisdiction_detail": "Arkansas (Ark. Code \u00a7 23-4-1303(8), \u00a7 23-4-1304)",
+      "jurisdiction_detail": "Arkansas (Ark. Code § 23-4-1303(8), § 23-4-1304)",
       "mechanism_type": "legislative",
-      "description": "Allows utilities to recover construction costs from ratepayers during the building phase \u2014 before the facility generates a single unit of output. Shifts financial risk entirely to ratepayers while the utility bears zero construction-phase risk.",
+      "description": "Allows utilities to recover construction costs from ratepayers during the building phase — before the facility generates a single unit of output. Shifts financial risk entirely to ratepayers while the utility bears zero construction-phase risk.",
       "how_it_works": "1. Utility files for Strategic Investment Rider approval. 2. Rider appears as monthly charge on residential bills (~$2.85/month). 3. Charges accumulate throughout multi-year construction period. 4. No binding power purchase agreement required from anchor tenant. 5. If anchor tenant (AVAIO) never materializes, ratepayers bear stranded asset exposure on $1.5B facility.",
       "durability": 6,
-      "durability_notes": "State statute \u2014 repealable but charges already accruing. Retroactive reversal would require returning collected charges.",
+      "durability_notes": "State statute — repealable but charges already accruing. Retroactive reversal would require returning collected charges.",
       "reversal_pathways": [
         "Legislative amendment requiring binding PPA before rider activation",
         "PSC rulemaking requiring beneficial ownership disclosure as rider condition",
@@ -296,7 +296,7 @@
         "DAILY_REPORTS/Intelligence_Report.md"
       ],
       "real_examples": [
-        "Jefferson Power Station \u2014 ~$2.85/month residential charge began upon procurement launch, no AVAIO binding PPA"
+        "Jefferson Power Station — ~$2.85/month residential charge began upon procurement launch, no AVAIO binding PPA"
       ],
       "status": "enacted",
       "enacted_date": "2025-03-20",
@@ -310,9 +310,9 @@
       "jurisdiction_detail": "H.R. 7296 (SAVE America Act)",
       "mechanism_type": "legislative",
       "description": "Requires all 50 states to submit unredacted voter registration lists to DHS. Contains no restrictions on what DHS does with data, no sunset provision on retention, no independent audit requirement, and criminal referral pathway for false positives.",
-      "how_it_works": "1. States submit complete voter rolls to DHS (name, address, DOB, SSN last 4, DL number). 2. DHS runs data against SAVE database (designed for immigration benefits, not voter verification). 3. SAVE has documented 50%+ error rates in some counties for naturalized citizens. 4. Flagged citizens are referred to DHS for criminal investigation. 5. No restrictions on secondary uses of collected data. 6. No sunset provision \u2014 data retained indefinitely.",
+      "how_it_works": "1. States submit complete voter rolls to DHS (name, address, DOB, SSN last 4, DL number). 2. DHS runs data against SAVE database (designed for immigration benefits, not voter verification). 3. SAVE has documented 50%+ error rates in some counties for naturalized citizens. 4. Flagged citizens are referred to DHS for criminal investigation. 5. No restrictions on secondary uses of collected data. 6. No sunset provision — data retained indefinitely.",
       "durability": 7,
-      "durability_notes": "If enacted, data collection would be immediate and irreversible \u2014 once DHS has the data, no law can un-collect it.",
+      "durability_notes": "If enacted, data collection would be immediate and irreversible — once DHS has the data, no law can un-collect it.",
       "reversal_pathways": [
         "Senate filibuster (bill expected to fail on cloture)",
         "Data use restriction amendments (mandatory sunset, audit requirements, purpose limitation)",
@@ -338,7 +338,7 @@
       "jurisdiction": "state",
       "jurisdiction_detail": "Arkansas PSC",
       "mechanism_type": "regulatory",
-      "description": "Regulatory body approves a project despite its own finding that the project's cost is 'not reasonable' \u2014 because the statutory architecture (Act 373) makes denial futile.",
+      "description": "Regulatory body approves a project despite its own finding that the project's cost is 'not reasonable' — because the statutory architecture (Act 373) makes denial futile.",
       "how_it_works": "1. PSC reviews project. 2. PSC's own analysis and expert witnesses find cost 'not reasonable.' 3. AG expert, PSC staff expert, and independent witnesses all recommend denial. 4. PSC approves anyway because Act 373's iterative resubmission means denial only delays. 5. The statutory structure captures the regulatory outcome regardless of merits.",
       "durability": 6,
       "durability_notes": "The override is a consequence of the underlying statute (A-01). Fixing it requires fixing Act 373.",
@@ -353,7 +353,7 @@
         "DAILY_REPORTS/Intelligence_Report.md"
       ],
       "real_examples": [
-        "PSC Docket 25-047-U \u2014 Jefferson Power Station approved January 28, 2026 despite 'not reasonable' cost finding"
+        "PSC Docket 25-047-U — Jefferson Power Station approved January 28, 2026 despite 'not reasonable' cost finding"
       ],
       "status": "active"
     },
@@ -364,7 +364,7 @@
       "jurisdiction": "both",
       "jurisdiction_detail": "Federal (SEC gaps) + State (no disclosure requirements)",
       "mechanism_type": "regulatory",
-      "description": "Multi-billion dollar infrastructure investments proceed with the ultimate beneficial owner completely concealed through corporate structures that avoid all reporting thresholds \u2014 no SEC filings, no CFIUS review, no state-level disclosure requirements.",
+      "description": "Multi-billion dollar infrastructure investments proceed with the ultimate beneficial owner completely concealed through corporate structures that avoid all reporting thresholds — no SEC filings, no CFIUS review, no state-level disclosure requirements.",
       "how_it_works": "1. Investment structured through private entity (no public securities). 2. No Form D, no 13F, no SEC disclosure. 3. No CFIUS filing required (or review not public). 4. State incentive packages awarded without beneficial ownership disclosure requirement. 5. 'Investment manager' descriptor used rather than entity name. 6. Shell company structures obscure whether capital is domestic, foreign sovereign, or foreign corporate.",
       "durability": 4,
       "durability_notes": "Could be fixed by state-level legislation requiring beneficial ownership disclosure as condition for tax incentives. Corporate Transparency Act (federal, 2024) partially addresses this but has exemptions.",
@@ -380,7 +380,7 @@
         "_AI_CONTEXT_INDEX/04_CAPITAL_ARCHITECTURE.md"
       ],
       "real_examples": [
-        "AVAIO Digital \u2014 $6-21B commitment, '$25 billion investment manager' unidentified for 5 years",
+        "AVAIO Digital — $6-21B commitment, '$25 billion investment manager' unidentified for 5 years",
         "Shell companies: Groot LLC, Forgelight Ventures, Willowbend Capital, Project Boar"
       ],
       "status": "active"
@@ -392,7 +392,7 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "SEC 13F reporting requirements",
       "mechanism_type": "regulatory",
-      "description": "Capital architecture operates below SEC 13F reporting thresholds \u2014 private deals, non-US securities, LP interests in private funds, and sub-threshold positions are all invisible to public disclosure.",
+      "description": "Capital architecture operates below SEC 13F reporting thresholds — private deals, non-US securities, LP interests in private funds, and sub-threshold positions are all invisible to public disclosure.",
       "how_it_works": "1. 13F only requires reporting of publicly traded US equity securities. 2. Private transactions, LP interests, and non-US holdings are exempt. 3. Gulf SWFs can hold massive positions through private structures that never appear in 13F filings. 4. Public sees only the tip of the capital architecture.",
       "durability": 5,
       "durability_notes": "SEC rulemaking or congressional action could expand reporting requirements. Industry lobbying would resist.",
@@ -418,10 +418,10 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "Office of the Comptroller of the Currency",
       "mechanism_type": "regulatory",
-      "description": "National bank charter from OCC preempts state-level financial regulation \u2014 enabling entities to bypass 50 different state regulatory regimes with a single federal charter.",
+      "description": "National bank charter from OCC preempts state-level financial regulation — enabling entities to bypass 50 different state regulatory regimes with a single federal charter.",
       "how_it_works": "1. Entity applies for OCC national bank charter. 2. If granted, entity operates under federal regulation only. 3. State banking regulators lose jurisdiction. 4. State consumer protection laws may be preempted. 5. For crypto entities, this means bypassing state money transmitter licenses and state-level oversight.",
       "durability": 7,
-      "durability_notes": "OCC charter is federal \u2014 revoking requires OCC enforcement action or congressional legislation. Once business is built on charter, extremely disruptive to revoke.",
+      "durability_notes": "OCC charter is federal — revoking requires OCC enforcement action or congressional legislation. Once business is built on charter, extremely disruptive to revoke.",
       "reversal_pathways": [
         "OCC charter denial (conflict of interest, unsafe and unsound practices)",
         "Congressional legislation preserving state regulatory authority over crypto entities",
@@ -443,10 +443,10 @@
       "jurisdiction": "state",
       "jurisdiction_detail": "Arkansas (multiple municipalities)",
       "mechanism_type": "regulatory",
-      "description": "Payment-In-Lieu-Of-Taxes agreements granting decades-long property tax exemptions for projects promising minimal employment \u2014 concentrating economic benefit while socializing infrastructure costs.",
+      "description": "Payment-In-Lieu-Of-Taxes agreements granting decades-long property tax exemptions for projects promising minimal employment — concentrating economic benefit while socializing infrastructure costs.",
       "how_it_works": "1. Municipality negotiates PILOT with developer. 2. Developer receives 65% property tax abatement for 30 years. 3. Employment requirement may be as low as 50 jobs per $1B investment. 4. Public services (schools, roads, utilities) still required but revenue base shrinks. 5. West Memphis Google deal: potentially $50B in personal property tax abatements over PILOT life.",
       "durability": 7,
-      "durability_notes": "PILOT agreements are contracts \u2014 legally binding for their full term. Cannot be unilaterally revoked without breach of contract liability.",
+      "durability_notes": "PILOT agreements are contracts — legally binding for their full term. Cannot be unilaterally revoked without breach of contract liability.",
       "reversal_pathways": [
         "State legislation capping PILOT duration or abatement percentage",
         "Minimum jobs-per-investment-dollar requirements in future PILOTs",
@@ -469,12 +469,12 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "Executive branch",
       "mechanism_type": "personnel",
-      "description": "Firing or removing an official before a scheduled accountability event (deposition, hearing, investigation milestone) \u2014 neutralizing their testimony or findings while installing a loyalist replacement.",
+      "description": "Firing or removing an official before a scheduled accountability event (deposition, hearing, investigation milestone) — neutralizing their testimony or findings while installing a loyalist replacement.",
       "how_it_works": "1. Official faces scheduled accountability event (subpoena, deposition, hearing). 2. Official is fired before event date. 3. Replacement is a loyalist (often without Senate confirmation). 4. Committee may need new vote to compel fired official's testimony. 5. Institutional knowledge and chain of command are disrupted. 6. Even if subpoena survives (by name), practical enforcement becomes politically costly.",
       "durability": 2,
-      "durability_notes": "Low durability as mechanism \u2014 each instance is one-time. But repeated use establishes precedent that accountability events can be pre-empted.",
+      "durability_notes": "Low durability as mechanism — each instance is one-time. But repeated use establishes precedent that accountability events can be pre-empted.",
       "reversal_pathways": [
-        "Inherent contempt (Congress arrests non-compliant witnesses \u2014 unused since 1930s)",
+        "Inherent contempt (Congress arrests non-compliant witnesses — unused since 1930s)",
         "Legislation requiring fired officials to comply with existing subpoenas regardless of employment status",
         "Independent counsel appointment with statutory protections",
         "Inspector General with removal-for-cause protection"
@@ -484,8 +484,8 @@
         "_AI_CONTEXT_INDEX/09_CURRENT_THREADS.md"
       ],
       "real_examples": [
-        "Pam Bondi \u2014 fired April 2, 2026, 12 days before April 14 subpoenaed deposition",
-        "Dan Bongino \u2014 departed ~2 days before Dec 19, 2025 Epstein disclosure deadline"
+        "Pam Bondi — fired April 2, 2026, 12 days before April 14 subpoenaed deposition",
+        "Dan Bongino — departed ~2 days before Dec 19, 2025 Epstein disclosure deadline"
       ],
       "status": "active"
     },
@@ -496,7 +496,7 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "Executive branch",
       "mechanism_type": "personnel",
-      "description": "Installing an acting official who serves without Senate confirmation \u2014 bypassing the constitutional advice-and-consent check on executive appointments.",
+      "description": "Installing an acting official who serves without Senate confirmation — bypassing the constitutional advice-and-consent check on executive appointments.",
       "how_it_works": "1. Confirmed official is fired or resigns. 2. Deputy or loyalist designated as 'acting' head. 3. Federal Vacancies Reform Act allows acting service for limited periods. 4. In practice, acting officials serve extended periods without confirmation. 5. Acting official has full authority of the position without having been vetted by Senate.",
       "durability": 3,
       "durability_notes": "Federal Vacancies Reform Act limits acting service, but enforcement is weak. Courts have occasionally invalidated actions by improperly acting officials.",
@@ -510,8 +510,8 @@
         "_AI_CONTEXT_INDEX/Node_Dossiers/tier2_purged_officials.md"
       ],
       "real_examples": [
-        "Todd Blanche \u2014 Trump's former personal defense attorney, acting AG without Senate confirmation",
-        "Gen. Christopher LaNeve \u2014 acting Army Chief of Staff, Hegseth ally"
+        "Todd Blanche — Trump's former personal defense attorney, acting AG without Senate confirmation",
+        "Gen. Christopher LaNeve — acting Army Chief of Staff, Hegseth ally"
       ],
       "status": "active"
     },
@@ -522,10 +522,10 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "OPM rulemaking",
       "mechanism_type": "personnel",
-      "description": "Reclassifying career civil servants from competitive service (with firing protections) to a new schedule where they can be dismissed at will \u2014 converting the federal workforce from merit-based to loyalty-based.",
-      "how_it_works": "1. OPM publishes Schedule Policy/Career final rule. 2. 94% of 40,500 public comments opposed \u2014 published regardless. 3. Positions previously protected by merit system can be reclassified. 4. Reclassified employees lose MSPB appeal rights. 5. Creates at-will workforce responsive to political direction rather than legal mandate. 6. DOGE workforce functions absorbed permanently by OPM (Nov 2025).",
+      "description": "Reclassifying career civil servants from competitive service (with firing protections) to a new schedule where they can be dismissed at will — converting the federal workforce from merit-based to loyalty-based.",
+      "how_it_works": "1. OPM publishes Schedule Policy/Career final rule. 2. 94% of 40,500 public comments opposed — published regardless. 3. Positions previously protected by merit system can be reclassified. 4. Reclassified employees lose MSPB appeal rights. 5. Creates at-will workforce responsive to political direction rather than legal mandate. 6. DOGE workforce functions absorbed permanently by OPM (Nov 2025).",
       "durability": 6,
-      "durability_notes": "Final rule \u2014 can be reversed by future administration's rulemaking but takes ~1-2 years. Employees fired under the rule cannot be easily rehired.",
+      "durability_notes": "Final rule — can be reversed by future administration's rulemaking but takes ~1-2 years. Employees fired under the rule cannot be easily rehired.",
       "reversal_pathways": [
         "New administration's OPM rulemaking reversing Schedule Policy/Career",
         "Congressional legislation codifying merit system protections",
@@ -551,10 +551,10 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "DoD / Secretary of War",
       "mechanism_type": "personnel",
-      "description": "Removing senior military commanders during active combat operations \u2014 unprecedented in modern US history. Replaces institutional command with political loyalists mid-conflict.",
+      "description": "Removing senior military commanders during active combat operations — unprecedented in modern US history. Replaces institutional command with political loyalists mid-conflict.",
       "how_it_works": "1. Senior commanders are fired during active combat. 2. Replacements are political allies rather than institutional successors. 3. No modern precedent constrains the action. 4. Remaining commanders receive implicit message about cost of resistance. 5. Institutional military independence is subordinated to political direction.",
       "durability": 2,
-      "durability_notes": "Personnel action \u2014 reversible by next administration. But institutional damage (chilling effect on military independence) persists.",
+      "durability_notes": "Personnel action — reversible by next administration. But institutional damage (chilling effect on military independence) persists.",
       "reversal_pathways": [
         "Congressional legislation requiring Senate confirmation of military command changes during active combat",
         "Inspector General investigation",
@@ -565,9 +565,9 @@
         "_AI_CONTEXT_INDEX/Node_Dossiers/tier2_purged_officials.md"
       ],
       "real_examples": [
-        "Gen. Randy George (Army Chief of Staff) \u2014 fired April 2, 2026 during active Iran war (Day 33+)",
-        "Gen. David Hodne (Army Transformation/Training) \u2014 fired same day",
-        "Maj. Gen. William Green Jr. (Chief of Chaplains) \u2014 first such firing in US history"
+        "Gen. Randy George (Army Chief of Staff) — fired April 2, 2026 during active Iran war (Day 33+)",
+        "Gen. David Hodne (Army Transformation/Training) — fired same day",
+        "Maj. Gen. William Green Jr. (Chief of Chaplains) — first such firing in US history"
       ],
       "status": "active"
     },
@@ -578,10 +578,10 @@
       "jurisdiction": "state",
       "jurisdiction_detail": "Arkansas (8 laws, 2025 session)",
       "mechanism_type": "legislative",
-      "description": "Eight new laws restricting the citizen ballot initiative process \u2014 canvasser residency requirements, mandatory reading requirements, signature disqualification powers \u2014 making grassroots direct democracy functionally impossible.",
-      "how_it_works": "1. Canvassers must be Arkansas residents (eliminates professional firms). 2. Signers must read full ballot title (4-6 minutes per person). 3. Eighth-grade reading level required for complex constitutional language. 4. Secretary of State gains power to disqualify signatures. 5. Combined effect: signature collection becomes impractical at scale. 6. District court enjoined several provisions as unconstitutional (Nov 2025). 7. State appealed \u2014 appeal creates operational uncertainty through July 3, 2026 signature deadline.",
+      "description": "Eight new laws restricting the citizen ballot initiative process — canvasser residency requirements, mandatory reading requirements, signature disqualification powers — making grassroots direct democracy functionally impossible.",
+      "how_it_works": "1. Canvassers must be Arkansas residents (eliminates professional firms). 2. Signers must read full ballot title (4-6 minutes per person). 3. Eighth-grade reading level required for complex constitutional language. 4. Secretary of State gains power to disqualify signatures. 5. Combined effect: signature collection becomes impractical at scale. 6. District court enjoined several provisions as unconstitutional (Nov 2025). 7. State appealed — appeal creates operational uncertainty through July 3, 2026 signature deadline.",
       "durability": 4,
-      "durability_notes": "Several provisions already enjoined. But the appeal itself serves the purpose \u2014 clock-running through signature deadline regardless of legal outcome.",
+      "durability_notes": "Several provisions already enjoined. But the appeal itself serves the purpose — clock-running through signature deadline regardless of legal outcome.",
       "reversal_pathways": [
         "Federal court permanent injunction (trial July 20, 2026)",
         "8th Circuit affirmance of preliminary injunction",
@@ -606,13 +606,13 @@
       "jurisdiction": "state",
       "jurisdiction_detail": "Arkansas Supreme Court",
       "mechanism_type": "judicial",
-      "description": "Unanimous 6-0 Arkansas Supreme Court ruling reversing 74 years of precedent \u2014 the legislature can now amend or repeal any citizen-initiated constitutional amendment with a 2/3 vote, eliminating the distinction between constitutional amendments and ordinary statutes.",
-      "how_it_works": "1. For 74 years (since Edgmon, 1951), voter-approved constitutional amendments were untouchable by legislature. 2. Good Day Farm cannabis case provided vehicle for challenge. 3. Court reinterpreted Article 5, Section 1 \u2014 'measure' includes constitutional amendments. 4. Legislature can now amend or repeal ANY citizen-initiated constitutional amendment. 5. Eliminates the purpose of the constitutional route for ballot initiatives. 6. Medical marijuana case was the legal vehicle, but effect applies to all citizen amendments.",
+      "description": "Unanimous 6-0 Arkansas Supreme Court ruling reversing 74 years of precedent — the legislature can now amend or repeal any citizen-initiated constitutional amendment with a 2/3 vote, eliminating the distinction between constitutional amendments and ordinary statutes.",
+      "how_it_works": "1. For 74 years (since Edgmon, 1951), voter-approved constitutional amendments were untouchable by legislature. 2. Good Day Farm cannabis case provided vehicle for challenge. 3. Court reinterpreted Article 5, Section 1 — 'measure' includes constitutional amendments. 4. Legislature can now amend or repeal ANY citizen-initiated constitutional amendment. 5. Eliminates the purpose of the constitutional route for ballot initiatives. 6. Medical marijuana case was the legal vehicle, but effect applies to all citizen amendments.",
       "durability": 8,
-      "durability_notes": "State supreme court precedent \u2014 can only be reversed by the same court, constitutional amendment via legislative referral (ironic), or federal constitutional challenge.",
+      "durability_notes": "State supreme court precedent — can only be reversed by the same court, constitutional amendment via legislative referral (ironic), or federal constitutional challenge.",
       "reversal_pathways": [
         "Arkansas Supreme Court reversal in future case (unlikely given 6-0 unanimity)",
-        "Federal constitutional challenge (14th Amendment \u2014 state cannot eliminate the distinction citizens relied on)",
+        "Federal constitutional challenge (14th Amendment — state cannot eliminate the distinction citizens relied on)",
         "New state constitutional amendment explicitly protecting citizen-initiated amendments from legislative modification (requires legislative referral, which legislature is unlikely to initiate)",
         "Federal legislation protecting citizen initiative rights"
       ],
@@ -620,7 +620,7 @@
         "13_State_and_County_Analysis/Arkansas_Law_Forensic_Audit.md"
       ],
       "real_examples": [
-        "State of Arkansas v. Good Day Farm Arkansas, LLC (Dec 11, 2025) \u2014 reversed Edgmon (1951)",
+        "State of Arkansas v. Good Day Farm Arkansas, LLC (Dec 11, 2025) — reversed Edgmon (1951)",
         "Affects: medical marijuana (2016), casino gaming (2018), term limits (1992), minimum wage, any future ballot measures"
       ],
       "status": "enacted",
@@ -633,10 +633,10 @@
       "jurisdiction": "state",
       "jurisdiction_detail": "Arkansas (8th Circuit appeal)",
       "mechanism_type": "procedural",
-      "description": "Filing an appeal not to win on merits but to maintain legal uncertainty through a critical deadline \u2014 the appeal creates operational friction for the opposing side even if it ultimately fails.",
-      "how_it_works": "1. District court rules against state (Nov 2025). 2. State appeals (Dec 2025). 3. 8th Circuit denies emergency stay (Dec 12, 2025). 4. But appeal remains pending \u2014 no oral argument date scheduled. 5. Canvassers face uncertainty about which rules apply. 6. Organizations struggle to hire staff amid legal ambiguity. 7. July 3, 2026 signature deadline approaches. 8. Trial scheduled for July 20, 2026 \u2014 AFTER the signature window closes. 9. State doesn't need to win \u2014 just needs to maintain uncertainty through deadline.",
+      "description": "Filing an appeal not to win on merits but to maintain legal uncertainty through a critical deadline — the appeal creates operational friction for the opposing side even if it ultimately fails.",
+      "how_it_works": "1. District court rules against state (Nov 2025). 2. State appeals (Dec 2025). 3. 8th Circuit denies emergency stay (Dec 12, 2025). 4. But appeal remains pending — no oral argument date scheduled. 5. Canvassers face uncertainty about which rules apply. 6. Organizations struggle to hire staff amid legal ambiguity. 7. July 3, 2026 signature deadline approaches. 8. Trial scheduled for July 20, 2026 — AFTER the signature window closes. 9. State doesn't need to win — just needs to maintain uncertainty through deadline.",
       "durability": 1,
-      "durability_notes": "One-time procedural tactic \u2014 burns out after deadline passes. But the effect (missed signature deadline) is permanent for that election cycle.",
+      "durability_notes": "One-time procedural tactic — burns out after deadline passes. But the effect (missed signature deadline) is permanent for that election cycle.",
       "reversal_pathways": [
         "Expedited appellate review (rare but possible under exigent circumstances)",
         "District court supplemental order clarifying scope of injunction during appeal",
@@ -647,7 +647,7 @@
         "13_State_and_County_Analysis/arkansas_infrastructure_forensic_audit.md (Section 2)"
       ],
       "real_examples": [
-        "LWV v. Jester \u2014 appeal pending, July 3 signature deadline, trial July 20 (after deadline)"
+        "LWV v. Jester — appeal pending, July 3 signature deadline, trial July 20 (after deadline)"
       ],
       "status": "active"
     },
@@ -658,8 +658,8 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "DOJ",
       "mechanism_type": "information_control",
-      "description": "Document releases with redaction patterns that protect high-level associates while exposing victim identities \u2014 inverting the stated purpose of transparency while satisfying the formal requirement of disclosure.",
-      "how_it_works": "1. Congress mandates document release (Epstein Files Transparency Act). 2. DOJ releases documents in phases. 3. Redactions applied to protect identified associates. 4. Victim information left unredacted \u2014 exposing survivors. 5. 'Phase' release structure fragments public attention across multiple news cycles. 6. Missing documents classified as 'incorrectly coded as duplicative.' 7. Only ~3M of 6M pages released as of March 2026.",
+      "description": "Document releases with redaction patterns that protect high-level associates while exposing victim identities — inverting the stated purpose of transparency while satisfying the formal requirement of disclosure.",
+      "how_it_works": "1. Congress mandates document release (Epstein Files Transparency Act). 2. DOJ releases documents in phases. 3. Redactions applied to protect identified associates. 4. Victim information left unredacted — exposing survivors. 5. 'Phase' release structure fragments public attention across multiple news cycles. 6. Missing documents classified as 'incorrectly coded as duplicative.' 7. Only ~3M of 6M pages released as of March 2026.",
       "durability": 3,
       "durability_notes": "Each specific redaction can be challenged. But the pattern of selective redaction requires institutional will to overcome.",
       "reversal_pathways": [
@@ -674,7 +674,7 @@
         "_AI_CONTEXT_INDEX/09_CURRENT_THREADS.md (Node 5)"
       ],
       "real_examples": [
-        "DOJ: 15 documents 'incorrectly coded as duplicative' \u2014 corrected only after NPR investigation",
+        "DOJ: 15 documents 'incorrectly coded as duplicative' — corrected only after NPR investigation",
         "37 pages still missing from public database (as of March 2026)",
         "Dec 2025: victim information exposed while associate information redacted"
       ],
@@ -687,7 +687,7 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "DOJ (VOCA/VAWA)",
       "mechanism_type": "financial",
-      "description": "Freezing congressionally appropriated funds for anti-trafficking organizations \u2014 eliminating legal aid for survivors precisely when new document releases make litigation possible.",
+      "description": "Freezing congressionally appropriated funds for anti-trafficking organizations — eliminating legal aid for survivors precisely when new document releases make litigation possible.",
       "how_it_works": "1. DOJ freezes $88M in VOCA/VAWA funds. 2. Over 100 grants expire. 3. Survivors lose legal aid in states where Epstein network operated (NM, NV, NY). 4. Document release creates potential for litigation. 5. But survivors have no legal representation to act on disclosures. 6. 21-state lawsuit filed (Rhode Island).",
       "durability": 3,
       "durability_notes": "Funding freezes can be reversed by congressional action or court order. But the damage (collapsed organizations, departed staff) is not easily undone.",
@@ -701,7 +701,7 @@
         "08_How_It's_Possible/08_How_Its_Possible.md"
       ],
       "real_examples": [
-        "$88M VOCA/VAWA freeze \u2014 5,000+ survivors affected, over 100 grants expired",
+        "$88M VOCA/VAWA freeze — 5,000+ survivors affected, over 100 grants expired",
         "Key collision states: NM, NV, NY (Epstein network operational geography)"
       ],
       "status": "active"
@@ -713,7 +713,7 @@
       "jurisdiction": "both",
       "jurisdiction_detail": "Corporate/federal",
       "mechanism_type": "information_control",
-      "description": "Capital architecture acquires media entities and restructures them \u2014 eliminating independent editorial capacity and replacing it with aligned editorial direction.",
+      "description": "Capital architecture acquires media entities and restructures them — eliminating independent editorial capacity and replacing it with aligned editorial direction.",
       "how_it_works": "1. Capital entity acquires media company (Paramount-Skydance/Ellison). 2. New editorial leadership installed (Bari Weiss as editor-in-chief). 3. Service elimination reduces coverage capacity (CBS News Radio closure: 700 stations). 4. Same capital entities (Oracle/Ellison) appear in both media and infrastructure architecture. 5. Dual-exposure: controls both narrative infrastructure and capital infrastructure.",
       "durability": 7,
       "durability_notes": "Once media companies are acquired, the acquisition is a done deal. Editorial changes are corporate decisions not subject to government review.",
@@ -730,7 +730,7 @@
       ],
       "real_examples": [
         "CBS News Radio closure (700 stations, March 20, 2026) under Bari Weiss/Paramount-Skydance/Ellison",
-        "1789 Capital media investments (TCN \u2014 historical)"
+        "1789 Capital media investments (TCN — historical)"
       ],
       "status": "active"
     },
@@ -742,7 +742,7 @@
       "jurisdiction_detail": "Intelligence community",
       "mechanism_type": "surveillance",
       "description": "Warrantless surveillance authority nominally targeting non-US persons overseas, but with documented 'incidental collection' of US persons' communications. Expiration date creates coupling opportunity with unrelated legislation.",
-      "how_it_works": "1. FISA Section 702 authorizes warrantless surveillance of non-US persons. 2. US persons' communications collected 'incidentally.' 3. Expiration date (April 20, 2026) creates must-renew pressure. 4. During active war, allowing FISA to lapse is politically untenable. 5. House conservatives threaten to attach SAVE America Act to FISA reauthorization. 6. Creates manufactured hostage scenario \u2014 accept voter data centralization or lose surveillance authority during wartime.",
+      "how_it_works": "1. FISA Section 702 authorizes warrantless surveillance of non-US persons. 2. US persons' communications collected 'incidentally.' 3. Expiration date (April 20, 2026) creates must-renew pressure. 4. During active war, allowing FISA to lapse is politically untenable. 5. House conservatives threaten to attach SAVE America Act to FISA reauthorization. 6. Creates manufactured hostage scenario — accept voter data centralization or lose surveillance authority during wartime.",
       "durability": 7,
       "durability_notes": "FISA is deeply embedded in intelligence community operations. Sunset provisions exist but are consistently renewed.",
       "reversal_pathways": [
@@ -767,10 +767,10 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "Constitutional",
       "mechanism_type": "financial",
-      "description": "Foreign sovereign-linked transactions settled in a stablecoin issued by a venture with presidential family financial interests \u2014 bypassing Emoluments Clause through structural ambiguity (is a stablecoin transaction an 'emolument'?).",
+      "description": "Foreign sovereign-linked transactions settled in a stablecoin issued by a venture with presidential family financial interests — bypassing Emoluments Clause through structural ambiguity (is a stablecoin transaction an 'emolument'?).",
       "how_it_works": "1. Foreign sovereign entity (MGX/Abu Dhabi) makes $2B investment. 2. Investment settled in USD1 stablecoin. 3. USD1 issued by World Liberty Financial. 4. Trump family holds financial interests in WLF. 5. USD1 demand from sovereign transactions generates revenue for WLF. 6. No Congressional consent resolution filed. 7. No DOJ OLC opinion released. 8. Constitutional safeguard bypassed through structural novelty.",
       "durability": 5,
-      "durability_notes": "Constitutional \u2014 but enforcement requires either congressional action or litigation. Novel structure means no precedent for courts to apply directly.",
+      "durability_notes": "Constitutional — but enforcement requires either congressional action or litigation. Novel structure means no precedent for courts to apply directly.",
       "reversal_pathways": [
         "Emoluments Clause litigation by Congress or competing entities",
         "Ethics amendment to CLARITY Act requiring divestiture/recusal",
@@ -794,10 +794,10 @@
       "jurisdiction": "state",
       "jurisdiction_detail": "Arkansas",
       "mechanism_type": "personnel",
-      "description": "Officials who previously led regulated entities now regulate those same entities or approve their deals \u2014 creating institutional conflicts of interest that shape regulatory outcomes.",
+      "description": "Officials who previously led regulated entities now regulate those same entities or approve their deals — creating institutional conflicts of interest that shape regulatory outcomes.",
       "how_it_works": "1. Former industry executive appointed to government regulatory role. 2. Government role oversees or approves deals benefiting former employer. 3. No mandatory recusal despite direct conflict. 4. Same political alignment appears across regulatory, legislative, and executive roles.",
       "durability": 3,
-      "durability_notes": "Personnel-specific \u2014 changes with each administration. But structural reform is needed to prevent recurrence.",
+      "durability_notes": "Personnel-specific — changes with each administration. But structural reform is needed to prevent recurrence.",
       "reversal_pathways": [
         "Mandatory recusal requirements for officials with industry ties to regulated entities",
         "Cooling-off periods between industry and regulatory roles (extend from 1-2 years to 5+)",
@@ -808,8 +808,8 @@
         "13_State_and_County_Analysis/Arkansas_Law_Forensic_Audit.md"
       ],
       "real_examples": [
-        "Hugh McDonald: 34 years at Entergy (CEO of Entergy Arkansas) \u2192 Secretary of Commerce (approves datacenter deals that benefit Entergy)",
-        "Doyle Webb: Former Republican Party Chairman \u2192 PSC Chairman (approves utility contracts)"
+        "Hugh McDonald: 34 years at Entergy (CEO of Entergy Arkansas) → Secretary of Commerce (approves datacenter deals that benefit Entergy)",
+        "Doyle Webb: Former Republican Party Chairman → PSC Chairman (approves utility contracts)"
       ],
       "status": "active"
     },
@@ -820,10 +820,10 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "DOJ / Federal courts",
       "mechanism_type": "judicial",
-      "description": "Federal prosecutors appointed through processes later ruled invalid \u2014 resulting in dismissal of indictments they obtained. Creates a pattern where prosecution efforts fail not on merits but on procedural grounds.",
-      "how_it_works": "1. Administration appoints prosecutors through non-standard process. 2. Prosecutors obtain indictments. 3. Court rules appointment invalid. 4. Indictments dismissed \u2014 defendants walk free. 5. Administration can claim they 'tried' while ensuring failure. 6. Multiple top federal prosecutors affected simultaneously.",
+      "description": "Federal prosecutors appointed through processes later ruled invalid — resulting in dismissal of indictments they obtained. Creates a pattern where prosecution efforts fail not on merits but on procedural grounds.",
+      "how_it_works": "1. Administration appoints prosecutors through non-standard process. 2. Prosecutors obtain indictments. 3. Court rules appointment invalid. 4. Indictments dismissed — defendants walk free. 5. Administration can claim they 'tried' while ensuring failure. 6. Multiple top federal prosecutors affected simultaneously.",
       "durability": 2,
-      "durability_notes": "Each invalid appointment is one-time \u2014 fixable by proper appointment. But pattern suggests systemic issue with appointment process.",
+      "durability_notes": "Each invalid appointment is one-time — fixable by proper appointment. But pattern suggests systemic issue with appointment process.",
       "reversal_pathways": [
         "Proper Senate-confirmed appointments",
         "Legislation clarifying appointment requirements for interim US Attorneys",
@@ -834,7 +834,7 @@
         "_AI_CONTEXT_INDEX/11_LEVERAGE_THESIS.md"
       ],
       "real_examples": [
-        "Lindsey Halligan \u2014 interim US Attorney, indictments against Comey and Letitia James thrown out as invalid",
+        "Lindsey Halligan — interim US Attorney, indictments against Comey and Letitia James thrown out as invalid",
         "Multiple top federal prosecutors' appointments deemed invalid"
       ],
       "status": "active"
@@ -846,12 +846,12 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "DoD / Pentagon",
       "mechanism_type": "executive",
-      "description": "Designating a company as a 'supply chain risk' \u2014 effectively excluding it from government contracts and signaling market danger \u2014 without judicial process, without evidence disclosure, and as apparent retaliation for refusing policy demands.",
-      "how_it_works": "1. Company refuses government demands (e.g., removing AI safety guardrails). 2. Pentagon designates company as 'supply chain risk.' 3. Designation has no due process \u2014 no hearing, no evidence disclosure. 4. Market impact is immediate (government contracts lost, signal to private sector). 5. Company must sue to challenge. 6. Judicial review finds designation retaliatory ('Orwellian,' 'First Amendment retaliation').",
+      "description": "Designating a company as a 'supply chain risk' — effectively excluding it from government contracts and signaling market danger — without judicial process, without evidence disclosure, and as apparent retaliation for refusing policy demands.",
+      "how_it_works": "1. Company refuses government demands (e.g., removing AI safety guardrails). 2. Pentagon designates company as 'supply chain risk.' 3. Designation has no due process — no hearing, no evidence disclosure. 4. Market impact is immediate (government contracts lost, signal to private sector). 5. Company must sue to challenge. 6. Judicial review finds designation retaliatory ('Orwellian,' 'First Amendment retaliation').",
       "durability": 3,
       "durability_notes": "Preliminary injunction granted (March 26, 2026). But designation process itself remains available for future use against other companies.",
       "reversal_pathways": [
-        "Judicial injunction (granted \u2014 Judge Rita Lin, N.D. Cal., March 26, 2026)",
+        "Judicial injunction (granted — Judge Rita Lin, N.D. Cal., March 26, 2026)",
         "Legislation requiring due process for supply chain risk designations",
         "Congressional oversight of designation criteria",
         "IG investigation of retaliatory designations"
@@ -861,7 +861,7 @@
         "_AI_CONTEXT_INDEX/09_CURRENT_THREADS.md"
       ],
       "real_examples": [
-        "Anthropic \u2014 refused Pentagon demands to remove AI safeguards; designated 'supply chain risk' (Feb 26-28, 2026); filed two federal lawsuits (March 9); 150 retired judges amicus brief (March 17); preliminary injunction granted (March 26)"
+        "Anthropic — refused Pentagon demands to remove AI safeguards; designated 'supply chain risk' (Feb 26-28, 2026); filed two federal lawsuits (March 9); 150 retired judges amicus brief (March 17); preliminary injunction granted (March 26)"
       ],
       "status": "challenged"
     },
@@ -872,10 +872,10 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "Congressional",
       "mechanism_type": "procedural",
-      "description": "Congress's inherent power to arrest and detain non-compliant witnesses has not been used since the 1930s \u2014 creating an environment where subpoenas can be defied with minimal consequence.",
-      "how_it_works": "1. Congress issues subpoena. 2. Recipient refuses to comply. 3. Congress can refer for criminal contempt (to DOJ \u2014 which is controlled by the administration). 4. DOJ declines to prosecute (or slow-walks). 5. Congress could use inherent contempt (Sergeant at Arms arrests witness) but hasn't since 1930s. 6. Civil enforcement through courts takes months to years. 7. Net effect: subpoena power is performative, not coercive.",
+      "description": "Congress's inherent power to arrest and detain non-compliant witnesses has not been used since the 1930s — creating an environment where subpoenas can be defied with minimal consequence.",
+      "how_it_works": "1. Congress issues subpoena. 2. Recipient refuses to comply. 3. Congress can refer for criminal contempt (to DOJ — which is controlled by the administration). 4. DOJ declines to prosecute (or slow-walks). 5. Congress could use inherent contempt (Sergeant at Arms arrests witness) but hasn't since 1930s. 6. Civil enforcement through courts takes months to years. 7. Net effect: subpoena power is performative, not coercive.",
       "durability": 7,
-      "durability_notes": "The atrophy of inherent contempt is a norm, not a law \u2014 Congress could revive it at any time. But political will is the barrier.",
+      "durability_notes": "The atrophy of inherent contempt is a norm, not a law — Congress could revive it at any time. But political will is the barrier.",
       "reversal_pathways": [
         "Revival of inherent contempt power (Congress votes to authorize Sergeant at Arms)",
         "Legislation creating independent enforcement mechanism for congressional subpoenas",
@@ -887,7 +887,7 @@
         "_AI_CONTEXT_INDEX/09_CURRENT_THREADS.md"
       ],
       "real_examples": [
-        "Bondi subpoena \u2014 'I will follow the law' but would not commit to compliance; then fired before deposition",
+        "Bondi subpoena — 'I will follow the law' but would not commit to compliance; then fired before deposition",
         "Pattern across administrations of subpoena defiance with minimal consequence"
       ],
       "status": "active"
@@ -899,7 +899,7 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "OPM",
       "mechanism_type": "institutional",
-      "description": "A temporary, legally ambiguous entity (DOGE) is absorbed into a permanent government agency (OPM), converting temporary mandates into permanent institutional functions \u2014 while simultaneously declaring the original entity 'doesn't exist.'",
+      "description": "A temporary, legally ambiguous entity (DOGE) is absorbed into a permanent government agency (OPM), converting temporary mandates into permanent institutional functions — while simultaneously declaring the original entity 'doesn't exist.'",
       "how_it_works": "1. Temporary entity (DOGE) created with ambiguous legal authority. 2. Entity designs workforce mandates (RIFs, firings, reorganization). 3. When challenged in court, entity's legal status is unclear. 4. Entity is formally disbanded. 5. Permanent agency (OPM) absorbs entity's functions and staff. 6. OPM Director publicly states 'DOGE doesn't exist.' 7. Workforce mandates continue as permanent OPM policy. 8. Legal challenges become moot because original entity no longer exists.",
       "durability": 7,
       "durability_notes": "Once absorbed into OPM as permanent function, requires new rulemaking or legislation to reverse. The institutional knowledge and processes are embedded.",
@@ -907,13 +907,13 @@
         "New administration's OPM rulemaking reversing absorbed functions",
         "Congressional legislation prohibiting OPM from performing non-statutory workforce reduction functions",
         "Judicial order reversing specific actions taken under absorbed authority",
-        "Inspector General investigation of DOGE \u2192 OPM transfer process"
+        "Inspector General investigation of DOGE → OPM transfer process"
       ],
       "repo_references": [
         "Project_Trident/Copilot_Opus_4.6_Analysis/Administrative_State_Audit/wiring_diagram.md"
       ],
       "real_examples": [
-        "DOGE disbanded Nov 2025 \u2192 OPM Director Kupor (ex-a16z) absorbed functions permanently",
+        "DOGE disbanded Nov 2025 → OPM Director Kupor (ex-a16z) absorbed functions permanently",
         "OPM published Schedule Policy/Career final rule despite 94% public opposition"
       ],
       "status": "enacted"
@@ -925,10 +925,10 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "Executive branch pattern",
       "mechanism_type": "procedural",
-      "description": "A documented repeating pattern where demands are issued with artificial deadlines, non-compliance is punished, and when one approach fails, an alternative vector is deployed \u2014 creating a 'win regardless' structure.",
+      "description": "A documented repeating pattern where demands are issued with artificial deadlines, non-compliance is punished, and when one approach fails, an alternative vector is deployed — creating a 'win regardless' structure.",
       "how_it_works": "1. DEMAND: Pass specific legislation / take specific action. 2. DEADLINE: Artificial urgency (expiration, midterms, crisis). 3. THREAT: 'I will not sign other bills' / legislative paralysis / shutdown. 4. PUNISHMENT: Primary threats, firings, market exclusion. 5. REPLACEMENT: If standalone fails, attach to must-pass legislation. 6. NARRATIVE ESCALATION: Reframe from policy dispute to security threat.",
       "durability": 2,
-      "durability_notes": "Each instance is tactical and one-time. But the template is documented and reusable \u2014 the durability is in the pattern, not any single instance.",
+      "durability_notes": "Each instance is tactical and one-time. But the template is documented and reusable — the durability is in the pattern, not any single instance.",
       "reversal_pathways": [
         "Public documentation and labeling of the pattern (this repo's function)",
         "Institutional commitment to standalone votes on standalone issues",
@@ -940,8 +940,8 @@
         "_AI_CONTEXT_INDEX/11_LEVERAGE_THESIS.md"
       ],
       "real_examples": [
-        "SAVE America Act: demand \u2192 FISA coupling threat \u2192 'I will not sign other bills' \u2192 narrative escalation to 'national security during war'",
-        "Anthropic: demand (remove safeguards) \u2192 deadline (contract expiration) \u2192 punishment (supply chain risk designation) \u2192 replacement (xAI/Grok at $0.42/agency)"
+        "SAVE America Act: demand → FISA coupling threat → 'I will not sign other bills' → narrative escalation to 'national security during war'",
+        "Anthropic: demand (remove safeguards) → deadline (contract expiration) → punishment (supply chain risk designation) → replacement (xAI/Grok at $0.42/agency)"
       ],
       "status": "active"
     },
@@ -952,10 +952,10 @@
       "jurisdiction": "international",
       "jurisdiction_detail": "BIS / UAE-Saudi-China-Thailand-HK",
       "mechanism_type": "financial",
-      "description": "Central Bank Digital Currency bridge platform enabling cross-border settlement outside SWIFT \u2014 allowing participating nations to bypass dollar-denominated transaction systems and the sanctions enforcement they carry.",
-      "how_it_works": "1. BIS Innovation Hub creates mBridge platform. 2. Founding participants include UAE and Saudi Arabia (also Gulf SWF capital architecture nodes). 3. First real-value transaction: UAE\u2192China $13M (Jan 2024). 4. Platform enables trade settlement without SWIFT. 5. Sanctions enforcement depends on SWIFT visibility \u2014 mBridge bypasses this. 6. Same nations (UAE, Saudi) simultaneously participate in Western infrastructure (CHIPS Act, TikTok, Stargate) and alternative architecture.",
+      "description": "Central Bank Digital Currency bridge platform enabling cross-border settlement outside SWIFT — allowing participating nations to bypass dollar-denominated transaction systems and the sanctions enforcement they carry.",
+      "how_it_works": "1. BIS Innovation Hub creates mBridge platform. 2. Founding participants include UAE and Saudi Arabia (also Gulf SWF capital architecture nodes). 3. First real-value transaction: UAE→China $13M (Jan 2024). 4. Platform enables trade settlement without SWIFT. 5. Sanctions enforcement depends on SWIFT visibility — mBridge bypasses this. 6. Same nations (UAE, Saudi) simultaneously participate in Western infrastructure (CHIPS Act, TikTok, Stargate) and alternative architecture.",
       "durability": 8,
-      "durability_notes": "International protocol \u2014 no single nation can shut it down. BIS institutional backing gives legitimacy. Once trade volume builds, path dependency makes reversal extremely costly.",
+      "durability_notes": "International protocol — no single nation can shut it down. BIS institutional backing gives legitimacy. Once trade volume builds, path dependency makes reversal extremely costly.",
       "reversal_pathways": [
         "US Treasury sanctions on mBridge participants (high escalation, risks dollar credibility)",
         "BIS governance reform restricting CBDC bridge development",
@@ -979,7 +979,7 @@
       "jurisdiction": "international",
       "jurisdiction_detail": "UAE",
       "mechanism_type": "financial",
-      "description": "A single state simultaneously participating in Western infrastructure (CHIPS Act, TikTok consortium, Stargate) AND alternative financial architecture (BRICS, mBridge, OPEC+ with Russia) \u2014 making it impossible to sanction without damaging Western systems.",
+      "description": "A single state simultaneously participating in Western infrastructure (CHIPS Act, TikTok consortium, Stargate) AND alternative financial architecture (BRICS, mBridge, OPEC+ with Russia) — making it impossible to sanction without damaging Western systems.",
       "how_it_works": "1. State acquires critical positions in Western tech infrastructure (GlobalFoundries 81.5%, TikTok 15%, Stargate equity). 2. Same state joins BRICS (Jan 2024). 3. Same state co-founds mBridge (dollar alternative settlement). 4. Same state coordinates OPEC+ production WITH Russia. 5. Same state hosts Russia-Ukraine peace talks (Russia's preferred venue). 6. Sanctioning this state would damage CHIPS Act recipients, TikTok operations, Stargate funding, AND oil markets simultaneously.",
       "durability": 9,
       "durability_notes": "Once positions are established across both architectures, the bridge state becomes functionally unsanctionable. Structural dependencies in Western infrastructure prevent enforcement.",
@@ -1005,10 +1005,10 @@
       "jurisdiction": "international",
       "jurisdiction_detail": "OPEC+ 8-nation group",
       "mechanism_type": "financial",
-      "description": "Voluntary oil production coordination group that includes nations on both sides of geopolitical conflicts \u2014 enabling energy price manipulation as leverage regardless of conflict outcomes.",
+      "description": "Voluntary oil production coordination group that includes nations on both sides of geopolitical conflicts — enabling energy price manipulation as leverage regardless of conflict outcomes.",
       "how_it_works": "1. 8-nation OPEC+ group includes Saudi Arabia, Russia, UAE, Kuwait, Iraq, Kazakhstan, Algeria, Oman. 2. Group coordinates production cuts/increases affecting global oil price. 3. 5 of 8 nations are in Iran strike geography. 4. War in region (Iran strikes Feb 2026) causes oil price spikes benefiting all producers. 5. Same producers' SWFs hold positions in US infrastructure affected by energy prices. 6. Energy price is simultaneously a weapon AND a revenue source for the same actors.",
       "durability": 8,
-      "durability_notes": "OPEC+ is voluntary \u2014 no treaty to withdraw from. But production coordination is self-enforcing because defection hurts all members.",
+      "durability_notes": "OPEC+ is voluntary — no treaty to withdraw from. But production coordination is self-enforcing because defection hurts all members.",
       "reversal_pathways": [
         "Strategic Petroleum Reserve releases (temporary, limited impact)",
         "Accelerated domestic energy production and renewables deployment",
@@ -1020,7 +1020,7 @@
         "_AI_CONTEXT_INDEX/09_CURRENT_THREADS.md (Node 3)"
       ],
       "real_examples": [
-        "Strait of Hormuz closure (Feb 2026) \u2014 oil up ~20%, 'biggest energy crisis since 1970s'",
+        "Strait of Hormuz closure (Feb 2026) — oil up ~20%, 'biggest energy crisis since 1970s'",
         "5 of 8 OPEC+ coordination nations in Iran strike geography"
       ],
       "status": "active"
@@ -1032,7 +1032,7 @@
       "jurisdiction": "international",
       "jurisdiction_detail": "Global South / Africa / Latin America",
       "mechanism_type": "financial",
-      "description": "When one major power withdraws foreign aid, competing powers fill the vacuum with their own infrastructure investment \u2014 capturing strategic relationships and dependencies that are extremely difficult to reverse.",
+      "description": "When one major power withdraws foreign aid, competing powers fill the vacuum with their own infrastructure investment — capturing strategic relationships and dependencies that are extremely difficult to reverse.",
       "how_it_works": "1. EO 14169 freezes US foreign assistance (Jan 20, 2025). 2. 83% of USAID programs cancelled (March 2025). 3. USAID ceases operations entirely (July 1, 2025). 4. China BRI engagement surges to $124B in H1 2025 alone (near full-year 2024 total). 5. Africa construction growth +395% from H1 2024. 6. Aid recipient nations develop dependencies on new patron. 7. Reversal requires competing with entrenched Chinese infrastructure investment.",
       "durability": 8,
       "durability_notes": "Infrastructure investment creates multi-decade dependencies. Once ports, roads, and networks are built, the investing nation has structural leverage over the recipient.",
@@ -1059,10 +1059,10 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "White House / Executive branch",
       "mechanism_type": "personnel",
-      "description": "A single individual controls which theological voices reach the executive decision-making apparatus \u2014 functioning as a gatekeeper who determines which religious interpretations influence policy and which are excluded.",
+      "description": "A single individual controls which theological voices reach the executive decision-making apparatus — functioning as a gatekeeper who determines which religious interpretations influence policy and which are excluded.",
       "how_it_works": "1. Personal pastor relationship predating political career (~2002). 2. Appointed Special Government Employee (White House Faith Office, Feb 2025). 3. Hosts ~500 faith leaders through official White House channel. 4. Connected Independent Charismatic / NAR movement to inner circle (2015-2016). 5. Filters which theological voices reach the president. 6. Actively pressures dissenters who cross theological boundaries (documented: called Boller to pressure about social media posts criticizing Israel).",
       "durability": 3,
-      "durability_notes": "Personnel-dependent \u2014 changes with each administration. But the institutional framework (Faith Office, Religious Liberty Commission) persists.",
+      "durability_notes": "Personnel-dependent — changes with each administration. But the institutional framework (Faith Office, Religious Liberty Commission) persists.",
       "reversal_pathways": [
         "Future administration appointing diverse theological advisory body",
         "Legislation requiring multi-denominational representation in religious advisory roles",
@@ -1075,7 +1075,7 @@
         "_AI_CONTEXT_INDEX/Node_Dossiers/tier2_religious_infrastructure.md"
       ],
       "real_examples": [
-        "Paula White \u2014 personal pastor since ~2002, SGE leading White House Faith Office, hosted ~500 faith leaders",
+        "Paula White — personal pastor since ~2002, SGE leading White House Faith Office, hosted ~500 faith leaders",
         "White called Boller to pressure about social media posts criticizing Israel (per Boller's Tucker Carlson interview, March 13, 2026)"
       ],
       "status": "active"
@@ -1087,10 +1087,10 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "White House Cabinet / Congress",
       "mechanism_type": "institutional",
-      "description": "Weekly Bible study sessions for Cabinet members, Senators, and Representatives deliver 8-12 page study materials applying specific eschatological interpretations to active policy areas \u2014 creating a theological framing pipeline into military and diplomatic decision-making.",
+      "description": "Weekly Bible study sessions for Cabinet members, Senators, and Representatives deliver 8-12 page study materials applying specific eschatological interpretations to active policy areas — creating a theological framing pipeline into military and diplomatic decision-making.",
       "how_it_works": "1. Capitol Ministries operates in 43 state capitols, 24 foreign nations, and the White House Cabinet. 2. Weekly sessions: Senate (Tuesday), House (Thursday), Cabinet (Wednesday). 3. 8-12 page study materials sent Sunday evenings. 4. Materials cover immigration, deficit spending, Israel's prophetic role, family structure. 5. Cabinet sponsors include Brooke Rollins (Agriculture) and Russell Vought (OMB). 6. Known participants include Pete Hegseth (SecDef) and Mike Huckabee (Amb. to Israel). 7. Same Bible study that shapes military decision-maker (Hegseth) also shapes diplomatic decision-maker (Huckabee).",
       "durability": 5,
-      "durability_notes": "501(c)(3) organization \u2014 protected by First Amendment. Cannot be banned. But transparency requirements and conflict-of-interest rules could limit policy influence.",
+      "durability_notes": "501(c)(3) organization — protected by First Amendment. Cannot be banned. But transparency requirements and conflict-of-interest rules could limit policy influence.",
       "reversal_pathways": [
         "Ethics rules requiring disclosure of all religious advisory sessions influencing policy decisions",
         "Mandatory recusal when policy decisions align with documented theological curriculum content",
@@ -1103,7 +1103,7 @@
       ],
       "real_examples": [
         "Capitol Ministries: 43 state capitols, 24 nations, White House Cabinet",
-        "Vought co-sponsors Cabinet Bible Study AND institutionalized DOGE \u2014 theological + administrative node overlap"
+        "Vought co-sponsors Cabinet Bible Study AND institutionalized DOGE — theological + administrative node overlap"
       ],
       "status": "active"
     },
@@ -1114,10 +1114,10 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "White House Religious Liberty Commission",
       "mechanism_type": "personnel",
-      "description": "A government commission nominally created to protect religious liberty actively enforces theological conformity on a specific issue (Israel) \u2014 ejecting members whose theology conflicts with Christian Zionist eschatology. Enforcement escalates with each successive dissenter.",
-      "how_it_works": "1. Commission created to 'promote religious liberty.' 2. First hearing focused on antisemitism, not religious liberty broadly. 3. Member raised Catholic theology (replacement theology) questioning unconditional Israel support. 4. Commission chair (Dan Patrick) unilaterally removed dissenting member. 5. Trump formally terminated her (March 12, 2026). 6. Escalating pattern: departure (Owens) \u2192 firing (Boller) \u2192 criminal referral consideration (Carlson). 7. Each successive dissenter is higher-profile \u2014 enforcement intensifies.",
+      "description": "A government commission nominally created to protect religious liberty actively enforces theological conformity on a specific issue (Israel) — ejecting members whose theology conflicts with Christian Zionist eschatology. Enforcement escalates with each successive dissenter.",
+      "how_it_works": "1. Commission created to 'promote religious liberty.' 2. First hearing focused on antisemitism, not religious liberty broadly. 3. Member raised Catholic theology (replacement theology) questioning unconditional Israel support. 4. Commission chair (Dan Patrick) unilaterally removed dissenting member. 5. Trump formally terminated her (March 12, 2026). 6. Escalating pattern: departure (Owens) → firing (Boller) → criminal referral consideration (Carlson). 7. Each successive dissenter is higher-profile — enforcement intensifies.",
       "durability": 3,
-      "durability_notes": "Commission is executive creation \u2014 can be dissolved or reformed by next administration. But the pattern of theological enforcement through government apparatus is the precedent.",
+      "durability_notes": "Commission is executive creation — can be dissolved or reformed by next administration. But the pattern of theological enforcement through government apparatus is the precedent.",
       "reversal_pathways": [
         "Dissolution of commission by future executive order",
         "Legislation prohibiting religious litmus tests for government advisory positions",
@@ -1129,9 +1129,9 @@
         "_AI_CONTEXT_INDEX/Node_Dossiers/tier2_religious_infrastructure.md"
       ],
       "real_examples": [
-        "Candace Owens \u2014 departed Daily Wire after criticizing Israel (2024)",
-        "Carrie Prejean Boller \u2014 fired from Religious Liberty Commission for Catholic theology on Israel (Feb-March 2026)",
-        "Tucker Carlson \u2014 CIA criminal referral reportedly under consideration (FARA) after platforming dissenters (March 2026)"
+        "Candace Owens — departed Daily Wire after criticizing Israel (2024)",
+        "Carrie Prejean Boller — fired from Religious Liberty Commission for Catholic theology on Israel (Feb-March 2026)",
+        "Tucker Carlson — CIA criminal referral reportedly under consideration (FARA) after platforming dissenters (March 2026)"
       ],
       "status": "active"
     },
@@ -1142,8 +1142,8 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "Congressional lobbying",
       "mechanism_type": "institutional",
-      "description": "10+ million-member organization translating specific End Times theology into legislative action and constituent pressure on Congress \u2014 funding military aid that flows to defense contractors in the same geographic areas as the documented capital architecture.",
-      "how_it_works": "1. CUFI: 10M+ members, largest pro-Israel org in US. 2. Theological position: Iran conflict fulfills Ezekiel 38-39, hastens Rapture. 3. Translates theology into lobbying: pushed $14.3B military aid (21st Century Peace Through Strength Act). 4. Aid flows to L3Harris, Rafael, Raytheon \u2014 same contractors in Camden, AR. 5. 501(c)(4) Action Fund pushes Iran Sanctions Enforcement Act. 6. 200+ campus chapters provide generational pipeline. 7. Members told they are 'Watchmen on the Walls' with divine mandate.",
+      "description": "10+ million-member organization translating specific End Times theology into legislative action and constituent pressure on Congress — funding military aid that flows to defense contractors in the same geographic areas as the documented capital architecture.",
+      "how_it_works": "1. CUFI: 10M+ members, largest pro-Israel org in US. 2. Theological position: Iran conflict fulfills Ezekiel 38-39, hastens Rapture. 3. Translates theology into lobbying: pushed $14.3B military aid (21st Century Peace Through Strength Act). 4. Aid flows to L3Harris, Rafael, Raytheon — same contractors in Camden, AR. 5. 501(c)(4) Action Fund pushes Iran Sanctions Enforcement Act. 6. 200+ campus chapters provide generational pipeline. 7. Members told they are 'Watchmen on the Walls' with divine mandate.",
       "durability": 7,
       "durability_notes": "Protected by First Amendment (lobbying, religious expression, association). Cannot be restricted without constitutional issues. Counter requires competing organizing at similar scale.",
       "reversal_pathways": [
@@ -1157,7 +1157,7 @@
       ],
       "real_examples": [
         "CUFI: 10M+ members, advanced $14.3B military aid to Israel",
-        "'What Iran started we will finish' \u2014 explicit support for ongoing war (March 2026)"
+        "'What Iran started we will finish' — explicit support for ongoing war (March 2026)"
       ],
       "status": "active"
     },
@@ -1168,10 +1168,10 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "Pentagon / DoD",
       "mechanism_type": "institutional",
-      "description": "Secretary of Defense's personal pastor and denomination given institutional access to the Pentagon \u2014 monthly prayer services during work hours, streamed on internal DoD network, with sermon content explicitly framing weapons systems as under divine authority.",
+      "description": "Secretary of Defense's personal pastor and denomination given institutional access to the Pentagon — monthly prayer services during work hours, streamed on internal DoD network, with sermon content explicitly framing weapons systems as under divine authority.",
       "how_it_works": "1. SecDef Hegseth attends CREC-affiliated church (Pilgrim Hill Reformed Fellowship). 2. Doug Wilson (CREC founder, self-described 'Christian nationalist') invited to preach at Pentagon (Feb 18, 2026). 3. Monthly Christian prayer services during work hours at Pentagon. 4. Services streamed on internal DoD network. 5. Pastor's sermon: 'Jesus has the final say' over Tomahawk and Minuteman missiles. 6. Pentagon spokesperson: Hegseth 'greatly values many of Mr Wilson's writings.' 7. Reports of Wilson establishing DC church branch near Pentagon.",
       "durability": 3,
-      "durability_notes": "Personnel-dependent \u2014 changes with SecDef. But institutional normalization (monthly services, DoD network streaming) creates precedent.",
+      "durability_notes": "Personnel-dependent — changes with SecDef. But institutional normalization (monthly services, DoD network streaming) creates precedent.",
       "reversal_pathways": [
         "Future SecDef discontinuing denominational access",
         "DoD IG investigation of Establishment Clause compliance",
@@ -1190,12 +1190,12 @@
     },
     {
       "id": "E-04",
-      "name": "Friction-as-a-Service (FaaS) \u2014 Industrialized Dissent Supply Chain",
+      "name": "Friction-as-a-Service (FaaS) — Industrialized Dissent Supply Chain",
       "category": "E",
       "jurisdiction": "both",
       "jurisdiction_detail": "Domestic",
       "mechanism_type": "procedural",
-      "description": "Industrialized protest infrastructure providing paid participants, coordinated transport, and logistics to schedule friction events at precise times \u2014 enabling attention capture during convergence windows regardless of organic public sentiment.",
+      "description": "Industrialized protest infrastructure providing paid participants, coordinated transport, and logistics to schedule friction events at precise times — enabling attention capture during convergence windows regardless of organic public sentiment.",
       "how_it_works": "1. Rent-a-Crowd: paid actors ($60-$200/day) create 'visual majority' for media. 2. Mercenary canvassers: professional 'brand ambassadors' distribute dual-use literature. 3. Logistical dissent: coordinated transport and housing for rapid deployment. 4. Forensic signatures: tiered payment structures, pre-paid debit cards, GPS spoofing. 5. Events timed to coincide with institutional compliance events (within 72 hours). 6. 50.7% surge in kinetic events during Dec 19, 2025 - Jan 15, 2026 convergence window.",
       "durability": 4,
       "durability_notes": "Each instance is tactical. But the supply chain infrastructure persists and can be reactivated for any issue.",
@@ -1210,7 +1210,7 @@
         "11_Protest_Dynamics_and_Funding/Protest_Funding_Audit.pdf"
       ],
       "real_examples": [
-        "Entergy New Orleans 'rate card' precedent \u2014 tiered payments for speaking vs. non-speaking roles",
+        "Entergy New Orleans 'rate card' precedent — tiered payments for speaking vs. non-speaking roles",
         "Jan 15, 2026 Bethesda 'Pop Culture' event masking energy/tech deployment",
         "50.7% kinetic event surge during Dec 19 - Jan 15 convergence"
       ],
@@ -1223,10 +1223,10 @@
       "jurisdiction": "international",
       "jurisdiction_detail": "Iran / IRGC-linked groups",
       "mechanism_type": "information_control",
-      "description": "State-linked cyber operations functioning in three modes: (1) escalatory precursor to kinetic strikes, (2) concurrent amplifier during active conflict, (3) kinetic substitute during diplomatic pauses \u2014 maintaining pressure without military escalation.",
-      "how_it_works": "1. PRECURSOR: Clalit healthcare breach (Feb 25) preceded Operation Epic Fury (Feb 28) by 72 hours. 2. CONCURRENT: June 2025 \u2014 35+ hacktivist groups launched 1,300+ attacks within 24 hours of kinetic strikes. 3. SUBSTITUTE: Late 2025 diplomatic pause \u2014 Nahal Soreq nuclear breach (Sept), Bennett phone hack (Dec) maintained pressure without kinetic action. 4. LEVERAGE POSITIONING: Operation Robert data dump (July 1) released exactly 7 days after ceasefire \u2014 maximum diplomatic impact.",
+      "description": "State-linked cyber operations functioning in three modes: (1) escalatory precursor to kinetic strikes, (2) concurrent amplifier during active conflict, (3) kinetic substitute during diplomatic pauses — maintaining pressure without military escalation.",
+      "how_it_works": "1. PRECURSOR: Clalit healthcare breach (Feb 25) preceded Operation Epic Fury (Feb 28) by 72 hours. 2. CONCURRENT: June 2025 — 35+ hacktivist groups launched 1,300+ attacks within 24 hours of kinetic strikes. 3. SUBSTITUTE: Late 2025 diplomatic pause — Nahal Soreq nuclear breach (Sept), Bennett phone hack (Dec) maintained pressure without kinetic action. 4. LEVERAGE POSITIONING: Operation Robert data dump (July 1) released exactly 7 days after ceasefire — maximum diplomatic impact.",
       "durability": 7,
-      "durability_notes": "Cyber capabilities are persistent \u2014 not consumed by use like kinetic weapons. Data once exfiltrated remains leverage indefinitely.",
+      "durability_notes": "Cyber capabilities are persistent — not consumed by use like kinetic weapons. Data once exfiltrated remains leverage indefinitely.",
       "reversal_pathways": [
         "Defensive cyber hardening of critical infrastructure (healthcare, utilities, nuclear)",
         "International cyber norms agreements with enforcement mechanisms",
@@ -1238,7 +1238,7 @@
         "_AI_CONTEXT_INDEX/09_CURRENT_THREADS.md (Node 2)"
       ],
       "real_examples": [
-        "Clalit breach (Feb 25) \u2192 72 hours \u2192 Operation Epic Fury (Feb 28)",
+        "Clalit breach (Feb 25) → 72 hours → Operation Epic Fury (Feb 28)",
         "Operation Robert: 100GB Trump inner circle emails, released 7 days post-ceasefire",
         "Handala: Nahal Soreq nuclear facility, Bennett iPhone, Delek Group (2TB)"
       ],
@@ -1251,14 +1251,14 @@
       "jurisdiction": "international",
       "jurisdiction_detail": "Multiple state and non-state actors",
       "mechanism_type": "information_control",
-      "description": "An archive of compromising material (14.6TB, ~98% unreleased) functions as a permanent digital deterrent \u2014 its existence influences behavior regardless of whether it is ever released, because the threat of release constrains all parties named in it.",
-      "how_it_works": "1. DOJ possesses 6M+ pages of Epstein investigation materials. 2. Only ~3M pages released as of March 2026. 3. 14.6TB archive \u2014 bulk unreleased. 4. Multiple state actors (US, Israel, Russia, Iran) have access to portions. 5. Individuals named in unreleased materials are constrained by potential exposure. 6. Archive functions like nuclear deterrent \u2014 power comes from existence, not use. 7. Selective release (phased disclosure) allows calibrated pressure.",
+      "description": "An archive of compromising material (14.6TB, ~98% unreleased) functions as a permanent digital deterrent — its existence influences behavior regardless of whether it is ever released, because the threat of release constrains all parties named in it.",
+      "how_it_works": "1. DOJ possesses 6M+ pages of Epstein investigation materials. 2. Only ~3M pages released as of March 2026. 3. 14.6TB archive — bulk unreleased. 4. Multiple state actors (US, Israel, Russia, Iran) have access to portions. 5. Individuals named in unreleased materials are constrained by potential exposure. 6. Archive functions like nuclear deterrent — power comes from existence, not use. 7. Selective release (phased disclosure) allows calibrated pressure.",
       "durability": 9,
       "durability_notes": "Information cannot be un-known. Once an archive exists, its leverage persists indefinitely regardless of who controls it.",
       "reversal_pathways": [
         "Full, immediate, unredacted public release (eliminates leverage by making information universal)",
         "Independent commission with statutory authority and security clearances to review and release",
-        "Mandatory disclosure legislation with criminal penalties for withholding (Epstein Files Transparency Act \u2014 partially enacted)",
+        "Mandatory disclosure legislation with criminal penalties for withholding (Epstein Files Transparency Act — partially enacted)",
         "Whistleblower protections for officials who disclose improperly withheld materials"
       ],
       "repo_references": [
@@ -1266,9 +1266,9 @@
         "_AI_CONTEXT_INDEX/01_CORE_THEORY.md (Track A)"
       ],
       "real_examples": [
-        "14.6TB Epstein archive \u2014 ~98% unreleased",
+        "14.6TB Epstein archive — ~98% unreleased",
         "DOJ: 6M pages, ~3M released, 15 documents 'incorrectly coded as duplicative'",
-        "Multiple nations hold partial archives \u2014 mutual leverage constraint"
+        "Multiple nations hold partial archives — mutual leverage constraint"
       ],
       "status": "active"
     },
@@ -1279,14 +1279,14 @@
       "jurisdiction": "state",
       "jurisdiction_detail": "37+ states as of 2025",
       "mechanism_type": "legislative",
-      "description": "Competitive dynamic where 37+ states offer escalating tax incentives for data centers \u2014 each state lowering thresholds and expanding exemptions to attract investment, creating a race to the bottom where no state can unilaterally impose accountability requirements without losing projects to less regulated neighbors.",
-      "how_it_works": "1. States compete for data center investment by offering tax incentives. 2. Kansas became 37th state with incentives (June 2025). 3. States progressively lower investment thresholds ($500M\u2192$100M in Arkansas). 4. Property tax abatements extend to 30 years. 5. Any single state imposing transparency requirements risks losing projects to competitors. 6. 300+ data center bills filed across 30+ states in first 6 weeks of 2026 alone. 7. Race-to-bottom dynamic prevents any state from acting independently on accountability.",
+      "description": "Competitive dynamic where 37+ states offer escalating tax incentives for data centers — each state lowering thresholds and expanding exemptions to attract investment, creating a race to the bottom where no state can unilaterally impose accountability requirements without losing projects to less regulated neighbors.",
+      "how_it_works": "1. States compete for data center investment by offering tax incentives. 2. Kansas became 37th state with incentives (June 2025). 3. States progressively lower investment thresholds ($500M→$100M in Arkansas). 4. Property tax abatements extend to 30 years. 5. Any single state imposing transparency requirements risks losing projects to competitors. 6. 300+ data center bills filed across 30+ states in first 6 weeks of 2026 alone. 7. Race-to-bottom dynamic prevents any state from acting independently on accountability.",
       "durability": 7,
-      "durability_notes": "Structural \u2014 requires coordinated multi-state or federal action. Individual state reform is self-defeating because investment simply moves to less regulated states.",
+      "durability_notes": "Structural — requires coordinated multi-state or federal action. Individual state reform is self-defeating because investment simply moves to less regulated states.",
       "reversal_pathways": [
         "Federal minimum standards for data center incentives (beneficial ownership disclosure, environmental review, ratepayer protection)",
         "Interstate compact establishing floor requirements for tax incentives",
-        "State moratorium legislation (introduced in New York, South Dakota, Oklahoma \u2014 2026)",
+        "State moratorium legislation (introduced in New York, South Dakota, Oklahoma — 2026)",
         "Federal CFIUS-equivalent review for infrastructure investments above threshold regardless of state incentive structure",
         "Mandatory clawback provisions in all state incentive packages"
       ],
@@ -1309,10 +1309,10 @@
       "jurisdiction": "state",
       "jurisdiction_detail": "Multiple states",
       "mechanism_type": "legislative",
-      "description": "State-level legislation preempting local government authority over data center zoning, land use, and environmental review \u2014 removing the governance layer closest to affected communities.",
+      "description": "State-level legislation preempting local government authority over data center zoning, land use, and environmental review — removing the governance layer closest to affected communities.",
       "how_it_works": "1. Zoning and land use traditionally controlled by local government. 2. State legislature passes preemption legislation. 3. Local governments lose ability to restrict or condition data center development. 4. Community opposition (water use, energy costs, noise) cannot be expressed through local zoning. 5. Environmental review requirements reduced or eliminated at state level. 6. Governor may veto local protection bills (Virginia governor vetoed transparency requirements in 2025).",
       "durability": 6,
-      "durability_notes": "State statute \u2014 repealable. But once projects are approved under preempted rules, development proceeds regardless of future law changes.",
+      "durability_notes": "State statute — repealable. But once projects are approved under preempted rules, development proceeds regardless of future law changes.",
       "reversal_pathways": [
         "State legislation restoring local zoning authority over data centers",
         "Federal environmental review requirements (Clean Air Act, Clean Water Act) that cannot be state-preempted",
@@ -1336,7 +1336,7 @@
       "jurisdiction": "state",
       "jurisdiction_detail": "Multiple states (18+ with special rate class bills in 2026)",
       "mechanism_type": "regulatory",
-      "description": "Utility infrastructure costs built to serve data center demand are shifted to residential ratepayers through rate increases \u2014 while the data center operator has no binding contractual commitment to actually use the capacity, leaving ratepayers exposed to stranded asset risk.",
+      "description": "Utility infrastructure costs built to serve data center demand are shifted to residential ratepayers through rate increases — while the data center operator has no binding contractual commitment to actually use the capacity, leaving ratepayers exposed to stranded asset risk.",
       "how_it_works": "1. Data center announces projected energy demand. 2. Utility builds new generation capacity (gas plants, transmission) to serve projected demand. 3. Utility recovers construction costs through residential rate increases. 4. Data center has not signed binding power purchase agreement. 5. If data center reduces demand, changes plans, or never materializes, ratepayers pay for unused capacity. 6. At least 18 states have introduced bills (2026) creating special rate classes for large energy users to address this.",
       "durability": 5,
       "durability_notes": "Addressable through state PUC rulemaking or legislation. But existing rate structures are locked in for current construction.",
@@ -1354,7 +1354,7 @@
       "real_examples": [
         "Jefferson Power Station: ~$2.85/month residential charge, no AVAIO binding PPA",
         "18+ states introduced special rate class bills (2026)",
-        "Arkansas Electric Cooperative: 4,000 MW new load requests \u2014 more than 80 years of prior build"
+        "Arkansas Electric Cooperative: 4,000 MW new load requests — more than 80 years of prior build"
       ],
       "status": "active"
     },
@@ -1365,7 +1365,7 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "FBI, NSA, CIA, NCTC",
       "mechanism_type": "surveillance",
-      "description": "Intelligence agencies query databases of communications collected under Section 702 using US person identifiers (names, phone numbers, emails) without a warrant \u2014 creating warrantless domestic surveillance through a program nominally targeting foreigners abroad.",
+      "description": "Intelligence agencies query databases of communications collected under Section 702 using US person identifiers (names, phone numbers, emails) without a warrant — creating warrantless domestic surveillance through a program nominally targeting foreigners abroad.",
       "how_it_works": "1. Section 702 authorizes targeting non-US persons abroad. 2. When targets communicate with US persons, US-side communications are collected ('incidental collection'). 3. Collected data stored in searchable databases. 4. FBI, NSA, CIA, NCTC can query these databases using US person identifiers. 5. No warrant, no probable cause, no individualized court order required. 6. FBI conducted up to 3.4 million US person queries in 2021 alone. 7. Queries used on BLM protesters, Jan 6 suspects, journalists, members of Congress, 19,000 political donors. 8. Federal court ruled these searches require a warrant (2024), but government appealing.",
       "durability": 7,
       "durability_notes": "Deeply embedded in IC operations. Every reauthorization attempt to add warrant requirement has failed. 2024 court ruling requiring warrants is under appeal.",
@@ -1393,7 +1393,7 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "FISA / RISAA (2024)",
       "mechanism_type": "legislative",
-      "description": "The 2024 RISAA broadened the definition of 'Electronic Communication Service Provider' \u2014 compelling a wider range of entities to assist government surveillance, expanding warrantless collection into new contexts with higher likelihood of US person communications being captured.",
+      "description": "The 2024 RISAA broadened the definition of 'Electronic Communication Service Provider' — compelling a wider range of entities to assist government surveillance, expanding warrantless collection into new contexts with higher likelihood of US person communications being captured.",
       "how_it_works": "1. Original Section 702: only traditional telecom/internet companies compelled to assist. 2. Government unable to compel unnamed service provider (FISC ruled entity didn't qualify as ECSP). 3. RISAA (2024) broadened ECSP definition. 4. New definition enables 702 surveillance in 'new contexts' with higher US person collection probability. 5. Specific entities compelled under expanded definition remain classified. 6. No public disclosure of which new categories of companies are now obligated.",
       "durability": 7,
       "durability_notes": "Enacted in RISAA (April 2024). Would require legislative amendment to narrow. Classified nature of specific entities makes public accountability difficult.",
@@ -1422,7 +1422,7 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "Privacy and Civil Liberties Oversight Board",
       "mechanism_type": "personnel",
-      "description": "Firing members of the independent oversight board responsible for monitoring surveillance programs \u2014 eliminating the body designed to prevent abuse precisely when reauthorization debates create the greatest need for oversight.",
+      "description": "Firing members of the independent oversight board responsible for monitoring surveillance programs — eliminating the body designed to prevent abuse precisely when reauthorization debates create the greatest need for oversight.",
       "how_it_works": "1. PCLOB (Privacy and Civil Liberties Oversight Board) is independent, bipartisan. 2. PCLOB's 2023 report recommended Section 702 reforms. 3. Three PCLOB members fired (August 2025). 4. Board becomes non-functional (lacks quorum). 5. Section 702 reauthorization debate (2026) proceeds without independent oversight body. 6. No entity exists to monitor compliance during wartime expansion of surveillance.",
       "durability": 3,
       "durability_notes": "Board members can be reappointed. But institutional knowledge is lost and oversight gap during critical period is permanent.",
@@ -1449,10 +1449,10 @@
       "jurisdiction": "both",
       "jurisdiction_detail": "Systemic pattern",
       "mechanism_type": "procedural",
-      "description": "Multiple actors independently exploit the same predictable low-attention calendar windows (holidays, solstices, fiscal deadlines) to implement structural changes with reduced public scrutiny \u2014 the statistical backbone of the thermostat model (r=0.6196, p=0.0004).",
-      "how_it_works": "1. Calendar anchors create predictable low-attention periods (holiday weeks, fiscal year boundaries, congressional recesses). 2. Multiple actors \u2014 domestic agencies, foreign adversaries, financial institutions \u2014 independently schedule implementations during these windows. 3. Friction events (scandals, document releases) coincide with compliance events (policy shifts, capital moves). 4. No central coordination required \u2014 shared incentives produce same clustering. 5. Pattern documented across 66 friction-compliance pairs with 7-day median lag. 6. December 19-23, 2025 case study: 5 signal types converging on same window.",
+      "description": "Multiple actors independently exploit the same predictable low-attention calendar windows (holidays, solstices, fiscal deadlines) to implement structural changes with reduced public scrutiny — the statistical backbone of the thermostat model (r=0.6196, p=0.0004).",
+      "how_it_works": "1. Calendar anchors create predictable low-attention periods (holiday weeks, fiscal year boundaries, congressional recesses). 2. Multiple actors — domestic agencies, foreign adversaries, financial institutions — independently schedule implementations during these windows. 3. Friction events (scandals, document releases) coincide with compliance events (policy shifts, capital moves). 4. No central coordination required — shared incentives produce same clustering. 5. Pattern documented across 66 friction-compliance pairs with 7-day median lag. 6. December 19-23, 2025 case study: 5 signal types converging on same window.",
       "durability": 8,
-      "durability_notes": "Structural and emergent \u2014 no single actor to regulate. Calendar anchors are fixed features of governance. Only transparency and monitoring can counter.",
+      "durability_notes": "Structural and emergent — no single actor to regulate. Calendar anchors are fixed features of governance. Only transparency and monitoring can counter.",
       "reversal_pathways": [
         "Mandatory 30-day public comment period for major policy changes regardless of calendar timing",
         "Prohibition on implementing major regulatory changes during congressional recess",
@@ -1479,8 +1479,8 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "Executive branch",
       "mechanism_type": "executive",
-      "description": "Executive branch refusing to spend funds that Congress has legally appropriated \u2014 violating the Impoundment Control Act to achieve policy outcomes Congress did not authorize through the power of the purse.",
-      "how_it_works": "1. Congress appropriates funds for specific purposes (foreign aid, VOCA, USAID). 2. Executive branch freezes or withholds appropriated funds. 3. Programs dependent on funding collapse (USAID ceased operations July 2025). 4. Impoundment Control Act (1974) prohibits this \u2014 requires presidential deferral message to Congress. 5. No deferral message sent in many cases. 6. Legal challenges proceed slowly while programs die. 7. Vacuum created by funding withdrawal is filled by competing actors (China BRI).",
+      "description": "Executive branch refusing to spend funds that Congress has legally appropriated — violating the Impoundment Control Act to achieve policy outcomes Congress did not authorize through the power of the purse.",
+      "how_it_works": "1. Congress appropriates funds for specific purposes (foreign aid, VOCA, USAID). 2. Executive branch freezes or withholds appropriated funds. 3. Programs dependent on funding collapse (USAID ceased operations July 2025). 4. Impoundment Control Act (1974) prohibits this — requires presidential deferral message to Congress. 5. No deferral message sent in many cases. 6. Legal challenges proceed slowly while programs die. 7. Vacuum created by funding withdrawal is filled by competing actors (China BRI).",
       "durability": 4,
       "durability_notes": "Clearly illegal under ICA. But enforcement requires congressional will or court order, both of which take time. Programs destroyed in interim may not be rebuildable.",
       "reversal_pathways": [
@@ -1498,7 +1498,7 @@
         "EO 14169: froze US foreign assistance (Jan 20, 2025)",
         "83% of USAID programs cancelled (March 2025)",
         "USAID ceased operations (July 1, 2025)",
-        "$88M VOCA/VAWA freeze \u2014 5,000+ survivors affected"
+        "$88M VOCA/VAWA freeze — 5,000+ survivors affected"
       ],
       "status": "active"
     },
@@ -1509,10 +1509,10 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "DOJ",
       "mechanism_type": "judicial",
-      "description": "Non-prosecution agreements (NPAs) that resolve criminal liability while creating ongoing leverage \u2014 the agreement itself becomes a control mechanism because its terms can be selectively enforced or violated.",
-      "how_it_works": "1. Entity facing criminal charges negotiates NPA with DOJ. 2. Criminal charges deferred or dropped in exchange for cooperation, payments, or behavior changes. 3. NPA terms create ongoing obligations monitored by DOJ. 4. DOJ retains ability to reinstate charges if terms violated. 5. This creates permanent leverage over the entity. 6. House Oversight investigating DOJ's use of NPAs in sex crime investigations. 7. Epstein's original 2008 NPA is the paradigmatic case \u2014 gave immunity to unnamed co-conspirators.",
+      "description": "Non-prosecution agreements (NPAs) that resolve criminal liability while creating ongoing leverage — the agreement itself becomes a control mechanism because its terms can be selectively enforced or violated.",
+      "how_it_works": "1. Entity facing criminal charges negotiates NPA with DOJ. 2. Criminal charges deferred or dropped in exchange for cooperation, payments, or behavior changes. 3. NPA terms create ongoing obligations monitored by DOJ. 4. DOJ retains ability to reinstate charges if terms violated. 5. This creates permanent leverage over the entity. 6. House Oversight investigating DOJ's use of NPAs in sex crime investigations. 7. Epstein's original 2008 NPA is the paradigmatic case — gave immunity to unnamed co-conspirators.",
       "durability": 6,
-      "durability_notes": "NPAs are contracts \u2014 enforceable in court. But the leverage dynamic persists for the life of the agreement and its shadow extends beyond formal terms.",
+      "durability_notes": "NPAs are contracts — enforceable in court. But the leverage dynamic persists for the life of the agreement and its shadow extends beyond formal terms.",
       "reversal_pathways": [
         "Congressional reform of NPA use in sex crime cases",
         "Mandatory judicial review and approval of all NPAs (removing DOJ unilateral authority)",
@@ -1525,23 +1525,23 @@
         "_AI_CONTEXT_INDEX/11_LEVERAGE_THESIS.md"
       ],
       "real_examples": [
-        "Epstein 2008 NPA \u2014 gave immunity to unnamed co-conspirators",
-        "Binance DOJ settlement ($4.3B, 2023) \u2014 ongoing compliance obligations",
+        "Epstein 2008 NPA — gave immunity to unnamed co-conspirators",
+        "Binance DOJ settlement ($4.3B, 2023) — ongoing compliance obligations",
         "House Oversight investigating DOJ NPA reform in sex trafficking context"
       ],
       "status": "active"
     },
     {
       "id": "E-08",
-      "name": "Shutter Control \u2014 Government-Directed Commercial Imagery Blackout",
+      "name": "Shutter Control — Government-Directed Commercial Imagery Blackout",
       "category": "E",
       "jurisdiction": "federal",
-      "jurisdiction_detail": "US government \u2192 commercial satellite operators (Planet Labs, Vantor/Maxar, BlackSky)",
+      "jurisdiction_detail": "US government → commercial satellite operators (Planet Labs, Vantor/Maxar, BlackSky)",
       "mechanism_type": "information_control",
-      "description": "US government requests commercial satellite operators to withhold all imagery of conflict zones \u2014 severing independent verification capability for journalists, human rights investigators, and OSINT analysts during active military operations. Companies that comply are rewarded by defense-investor markets; the mechanism has no formal legal basis but achieves industry-wide compliance through government contracting relationships.",
+      "description": "US government requests commercial satellite operators to withhold all imagery of conflict zones — severing independent verification capability for journalists, human rights investigators, and OSINT analysts during active military operations. Companies that comply are rewarded by defense-investor markets; the mechanism has no formal legal basis but achieves industry-wide compliance through government contracting relationships.",
       "how_it_works": "1. US government requests commercial satellite firms withhold imagery of conflict zones. 2. Planet Labs shifts from 14-day delay to indefinite 'managed distribution' (case-by-case only). 3. All new and archived imagery since March 9, 2026 withheld. 4. Other US firms (Vantor/Maxar, BlackSky) impose matching restrictions voluntarily or under pressure. 5. Non-US alternatives (ESA, Asian providers) available but lower resolution and less frequent. 6. Journalists, HRW, Amnesty, OSINT communities lose independent ground-truth verification. 7. Same imagery ecosystem that verified Minab school strike (Node 14) is now severed. 8. Compliant firms rewarded: PL stock +17% ($12.4B market cap). 9. Historical precedent: 2003 Iraq War imagery restrictions.",
       "durability": 5,
-      "durability_notes": "No formal legal basis documented \u2014 compliance is voluntary/contractual. But government contracting leverage makes non-compliance commercially suicidal for defense-adjacent satellite firms. Duration tied to conflict.",
+      "durability_notes": "No formal legal basis documented — compliance is voluntary/contractual. But government contracting leverage makes non-compliance commercially suicidal for defense-adjacent satellite firms. Duration tied to conflict.",
       "reversal_pathways": [
         "Congressional inquiry into legal basis for shutter control authority",
         "Legislation requiring formal legal process (court order) before commercial imagery restriction",
@@ -1554,10 +1554,10 @@
         "_AI_CONTEXT_INDEX/09_CURRENT_THREADS.md (Node 15)"
       ],
       "real_examples": [
-        "Planet Labs: indefinite blackout announced April 5, 2026 \u2014 all imagery since March 9 withheld",
+        "Planet Labs: indefinite blackout announced April 5, 2026 — all imagery since March 9 withheld",
         "Vantor (Maxar) and BlackSky: imposing matching restrictions",
-        "PL stock surged on compliance announcement \u2014 compliance rewarded by defense investors",
-        "Anthropic contrast: refused Pentagon demands \u2192 consumer surge; PL complied \u2192 defense investor surge \u2014 both commercially rewarded by different audiences",
+        "PL stock surged on compliance announcement — compliance rewarded by defense investors",
+        "Anthropic contrast: refused Pentagon demands → consumer surge; PL complied → defense investor surge — both commercially rewarded by different audiences",
         "2003 Iraq War imagery restrictions (historical precedent)"
       ],
       "status": "active",
@@ -1570,8 +1570,8 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "SEC / Nasdaq",
       "mechanism_type": "financial",
-      "description": "A private entity that consolidated launch capability, spy satellite networks, social media, AI with classified military access, and financial services under single ownership files for public listing with a dual-class share structure \u2014 raising $50-80B while preserving founder control and making the consolidated power structure permanent through capital market lock-in.",
-      "how_it_works": "1. SpaceX-xAI merger (Feb 2026) consolidated: SpaceX (launch + Starlink + Starshield spy satellites) + xAI (Grok + Pentagon classified access) + X (social media + X Money). 2. Confidential SEC filing submitted April 1, 2026. 3. Nasdaq listing targeted June-July 2026. 4. Valuation target: $1.5-1.75T \u2014 would be largest IPO in history. 5. Expected to raise $50B-$80B. 6. Dual-class share structure under consideration \u2014 preserves founder control regardless of ownership dilution. 7. Once public with dual-class structure, consolidated empire becomes nearly impossible to unwind \u2014 shareholder base, institutional holdings, and index fund inclusion create structural permanence.",
+      "description": "A private entity that consolidated launch capability, spy satellite networks, social media, AI with classified military access, and financial services under single ownership files for public listing with a dual-class share structure — raising $50-80B while preserving founder control and making the consolidated power structure permanent through capital market lock-in.",
+      "how_it_works": "1. SpaceX-xAI merger (Feb 2026) consolidated: SpaceX (launch + Starlink + Starshield spy satellites) + xAI (Grok + Pentagon classified access) + X (social media + X Money). 2. Confidential SEC filing submitted April 1, 2026. 3. Nasdaq listing targeted June-July 2026. 4. Valuation target: $1.5-1.75T — would be largest IPO in history. 5. Expected to raise $50B-$80B. 6. Dual-class share structure under consideration — preserves founder control regardless of ownership dilution. 7. Once public with dual-class structure, consolidated empire becomes nearly impossible to unwind — shareholder base, institutional holdings, and index fund inclusion create structural permanence.",
       "durability": 9,
       "durability_notes": "Once publicly listed with dual-class structure, unwinding the consolidation would require either antitrust action against a $1.5T+ company or voluntary divestiture. Index fund inclusion creates passive ownership lock-in across retirement accounts nationwide.",
       "reversal_pathways": [
@@ -1593,6 +1593,191 @@
       ],
       "status": "pending",
       "legislation": "SEC S-1 filing (confidential, April 1, 2026)"
+    },
+    {
+      "id": "H-05",
+      "name": "Enforcement Capture — Agency Weaponization for Private Interest (Targeted Deportation of Witness)",
+      "category": "H",
+      "jurisdiction": "federal",
+      "jurisdiction_detail": "ICE / DHS",
+      "mechanism_type": "executive",
+      "description": "A federal immigration enforcement agency is allegedly weaponized by a private individual with political connections to resolve a personal domestic dispute (custody) and simultaneously remove a witness with damaging information from US jurisdiction. The mechanism exploits the discretionary nature of enforcement prioritization — ICE officers exercise wide discretion over whom to arrest and when, creating a vulnerability to political direction or personal influence.",
+      "how_it_works": "1. Private individual with political connections identifies target for removal. 2. Target is a long-term US resident, witness to sensitive matters, and mother of the private individual's child. 3. ICE exercises discretionary enforcement to prioritize the target's case. 4. Target is deported before congressional testimony can be taken in person. 5. The action is hidden inside the statistical noise of mass enforcement operations — one case among hundreds of thousands. 6. Mass deportation volume provides plausible deniability for the targeted action.",
+      "durability": 6,
+      "durability_notes": "The enforcement apparatus persists regardless of individual case outcomes. Discretionary enforcement prioritization is structural — it cannot be fully eliminated without removing all prosecutorial discretion. Each instance is deniable because the enforcement action is facially legitimate.",
+      "reversal_pathways": [
+        "Judicial injunction challenging deportation as retaliatory and procedurally defective",
+        "Congressional subpoena of target's deportation file and all ICE communications related to the case",
+        "Legislation requiring witnesses under congressional subpoena to retain legal standing regardless of immigration action",
+        "Inspector General investigation of retaliatory deportation patterns",
+        "Mandatory disclosure of all non-standard communications (calls, emails, texts) between political figures and ICE regarding specific cases"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Run_1/friction_breaker_report_20260411_165311.json"
+      ],
+      "real_examples": [
+        "Amanda Ungaro — long-term US resident, witness to Epstein-network activities, mother of Paolo Zampoli's child, allegedly deported to Brazil after Zampoli contacted ICE, hidden within mass deportation statistics"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "E-09",
+      "name": "Statistical Smokescreen (Mass Volume as Individual Cover)",
+      "category": "E",
+      "jurisdiction": "federal",
+      "jurisdiction_detail": "DHS / ICE (generalizable to any high-volume federal program)",
+      "mechanism_type": "information_control",
+      "description": "An enforcement or regulatory system is operated at such massive volume — with deliberately inconsistent public statistics — that individual targeted actions become invisible to oversight mechanisms. The scale is not incidental; it is the mechanism. When a system processes hundreds of thousands of cases and reports contradictory numbers, no journalist, watchdog, or committee can identify the politically motivated cases without case-level data.",
+      "how_it_works": "1. Federal program operates at massive scale (hundreds of thousands of cases). 2. Public statistics are inconsistent — numbers change daily (675K vs 622K vs 700K vs 350-400K). 3. Individual targeted cases are buried inside aggregate statistics. 4. Oversight bodies requesting aggregate data cannot identify specific abuses. 5. Case-level data is withheld on privacy, operational security, or national security grounds. 6. Noise-to-signal ratio makes accountability mathematically impossible without individual record access.",
+      "durability": 7,
+      "durability_notes": "Structural — applies to any high-volume government action (regulatory approvals, contract awards, classification decisions, deportations). Countermeasure requires case-level data access, which the government systematically withholds. Distinct from E-01 (document-level redaction) because concealment is statistical, and from E-04 (FaaS) because the volume is real enforcement, not manufactured friction.",
+      "reversal_pathways": [
+        "Congressional subpoena for case-level records with full identifying metadata (not aggregate statistics)",
+        "Independent accuracy audit requirement for all high-volume enforcement statistics before congressional testimony",
+        "Mandatory GAO verification of DHS enforcement numbers before policy justifications",
+        "Investigative journalism cross-referencing deportation data with witness lists and investigation targets",
+        "State-level refusal to provide additional data to DHS without audit requirements"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Run_1/friction_breaker_report_20260411_165311.json"
+      ],
+      "real_examples": [
+        "DHS deportation statistics changing from 675K to 622K to 700K to 350-400K within days — Ungaro case invisible within noise",
+        "~75% of detained individuals had no criminal record — making targeted political removals indistinguishable from routine enforcement"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "C-07",
+      "name": "Diplomatic Title as Legal Shield (Special Envoy Immunization)",
+      "category": "C",
+      "jurisdiction": "federal",
+      "jurisdiction_detail": "Executive branch / State Department",
+      "mechanism_type": "personnel",
+      "description": "A private individual under scrutiny for connections to ongoing investigations is awarded a government diplomatic title (Special Envoy) without Senate confirmation, public vetting, or conflict-of-interest review. The title provides travel access with senior officials, perceived institutional legitimacy, and potential diplomatic immunity arguments in civil proceedings — simultaneously rewarding cooperation and creating a legal buffer around the individual's activities.",
+      "how_it_works": "1. Private individual performs narrative-control and witness-management functions for the executive. 2. Individual has connections to ongoing investigations (e.g., Epstein network). 3. Executive awards 'Special Envoy' title without Senate confirmation. 4. Title provides diplomatic travel access alongside senior officials (VP). 5. Title creates perceived legitimacy and potential immunity arguments in civil proceedings. 6. No public vetting or conflict-of-interest review occurs. 7. The title converts a private liability into a government asset with diplomatic protection.",
+      "durability": 4,
+      "durability_notes": "Personnel-dependent — changes with administration. But the institutional precedent of using diplomatic titles as shields for connected individuals is the durable pattern. Distinct from C-02 (Acting Official Installation) because the individual is not filling a government position — they receive a title that launders their role.",
+      "reversal_pathways": [
+        "Mandatory ethics review and public disclosure for all Special Envoy appointments",
+        "Senate holds on diplomatic appointments until Special Envoy vetting standards are disclosed",
+        "Legislation requiring Senate confirmation for Special Envoy titles with diplomatic access",
+        "Cooling-off period legislation prohibiting individuals under congressional investigation from receiving diplomatic titles",
+        "Congressional subpoena of appointment criteria and background check records for Special Envoys"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Run_1/friction_breaker_report_20260411_165311.json"
+      ],
+      "real_examples": [
+        "Paolo Zampoli — central figure in Epstein network scrutiny, performing damage control for First Lady, awarded Special Envoy title, traveled with VP Vance to Hungary (where Russian intelligence ran disinformation operations using forged Epstein documents)"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "D-10",
+      "name": "Preemptive Credibility Assassination (Official Discrediting Before Testimony)",
+      "category": "D",
+      "jurisdiction": "federal",
+      "jurisdiction_detail": "White House / Executive communications",
+      "mechanism_type": "procedural",
+      "description": "Before a witness can testify or reach the public record, the administration uses official channels — including White House press conferences — to brand the witness as a liar, mentally unstable, or otherwise unreliable. This uses the institutional authority and media access of official government positions to pre-poison the evidentiary record. When the witness eventually speaks, every outlet that covered the press conference has already published the administration's framing as the baseline narrative.",
+      "how_it_works": "1. Witness with damaging testimony is identified. 2. Before testimony can occur, official government channel (press conference, statement) is used to discredit witness. 3. Institutional weight of official communication ensures immediate, unfiltered coverage by all major outlets. 4. Administration's framing becomes the baseline narrative. 5. Witness must overcome 'narrative debt' — fighting uphill against prior institutional framing. 6. Asymmetry: official press conference reaches millions instantly; witness responds from weaker platform (social media, foreign location). 7. Even if witness testimony is eventually heard, framing has already been set.",
+      "durability": 3,
+      "durability_notes": "Each instance is tactical and one-time. But the template is repeatable and the narrative damage persists in the media record. Distinct from E-01 (document-level redaction) and E-03 (media acquisition) because it operates through official government communications rather than document control or media ownership.",
+      "reversal_pathways": [
+        "Congressional remote testimony via video — deportation/distance does not stop Congress from taking testimony",
+        "Legislation protecting congressional witnesses from official government discrediting campaigns during investigation periods",
+        "Independent counsel appointment with statutory protections to investigate coordination between discrediting and removal",
+        "Investigative journalism documenting timeline correlation between discrediting statements and witness removal actions",
+        "Public documentation of the pattern (this repo's function) to enable pattern recognition"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Run_1/friction_breaker_report_20260411_165311.json"
+      ],
+      "real_examples": [
+        "First Lady held White House press conference branding Amanda Ungaro a 'liar' before House Oversight Committee could schedule her testimony — pre-poisoning the evidentiary record while Ungaro was being deported to Brazil"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "G-08",
+      "name": "Regulatory Exemption Tailoring (Writing Rules to Fit Existing Holdings)",
+      "category": "G",
+      "jurisdiction": "federal",
+      "jurisdiction_detail": "SEC / CFTC / OCC",
+      "mechanism_type": "regulatory",
+      "description": "An administration writes new regulatory exemptions specifically scoped to match the exact types of financial products held or issued by the sitting president's family — in this case, exempting 'meme coins' and 'governance tokens' from SEC oversight after the president holds those exact asset classes. The exemptions are drafted broadly enough to appear neutral but narrow enough in practice to benefit a specific set of beneficiaries.",
+      "how_it_works": "1. President or family acquires financial assets of specific type (meme coins, governance tokens). 2. Administration appoints regulators. 3. Regulators draft new exemptions for the specific asset class the president holds. 4. Exemptions are worded as neutral policy ('all meme coins') but scoped to benefit known beneficiaries. 5. Public loses regulatory protections (fraud disclosure, market manipulation rules) for those specific products. 6. Because exemptions appear neutral, they are very difficult to challenge without proving intent. 7. GAO or independent audit mapping rule changes against known holdings can reveal the pattern.",
+      "durability": 7,
+      "durability_notes": "Once exemptions are codified in SEC/CFTC guidance or rulemaking, industry builds business models on top of them. Reversal requires new rulemaking or legislation and faces industry opposition from the ecosystem that grew under the exemption.",
+      "reversal_pathways": [
+        "Mandatory recusal requirements for regulators whose decisions affect assets held by executive branch family members",
+        "Independent GAO audit mapping all crypto regulatory changes against known executive family holdings",
+        "Ethics amendment to CLARITY Act requiring divestiture before regulatory rulemaking",
+        "Public disclosure requirements for all meetings between crypto regulators and executive family representatives",
+        "Congressional oversight hearings requiring SEC/CFTC to justify each exemption against conflict-of-interest standards"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Test_2/friction_breaker_report_20260409_072603.json"
+      ],
+      "real_examples": [
+        "SEC issued new guidelines exempting 'meme coins' and 'governance tokens' from standard oversight — exact asset types held by Trump family via WLF",
+        "WLF governance tokens and USD1 stablecoin both fell within newly created exemptions"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "B-07",
+      "name": "Inaugural-Period Deal Structuring (Pre-Accountability Window Transaction)",
+      "category": "B",
+      "jurisdiction": "federal",
+      "jurisdiction_detail": "Transition period (election → inauguration)",
+      "mechanism_type": "financial",
+      "description": "A major foreign investment in a presidential family business is executed in the days immediately before inauguration — after the election outcome is certain but before the new administration's ethics rules, disclosure requirements, or accountability mechanisms take effect. The timing allows the deal to occur in a legal gray zone where neither the outgoing administration's oversight nor the incoming one's rules fully apply.",
+      "how_it_works": "1. Election outcome determined — incoming president known. 2. Foreign sovereign-linked entity executes major investment in incoming president's family company. 3. Deal is structured during transition period — lowest-oversight window in American political calendar. 4. No CFIUS review triggered. 5. No disclosure requirement applies (incoming ethics rules not yet in effect, outgoing rules don't cover incoming officials). 6. Deal is completed before inauguration. 7. By the time oversight mechanisms exist, the deal is done and unwinding is legally complex. 8. Public disclosure may not occur for over a year.",
+      "durability": 5,
+      "durability_notes": "Each deal is one-time, but the template is replicable for any future transition. Structural fix requires legislation governing transition-period financial activity by incoming officials. Once the deal is done, retroactive reversal requires unwinding complex financial structures.",
+      "reversal_pathways": [
+        "Legislation requiring CFIUS review for all foreign investments in incoming president's family entities during transition period",
+        "Mandatory financial disclosure by president-elect and family during transition (extending current requirements)",
+        "Ethics framework that takes effect upon election certification, not inauguration",
+        "Congressional investigation and mandatory disclosure of all transition-period financial transactions involving incoming officials",
+        "FOIA requests to Treasury regarding CFIUS reviews (or non-reviews) of transition-period deals"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Test_2/friction_breaker_report_20260409_072603.json"
+      ],
+      "real_examples": [
+        "Tahnoun bin Zayed Al Nahyan (Abu Dhabi royal) secretly purchased 49% stake in WLF for $500M days before January 2025 inauguration — deal not publicly revealed until early 2026"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "A-13",
+      "name": "Strategic Asset Declaration as Market Support (Government Policy as Personal Portfolio Booster)",
+      "category": "A",
+      "jurisdiction": "federal",
+      "jurisdiction_detail": "Executive branch (executive order)",
+      "mechanism_type": "legislative",
+      "description": "The executive branch uses official government action — designating an asset class (e.g., Bitcoin) as a 'strategic reserve asset' — to provide official US government legitimacy and price support to an entire asset class in which the president and his family hold significant personal financial stakes. Unlike direct market manipulation, this operates through policy signaling rather than direct trading, making it extremely difficult to prosecute while providing substantial financial benefit.",
+      "how_it_works": "1. President holds significant personal positions in an asset class (Bitcoin, ETH, associated crypto). 2. President signs executive order designating that asset class as a 'strategic reserve asset.' 3. Government endorsement provides legitimacy signal to markets. 4. Asset price increases on news of government backing. 5. President's personal holdings increase in value. 6. No individual transaction is fraudulent — the market impact is systemic. 7. Taxpayer-backed government credibility is used to boost personal portfolio. 8. Other asset holders benefit too, providing political cover ('everyone benefited').",
+      "durability": 6,
+      "durability_notes": "Executive order — reversible by next president. But the market impact of the declaration is immediate and irreversible (price movement has already occurred). Industry and institutional investors who entered the market based on the declaration create path dependency that makes reversal politically costly.",
+      "reversal_pathways": [
+        "Ethics legislation requiring divestiture of all personal holdings in asset classes affected by presidential executive orders",
+        "Congressional review requirement for executive orders affecting asset classes in which the president holds personal stakes",
+        "GAO audit of market impact of strategic reserve declarations on presidential family holdings",
+        "Independent ethics commission review of all executive orders with potential personal financial benefit to signatories",
+        "Future administration reversing the strategic reserve designation (executive order is reversible; market impact is not)"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Test_2/friction_breaker_report_20260409_072603.json"
+      ],
+      "real_examples": [
+        "Bitcoin designated as 'strategic reserve asset' via executive order — price impact benefited president's known crypto holdings",
+        "Trump family holds Bitcoin, ETH, and associated crypto assets via WLF and personal holdings"
+      ],
+      "status": "active"
     }
   ]
 }
