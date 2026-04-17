@@ -42,7 +42,7 @@ python app.py
 
 ```
 app.py                              # Flask app + CLI + full analysis pipeline
-mechanism_classifier_taxonomy.json  # 66 mechanisms, 8 categories
+mechanism_classifier_taxonomy.json  # 69 mechanisms, 8 categories
 templates/index.html                # Web UI (single-page)
 tests/test_app.py                   # Test suite (pytest)
 _AI_CONTEXT_INDEX/                  # Background research context files
@@ -54,7 +54,7 @@ requirements.txt                    # Pip requirements (mirrors pyproject.toml)
 
 1. **User inputs text** (paste, URL, or CLI)
 2. **GLiNER2** extracts entities locally (zero-cost, runs on CPU, ~400 MB model)
-3. **Mechanism Classifier** matches entities against the 66-mechanism taxonomy
+3. **Mechanism Classifier** matches entities against the 69-mechanism taxonomy
 4. **Claude API** generates countermeasure analysis (uses the user's own key)
 5. **Results** are returned as JSON and displayed in the web UI
 

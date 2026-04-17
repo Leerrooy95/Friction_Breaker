@@ -1,6 +1,6 @@
 # Mechanism Classifier Taxonomy — Documentation
 
-**Version**: 2.2.0
+**Version**: 2.5.0
 **Source**: The Regulated Friction Project (v12.3)
 **Generated**: April 2026
 **Authors**: Austin Smith + Claude (Opus 4.6)
@@ -11,7 +11,7 @@
 
 This taxonomy is the foundation layer for the countermeasure engine. It extracts every legal, regulatory, personnel, financial, and procedural mechanism documented in The Regulated Friction Project and classifies them into a machine-queryable structure.
 
-**Total mechanisms cataloged**: 66
+**Total mechanisms cataloged**: 69
 **Categories**: 8
 
 > **Future: Mechanism Dependency Graph** — Some mechanisms enable or depend on
@@ -31,8 +31,8 @@ This taxonomy is the foundation layer for the countermeasure engine. It extracts
 |----|----------|-------|-------------|
 | A | Legislative Architecture | 14 | Auto-approvals, iterative loops, emergency clauses, bespoke carve-outs, competitor exclusions, federal oversight bypasses, interstate incentive race, state preemption of local authority, strategic asset declaration, water rights capture |
 | B | Regulatory Capture and Override | 8 | Forced approval despite adverse findings, beneficial ownership concealment, 13F gaps, OCC preemption, PILOT agreements, ratepayer cost shift without binding demand, inaugural-period deal structuring, vertical integration lock-in |
-| C | Personnel Cycling and Lock-In | 7 | Pre-accountability firings, acting official installation, civil service conversion, wartime purges, temporary entity absorption, impoundment, diplomatic title as legal shield |
-| D | Democratic Check Suppression | 11 | Ballot initiative restrictions, constitutional protection reversal, clock-running litigation, coercion template, theological access architecture, curriculum pipeline, compliance enforcement, CUFI lobbying, CREC/Pentagon access, preemptive credibility assassination, demand shock narrative override |
+| C | Personnel Cycling and Lock-In | 9 | Pre-accountability firings, acting official installation, civil service conversion, wartime purges, temporary entity absorption, impoundment, diplomatic title as legal shield, cross-appropriations transfer, presidential parallel finance entity |
+| D | Democratic Check Suppression | 12 | Ballot initiative restrictions, constitutional protection reversal, clock-running litigation, coercion template, theological access architecture, curriculum pipeline, compliance enforcement, CUFI lobbying, CREC/Pentagon access, preemptive credibility assassination, demand shock narrative override, crisis-linked urgency capture |
 | E | Information Control | 9 | Selective redaction, witness support defunding, media acquisition, FaaS protest supply chain, cyber-kinetic operations, information archive as deterrent, calendar anchor exploitation, shutter control, statistical smokescreen |
 | F | Surveillance / Data Centralization | 4 | FISA Section 702 coupling, backdoor US person queries, ECSP definition expansion, PCLOB oversight gutting |
 | G | Capital Opacity | 8 | Emoluments bypass via stablecoin, revolving door nexus, mBridge CBDC settlement, dual-alignment bridge state, OPEC+ leverage, BRI vacuum capture, consolidated private empire IPO, regulatory exemption tailoring |
@@ -130,16 +130,21 @@ Outputs: Plain-English report (Political Translator format)
 
 ## Taxonomy Completeness
 
-v2.4.0 is comprehensive as of April 2026, covering:
+v2.5.0 is comprehensive as of April 2026, covering:
 
 - ✅ Legislative architecture (14 mechanisms)
 - ✅ Regulatory capture (8 mechanisms)
-- ✅ Personnel cycling (7 mechanisms)
-- ✅ Democratic check suppression (11 mechanisms)
+- ✅ Personnel cycling (9 mechanisms)
+- ✅ Democratic check suppression (12 mechanisms)
 - ✅ Information control (9 mechanisms)
 - ✅ Surveillance (4 mechanisms)
 - ✅ Capital opacity (8 mechanisms)
 - ✅ Judicial architecture (5 mechanisms)
+
+**v2.5.0 additions** (April 17, 2026): Three mechanisms detected during Board of Peace fund diversion analysis (`Leroys_Tests/Discord_Run_1/`):
+- **C-08** Unauthorized Cross-Appropriations Transfer — Executive Fund Laundering (durability 5) — distinct from C-06 (Impoundment): active multi-account redirection to unauthorized entity, not simple withholding
+- **C-09** Presidential Parallel Finance Entity — Off-Budget International Fund (durability 6) — novel governance structure: presidential entity receiving public funds with no FOIA, IG, or congressional reporting
+- **D-12** Crisis-Linked Urgency Capture — War-Cost Justification for Fund Diversion (durability 4) — distinct from E-07 (Calendar Anchor) and D-11 (Demand Shock): crisis-driven attention capture enabling domestic fund diversion
 
 **v2.4.0 additions** (April 17, 2026): Three mechanisms detected during AI datacenter analysis (`Leroys_Tests/Discord_Test_1/`):
 - **A-14** Water Rights Capture via Data Center Siting (durability 9 — highest in taxonomy, tied with information archive deterrent and dual-alignment bridge state)
