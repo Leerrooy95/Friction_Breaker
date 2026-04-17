@@ -1,13 +1,13 @@
 {
   "metadata": {
     "name": "Mechanism Classifier Taxonomy",
-    "version": "2.5.0",
+    "version": "2.6.0",
     "source_repo": "github.com/Leerrooy95/The_Regulated_Friction_Project",
     "source_version": "v11.9",
     "generated": "2026-04-17",
     "author": "Austin Smith + Claude (Opus 4.6)",
     "purpose": "Structured classification of every legal, regulatory, personnel, financial, and procedural mechanism documented in the Regulated Friction Project. Foundation layer for the countermeasure engine.",
-    "total_mechanisms": 69,
+    "total_mechanisms": 73,
     "categories": 8
   },
   "categories": [
@@ -443,6 +443,66 @@
         "Multiple western state data center siting agreements (2025-2026) include water rights allocations embedded in economic development deals",
         "Agricultural and municipal users in water-stressed basins losing long-term access as industrial allocations are prioritized",
         "Detected by Friction Breaker analysis (Discord_Test_1) as highest-durability blind spot in current AI infrastructure opposition"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "A-15",
+      "name": "Host Government Exclusion from Reconstruction Governance",
+      "category": "A",
+      "jurisdiction": "international",
+      "jurisdiction_detail": "Multilateral reconstruction funding architecture",
+      "mechanism_type": "legislative",
+      "description": "A reconstruction funding architecture is deliberately structured to bypass the recognized governing authority of the territory being reconstructed, both by creating a new fund that does not require host-government agreement and by failing to reference the host government's own reconstruction plans. In contrast to precedent Financial Intermediary Funds for Ukraine and Haiti — where the affected government chaired or occupied governance seats — this structure prevents the territory's population from having meaningful input over reconstruction priorities while enabling external powers to determine the political and economic shape of post-conflict recovery.",
+      "how_it_works": "1. Major conflict ends, requiring large-scale reconstruction funding. 2. External powers create a multilateral fund structure (often via World Bank Financial Intermediary Fund). 3. Governance seats and chair positions are allocated to donor nations and external bodies — not the territory's recognized government. 4. Fund charter does not reference or build on existing host-government reconstruction plans. 5. Disbursement criteria are determined by donors, not affected populations. 6. Host government has no veto, no chair role, and no statutory consultation requirement. 7. Reconstruction priorities reflect donor preferences (security, geopolitical alignment) rather than population needs. 8. Long-term political and economic shape of recovery is determined externally — creating dependencies that constrain future host-government policy choices.",
+      "durability": 6,
+      "durability_notes": "Once disbursement begins and infrastructure is built around external priorities, future host-government control over reconstruction becomes practically impossible to assert. Contracts, third-party commitments, and built infrastructure create path dependencies. The longer the structure operates, the more entrenched donor priorities become.",
+      "reversal_pathways": [
+        "Diplomatic pressure for host-government chair seat or co-chair role in reconstruction fund governance",
+        "UN General Assembly resolution affirming host-government primacy in reconstruction governance (non-binding but legitimacy-shifting)",
+        "Donor nation conditionality requiring host-government consent for fund deployment in their territory",
+        "Establishment of parallel host-government-led reconstruction fund with competing donor pool",
+        "Independent monitoring body with statutory authority to assess alignment of fund priorities with affected population needs",
+        "Sunset provision in fund charter requiring renewal by host government after defined period",
+        "Documentation and public reporting of contrast with Ukraine/Haiti precedent (where host governments had governance roles)"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Discord_Run_2/friction_breaker_report_20260417_191123.json"
+      ],
+      "real_examples": [
+        "Board of Peace / Gaza Reconstruction Architecture and Development Fund (2026): Palestinian Authority excluded from governance structure",
+        "Contrast with World Bank Ukraine Reconstruction Trust Fund where Ukraine occupied governance seats",
+        "Contrast with World Bank Haiti Reconstruction Fund where Haiti's interim government had chair role"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "A-16",
+      "name": "Mandate Scope Bait-and-Switch (UN Endorsement of Undisclosed Charter)",
+      "category": "A",
+      "jurisdiction": "international",
+      "jurisdiction_detail": "UN Security Council and parallel implementing bodies",
+      "mechanism_type": "legislative",
+      "description": "The UN Security Council endorses a plan referencing a specific mandate (e.g., Gaza reconstruction, host-population self-determination) while the governing charter for the implementing body — unpublished at the time of the vote — contains an entirely different and broader mandate with no reference to the stated objectives. By withholding the charter until after the authorizing vote, the mechanism captures UN legitimacy for a body whose actual governance structure and mandate the Security Council members did not review or approve.",
+      "how_it_works": "1. A plan is presented to the UN Security Council framed around specific, narrow, sympathetic objectives (reconstruction, peacekeeping, humanitarian aid). 2. The Security Council adopts a resolution endorsing the plan and the implementing body. 3. The actual governing charter for the implementing body is not published before the vote. 4. After the vote, the charter is finalized (or revealed) with broader scope — different mandate, broader authority, additional functions not mentioned in the resolution. 5. The implementing body operates under the broader charter while citing the UN resolution as authority. 6. Member states that voted for the narrow framing find themselves having endorsed the broader one. 7. Reversal requires a new Security Council vote, which faces vetoes from beneficiaries.",
+      "durability": 7,
+      "durability_notes": "Once a UN Security Council resolution is adopted, retraction or modification requires another vote — subject to veto by any of the five permanent members, including the resolution's primary sponsor. The legitimacy already conferred is durable: the body now claims UN endorsement for activities the UN never reviewed.",
+      "reversal_pathways": [
+        "UN General Assembly resolution requesting publication of governing charters before any future Security Council endorsement vote",
+        "Procedural reform requiring documentary review period (e.g., 30 days) before Security Council votes endorsing implementing bodies",
+        "International Court of Justice advisory opinion on whether activities exceeding the resolution's scope retain UN authority",
+        "Member-state withdrawal of support and public statement that endorsement was based on undisclosed materials",
+        "Civil society and academic documentation of the gap between resolution scope and actual charter mandate",
+        "Sunset provision in future Security Council resolutions requiring re-endorsement after charter publication and review",
+        "Independent legal analysis by UN Secretariat on whether the implementing body's actual scope falls within the resolution's authorization"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Discord_Run_2/friction_breaker_report_20260417_191123.json"
+      ],
+      "real_examples": [
+        "UN Security Council Resolution 2803 (November 2025) endorsed Trump's Comprehensive Plan to End the Gaza Conflict, calling for Board of Peace creation around Gaza reconstruction and Palestinian self-determination",
+        "Board of Peace Charter — unpublished at time of UNSC vote — makes no mention of either Gaza or Palestinian self-determination; envisages broader mandate as 'more nimble and effective' multilateral institution for peacebuilding",
+        "Charter vests authority in chairman in personal capacity rather than office — not disclosed before vote"
       ],
       "status": "active"
     },
@@ -890,10 +950,10 @@
       "jurisdiction": "federal",
       "jurisdiction_detail": "Executive branch, international",
       "mechanism_type": "executive",
-      "description": "The president creates an international organization outside normal congressional authorization, funds it with redirected appropriations, and commits to large total contributions — with no governance transparency, no FOIA obligations, no IG oversight, and no congressional authorization. Structurally distinct from think tanks, federal agencies, and foreign aid programs: it is a presidential entity that receives public funds and deploys them according to undisclosed criteria, potentially with authority continuing after the creator leaves office.",
+      "description": "The president creates an international organization outside normal congressional authorization, funds it with redirected appropriations, and commits to large total contributions — with no governance transparency, no FOIA obligations, no IG oversight, and no congressional authorization. The organization's charter vests core governance authorities (agenda-setting, tie-breaking, dispute arbitration, entity creation and dissolution, successor selection, full budget control) in the creator personally rather than in the office they hold — making the entity an extension of one person's authority that persists beyond their governmental tenure. Structurally distinct from think tanks, federal agencies, and foreign aid programs: it is a presidential entity that receives public funds and deploys them according to undisclosed criteria, with personal authority continuing after the creator leaves office.",
       "how_it_works": "1. President announces creation of international organization via executive action or international framework (e.g., UN Security Council resolution). 2. Governance charter is drafted without publication or public comment. 3. Chairman authority is vested in the president in a personal capacity rather than as an office-holder. 4. Executive board members named without reference to their current offices or titles — preserving their authority even after they leave government service. 5. Public funds are transferred via cross-appropriations mechanisms (see C-08). 6. Entity has no FOIA obligations, no inspector general, no conflict-of-interest rules. 7. Commits to large total contributions ($10B+) creating commitments that bind future administrations. 8. International commitments (contracts, troop deployments, reconstruction agreements) create facts on the ground difficult to unwind even if funding is cut.",
-      "durability": 6,
-      "durability_notes": "Durability could escalate to 8+ if authority persists post-term as charter language suggests. Once international commitments are made and third parties (foreign governments, contractors, multilateral institutions) have acted in reliance, reversal requires diplomatic and legal costs future administrations may not be willing to bear. The longer it operates, the more entrenched it becomes.",
+      "durability": 8,
+      "durability_notes": "Originally rated 6 in v2.5.0 with note that durability could escalate to 8+ if authority persists post-term. Upgraded to 8 in v2.6.0 based on detailed Carnegie Endowment analysis (Discord_Run_2) confirming the charter vests agenda-setting, tie-breaking, dispute arbitration, entity creation/dissolution, successor selection, and full budget control in a named individual in personal capacity — not in the office. These authorities continue beyond governmental tenure and are not subject to any democratic check, succession mechanism, or external legal framework. Once international commitments are made and third parties (foreign governments, contractors, multilateral institutions) have acted in reliance, reversal requires diplomatic and legal costs future administrations may not be willing to bear.",
       "reversal_pathways": [
         "Congressional legislation requiring any presidential entity receiving federal funds above a threshold to register as a federal agency with full FOIA, IG, and congressional reporting obligations",
         "Subpoena and public release of governance charter, executive board composition, investment criteria, and all fund disbursements",
@@ -905,13 +965,45 @@
       ],
       "repo_references": [
         "Leroys_Tests/Discord_Run_1/friction_breaker_report_20260417_131205.json",
-        "_AI_CONTEXT_INDEX/03_BOARD_OF_PEACE.md"
+        "_AI_CONTEXT_INDEX/03_BOARD_OF_PEACE.md",
+        "Leroys_Tests/Discord_Run_2/friction_breaker_report_20260417_191123.json"
       ],
       "real_examples": [
         "Board of Peace (January-February 2026): $10B total US commitment, $1.25B already transferred, chairman authority held by Trump in personal capacity, executive board members identified without current office references (per Carnegie Endowment analysis)",
         "UN Security Council Resolution 2803 welcomed the Board but Congress played no authorizing role",
         "No FOIA obligations, no IG, no published charter, no conflict-of-interest rules",
-        "$1 billion pay-in required for permanent membership — creating a parallel international finance structure"
+        "$1 billion pay-in required for permanent membership — creating a parallel international finance structure",
+        "Carnegie Endowment analysis (March 2026): Board of Peace charter vests authority in named individuals without reference to current offices — preserving authority after they leave government service; no oversight or auditing mechanisms in charter; chairman holds final budget authority"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "C-10",
+      "name": "Pass-Through Fiduciary Abdication (Limited Trustee FIF Structure)",
+      "category": "C",
+      "jurisdiction": "international",
+      "jurisdiction_detail": "Multilateral financial institutions (World Bank, IMF) and donor nations",
+      "mechanism_type": "institutional",
+      "description": "A major multilateral financial institution (World Bank) establishes a Financial Intermediary Fund specifically structured to transfer pooled donor funds to a third party while explicitly disclaiming all fiduciary responsibility for post-transfer use. Unlike prior FIFs where the bank retained governance and fiduciary roles, this structure allows the institution to launder donor legitimacy onto a recipient entity while bearing no accountability for how funds are spent — effectively converting institutional credibility into a reputational subsidy for an otherwise unaccountable recipient.",
+      "how_it_works": "1. Donor nations seek a credible vehicle for pooled contributions to a recipient entity that lacks independent legitimacy. 2. World Bank (or comparable multilateral) establishes a Financial Intermediary Fund (FIF). 3. Bank's role is structured as 'limited trustee' — holding funds during pooling phase only. 4. Charter explicitly disclaims fiduciary responsibility, accountability, and oversight for post-transfer use. 5. Bank does not occupy governance seats on the recipient entity. 6. Bank does not require reporting from the recipient on how funds are spent. 7. Donors gain the legitimacy of contributing to a 'World Bank fund' while the recipient gains the credibility of receiving 'World Bank-administered funds' — without anyone bearing actual accountability. 8. Pattern, once established, becomes a template for future donor-recipient arrangements seeking the same legitimacy laundering.",
+      "durability": 7,
+      "durability_notes": "The structural pattern becomes precedent for future FIFs. Once the World Bank has accepted limited-trustee status for one fund, refusing it for the next becomes politically difficult. The reputational subsidy compounds as the pattern repeats. Reversal requires institutional reform within the World Bank or donor pressure to require fiduciary roles.",
+      "reversal_pathways": [
+        "World Bank policy reform restoring full fiduciary responsibility as a precondition for FIF establishment",
+        "Donor nation conditionality: contributions only to FIFs where the trustee retains governance and reporting authority",
+        "World Bank Independent Evaluation Group review of limited-trustee FIF outcomes and recommendation against the structure",
+        "Civil society pressure highlighting the reputational subsidy mechanism and its outcomes",
+        "Comparison with prior FIFs (Ukraine, Haiti) where bank retained governance — establishing the structural anomaly",
+        "Mandatory disclosure to donor publics that bank disclaims fiduciary responsibility before any contribution is committed",
+        "International transparency standards (e.g., IATI) explicitly excluding limited-trustee FIFs from credibility certifications"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Discord_Run_2/friction_breaker_report_20260417_191123.json"
+      ],
+      "real_examples": [
+        "World Bank Gaza Reconstruction Architecture and Development Fund (GRAD) for Board of Peace (2026): bank acts as 'limited trustee' with no responsibility or accountability for post-transfer use",
+        "Contrast with World Bank Ukraine and Haiti reconstruction FIFs where the bank formed part of the fund's governing structure",
+        "Carnegie Endowment characterized as 'unusual for the World Bank' — only two of the World Bank's thirty-two FIFs have been used for reconstruction, and in neither prior case did the bank act as limited trustee"
       ],
       "status": "active"
     },
@@ -1824,6 +1916,35 @@
       "real_examples": [
         "SEC issued new guidelines exempting 'meme coins' and 'governance tokens' from standard oversight — exact asset types held by Trump family via WLF",
         "WLF governance tokens and USD1 stablecoin both fell within newly created exemptions"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "G-09",
+      "name": "Pending Litigation as Financial Leverage (Lawsuit-Settlement-Account Nexus)",
+      "category": "G",
+      "jurisdiction": "federal",
+      "jurisdiction_detail": "Sitting officials and major financial institutions",
+      "mechanism_type": "financial",
+      "description": "A sitting official or entity with a large pending personal lawsuit against a financial institution simultaneously negotiates for that same institution to serve as the depository and account manager for a major public or quasi-public fund under the official's control. The unresolved litigation creates structural leverage over the bank's cooperation and terms, while the account relationship creates financial dependency running in the opposite direction — producing a bilateral capture relationship that compromises both the bank's independence and the integrity of the fund's governance.",
+      "how_it_works": "1. Official has a large pending personal lawsuit against a major financial institution (potentially $1B+). 2. Same official controls or directs a public or quasi-public fund with substantial deposits. 3. The bank is selected as depository and account manager for the fund. 4. The bank now has commercial interest in maintaining the depository relationship (fees, float, prestige). 5. The official has interest in favorable settlement terms on the personal lawsuit. 6. Each party has leverage over the other: bank can favor the official to protect deposits; official can favor the bank to extract better settlement. 7. Neither party has incentive to disclose the conflict because both benefit from the structural ambiguity. 8. Public funds and personal financial outcomes become entangled.",
+      "durability": 5,
+      "durability_notes": "Each individual instance is dependent on the specific lawsuit timeline and account agreement. But the pattern — using personal litigation to influence institutional financial relationships — is a repeatable template. Once normalized, future officials may replicate the structure.",
+      "reversal_pathways": [
+        "Mandatory disclosure of all pending personal litigation by officials before selection of depository institutions for any public or quasi-public fund they control",
+        "Ethics rules prohibiting financial institutions with pending litigation from official-controlled parties from being selected as depositories",
+        "Mandatory recusal of officials from depository selection decisions when they have personal litigation against candidate institutions",
+        "Independent depository selection committee for public funds, removing the official from the decision",
+        "Settlement of pending personal litigation as a precondition for any depository relationship between the official's fund and the institution",
+        "Public reporting requirement: any depository relationship between a public fund and an institution facing personal litigation from a controlling official must be disclosed in financial filings",
+        "Bar association ethics review of the dual-role attorneys involved in both negotiations"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Discord_Run_2/friction_breaker_report_20260417_191123.json"
+      ],
+      "real_examples": [
+        "Trump's pending $5 billion personal lawsuit against JPMorgan Chase concurrent with JPMorgan being selected as depository institution for Board of Peace funds (per Carnegie Endowment analysis, March 2026)",
+        "Bilateral capture: bank may offer favorable settlement to maintain $10B+ depository relationship; official may favor bank in fund governance to extract favorable settlement"
       ],
       "status": "active"
     },
