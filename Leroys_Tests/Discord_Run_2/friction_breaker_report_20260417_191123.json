@@ -1,0 +1,354 @@
+{
+  "_meta": {
+    "context_index_loaded": true,
+    "gliner_entities": [
+      {
+        "label": "country",
+        "score": 0.978,
+        "text": "Saudi Arabia"
+      },
+      {
+        "label": "country",
+        "score": 0.975,
+        "text": "Germany"
+      },
+      {
+        "label": "country",
+        "score": 0.971,
+        "text": "Qatar"
+      },
+      {
+        "label": "country",
+        "score": 0.97,
+        "text": "Kuwait"
+      },
+      {
+        "label": "country",
+        "score": 0.963,
+        "text": "France"
+      },
+      {
+        "label": "country",
+        "score": 0.96,
+        "text": "Italy"
+      },
+      {
+        "label": "country",
+        "score": 0.95,
+        "text": "United States"
+      },
+      {
+        "label": "country",
+        "score": 0.95,
+        "text": "UAE"
+      },
+      {
+        "label": "country",
+        "score": 0.944,
+        "text": "UK"
+      },
+      {
+        "label": "organization",
+        "score": 0.939,
+        "text": "United Nations"
+      },
+      {
+        "label": "country",
+        "score": 0.937,
+        "text": "Iran"
+      },
+      {
+        "label": "organization",
+        "score": 0.932,
+        "text": "JPMorgan Chase"
+      },
+      {
+        "label": "country",
+        "score": 0.928,
+        "text": "Ukraine"
+      },
+      {
+        "label": "country",
+        "score": 0.925,
+        "text": "Russia"
+      },
+      {
+        "label": "organization",
+        "score": 0.914,
+        "text": "UN Security Council"
+      },
+      {
+        "label": "politician",
+        "score": 0.901,
+        "text": "Trump"
+      },
+      {
+        "label": "country",
+        "score": 0.892,
+        "text": "South Africa"
+      },
+      {
+        "label": "country",
+        "score": 0.886,
+        "text": "Haiti"
+      },
+      {
+        "label": "official",
+        "score": 0.877,
+        "text": "Nickolay Mladenov"
+      },
+      {
+        "label": "organization",
+        "score": 0.869,
+        "text": "Board of Peace"
+      }
+    ],
+    "gliner_entities_extracted": 96,
+    "model": "claude-sonnet-4-6 + claude-haiku-4-5-20251001",
+    "model_classify": "claude-sonnet-4-6",
+    "model_prose": "claude-haiku-4-5-20251001",
+    "processing_time_seconds": 160.02,
+    "taxonomy_mechanisms_available": 69,
+    "taxonomy_version": "2.5.0",
+    "timestamp": "2026-04-17T19:11:23.814707+00:00"
+  },
+  "input_summary": "A detailed analysis of Trump's Board of Peace\u2014a new international organization for Gaza reconstruction\u2014showing how it concentrates unlimited power in one person without standard financial oversight, congressional authorization, or accountability to the public. The classification engine identified seven major political mechanisms that bypass normal checks and balances.",
+  "mechanisms_identified": [
+    {
+      "confidence": "HIGH",
+      "countermeasures": [
+        {
+          "action": "Congressional legislation requiring any presidential entity receiving federal funds above a threshold to register as a federal agency with full FOIA, IG, and congressional reporting obligations",
+          "durability_score": 8,
+          "feasibility": "LOW",
+          "plain_english": "Congress passes a law saying any organization the president controls that gets federal money must follow the same transparency rules as normal government agencies. Citizens can then demand documents and see where money is spent.",
+          "who_can_do_it": "U.S. Congress (simple majority House + 60-vote Senate cloture)"
+        },
+        {
+          "action": "Subpoena and public release of governance charter, executive board composition, investment criteria, and all fund disbursements",
+          "durability_score": 6,
+          "feasibility": "MEDIUM",
+          "plain_english": "Congress demands the organization release all its rules, who runs it, what decisions they made, and where every dollar went. This information becomes public so citizens can see what happened.",
+          "who_can_do_it": "Senate Foreign Relations Committee, House Foreign Affairs Committee"
+        },
+        {
+          "action": "Appropriations prohibition on further transfers to any entity lacking congressional authorization",
+          "durability_score": 6,
+          "feasibility": "LOW",
+          "plain_english": "Congress stops sending money to the organization until it proves Congress actually approved it. No more taxpayer funds go to unauthorized bodies.",
+          "who_can_do_it": "U.S. Congress via appropriations riders"
+        },
+        {
+          "action": "Sunset provision forcing reauthorization by next administration \u2014 preventing post-term authority persistence",
+          "durability_score": 5,
+          "feasibility": "MEDIUM",
+          "plain_english": "Congress sets an expiration date so the organization automatically ends when the president leaves office unless the next president gets Congress to approve it again.",
+          "who_can_do_it": "U.S. Congress; UN Security Council (via expiration of Resolution 2803 mandate)"
+        },
+        {
+          "action": "Mandatory conflict-of-interest disclosure for all principals before any fund deployment",
+          "durability_score": 5,
+          "feasibility": "MEDIUM",
+          "plain_english": "Everyone running the organization must publicly list their business deals, lawsuits, and personal connections before any money is spent. This shows if they're using the position for personal gain.",
+          "who_can_do_it": "U.S. Congress; donor state governments as condition of pledge disbursement"
+        },
+        {
+          "action": "Antideficiency Act litigation challenging the legal basis for the entity's receipt of federal funds",
+          "durability_score": 4,
+          "feasibility": "MEDIUM",
+          "plain_english": "The Justice Department sues to stop the organization from receiving federal money on the grounds that it was never legally authorized to get it in the first place.",
+          "who_can_do_it": "U.S. Department of Justice (IG referral); congressional standing litigation"
+        },
+        {
+          "action": "Future administration dissolving the entity and recovering committed funds where legally possible",
+          "durability_score": 3,
+          "feasibility": "MEDIUM",
+          "plain_english": "When the next president takes office, they can shut down the organization and try to get the money back for the government.",
+          "who_can_do_it": "Next U.S. presidential administration"
+        }
+      ],
+      "durability": 6,
+      "evidence": "Trump has yet to publish the board's resolutions on its official website... the charter does not set out oversight and auditing mechanisms or rules concerning conflicts of interest... Trump will retain absolute power over Board of Peace spending... the board will likely devolve into Trump's private enterprise if it is not already dissolved",
+      "name": "Presidential Parallel Finance Entity (Off-Budget International Fund)",
+      "taxonomy_id": "C-09",
+      "what_it_does": "A president creates a private international organization that receives billions in taxpayer money but operates with zero transparency, no published rules, and complete control by one person. The public and Congress have no way to know where the money goes or how it's spent."
+    },
+    {
+      "confidence": "MEDIUM",
+      "countermeasures": [
+        {
+          "action": "GAO reporting requirement triggered for any fund transfer across appropriations categories above a defined threshold",
+          "durability_score": 6,
+          "feasibility": "MEDIUM",
+          "plain_english": "When money moves between government accounts in large amounts, the Government Accountability Office (which audits the government) must be told and must tell Congress what happened.",
+          "who_can_do_it": "U.S. Congress via GAO mandate legislation or committee directive"
+        },
+        {
+          "action": "Legislation prohibiting cross-appropriations transfers above a threshold without explicit congressional authorization",
+          "durability_score": 6,
+          "feasibility": "LOW",
+          "plain_english": "Congress passes a law saying large amounts of money can't be moved between accounts without Congress voting to approve it first.",
+          "who_can_do_it": "U.S. Congress"
+        },
+        {
+          "action": "Inspector General investigation at originating agency with standing to block transfer pending review",
+          "durability_score": 5,
+          "feasibility": "MEDIUM",
+          "plain_english": "The Inspector General\u2014who investigates government wrongdoing\u2014can stop money from moving out until they've investigated whether it's legal.",
+          "who_can_do_it": "Agency Inspectors General; Congress via IG referral"
+        },
+        {
+          "action": "Federal court order requiring return of diverted funds to original appropriations via mandamus action",
+          "durability_score": 5,
+          "feasibility": "LOW",
+          "plain_english": "A federal judge can order the government to put the money back where it came from and force officials to follow the law.",
+          "who_can_do_it": "Congressional leaders with standing; advocacy organizations"
+        },
+        {
+          "action": "Appropriations rider restoring specific funds and designating them as no-transfer funds",
+          "durability_score": 4,
+          "feasibility": "LOW",
+          "plain_english": "Congress adds language to spending bills that locks specific money in place so it can't be moved to unauthorized organizations.",
+          "who_can_do_it": "U.S. Congress (House and Senate Appropriations Committees)"
+        }
+      ],
+      "durability": 5,
+      "evidence": "The board has received pledges of $17 billion at its first convening: $10 billion from the United States... Negotiations are reportedly underway between the Trump administration and JPMorgan Chase to establish a private account for the Board of Peace accessible by the chairman and/or his designates on the Executive Board",
+      "name": "Unauthorized Cross-Appropriations Transfer (Executive Fund Laundering)",
+      "taxonomy_id": "C-08",
+      "what_it_does": "Billions of dollars move from one government account to a private bank account controlled by one person, with no permission from Congress. It's like laundering money through a back door so nobody can track it."
+    },
+    {
+      "confidence": "MEDIUM",
+      "countermeasures": [
+        {
+          "action": "CFIUS mandatory review for infrastructure investments above threshold regardless of structure",
+          "durability_score": 6,
+          "feasibility": "MEDIUM",
+          "plain_english": "The Committee on Foreign Investment in the United States (CFIUS) reviews all big infrastructure deals to make sure foreign interests aren't secretly controlling them, no matter how hidden the ownership is.",
+          "who_can_do_it": "U.S. Treasury (CFIUS); Congress via CFIUS expansion legislation"
+        },
+        {
+          "action": "State legislation requiring beneficial ownership disclosure as condition for any public fund participation",
+          "durability_score": 5,
+          "feasibility": "MEDIUM",
+          "plain_english": "Gulf countries that pledge money to the organization can demand that everyone involved disclose who really owns what before the countries hand over their money.",
+          "who_can_do_it": "Gulf donor state governments as pledge condition; U.S. state legislatures"
+        },
+        {
+          "action": "Corporate Transparency Act enforcement and expansion to cover Board of Peace-linked entities",
+          "durability_score": 5,
+          "feasibility": "MEDIUM",
+          "plain_english": "The government uses its Corporate Transparency Act to force all companies connected to the organization to reveal their real owners to the Financial Crimes Enforcement Network.",
+          "who_can_do_it": "FinCEN; U.S. DOJ"
+        },
+        {
+          "action": "FOIA to Treasury regarding all financial arrangements and account structures for the Board of Peace",
+          "durability_score": 3,
+          "feasibility": "HIGH",
+          "plain_english": "Citizens, journalists, and nonprofit groups file Freedom of Information Act requests to get Treasury documents showing all the bank accounts, loans, and financial deals connected to the organization.",
+          "who_can_do_it": "Journalists, NGOs, congressional staff, public interest litigants"
+        }
+      ],
+      "durability": 4,
+      "evidence": "all but one of whom are identified in the Board's January 22, 2026 resolution without reference to their current office or title... The charter does not set out oversight and auditing mechanisms or rules concerning conflicts of interest... Trump has yet to publish the board's resolutions on its official website",
+      "name": "Beneficial Ownership Concealment",
+      "taxonomy_id": "B-02",
+      "what_it_does": "The people running the organization hide who they really are and what business deals they have. Nobody knows whose interests they're actually protecting when they make spending decisions."
+    },
+    {
+      "confidence": "MEDIUM",
+      "countermeasures": [
+        {
+          "action": "Mandatory recusal requirements for officials with personal financial or legal relationships to regulated entities or financial partners",
+          "durability_score": 6,
+          "feasibility": "LOW",
+          "plain_english": "Anyone running the organization who has a lawsuit, business deal, or personal relationship with a bank handling its money must step back and not make decisions about that bank.",
+          "who_can_do_it": "U.S. Congress via ethics legislation; UN Security Council as mandate condition"
+        },
+        {
+          "action": "Independent ethics review for all Executive Board appointments with disclosure of personal, professional, and financial ties",
+          "durability_score": 5,
+          "feasibility": "LOW",
+          "plain_english": "An independent ethics office reviews everyone chosen to run the organization and publicly lists all their business relationships, lawsuits, and personal connections to the president.",
+          "who_can_do_it": "U.S. Congress; UN Secretary-General; donor state coalitions"
+        },
+        {
+          "action": "Public disclosure of all meetings between Executive Board members and financial institutions managing Board of Peace accounts",
+          "durability_score": 4,
+          "feasibility": "MEDIUM",
+          "plain_english": "Every time someone running the organization meets with the bank that handles its money, that meeting must be reported publicly so citizens know who's talking to whom.",
+          "who_can_do_it": "Congressional oversight committees; donor state transparency requirements"
+        }
+      ],
+      "durability": 3,
+      "evidence": "The nine-member Executive Board includes mostly persons who either currently work for Trump or who have had close personal, professional, or past business relationships with him... Trump's personal lawsuit against JPMorgan and its CEO Jamie Dimon for $5 billion raises concerns about whether any settlement discussions might impact arrangements concerning the Board of Peace account",
+      "name": "Revolving Door Personnel-Capital Nexus",
+      "taxonomy_id": "G-02",
+      "what_it_does": "The president's personal friends and business partners run the organization. A major lawsuit between the president and a bank is happening at the same time that bank is handling the organization's money, creating a conflict of interest."
+    },
+    {
+      "confidence": "LOW",
+      "countermeasures": [
+        {
+          "action": "Congressional resolution requiring Senate consent for any international organization receiving U.S. federal funds that claims to operate outside existing UN/multilateral frameworks",
+          "durability_score": 6,
+          "feasibility": "LOW",
+          "plain_english": "Congress passes a rule saying the Senate must vote and approve any new international organization that uses U.S. taxpayer money and tries to replace or override the United Nations.",
+          "who_can_do_it": "U.S. Senate Foreign Relations Committee; full Senate"
+        },
+        {
+          "action": "State-level environmental and accountability review requirements for any entity receiving U.S. foreign assistance funds",
+          "durability_score": 4,
+          "feasibility": "LOW",
+          "plain_english": "States can demand that any organization getting U.S. foreign aid money meets environmental and accountability standards before the money is sent.",
+          "who_can_do_it": "U.S. Congress via foreign assistance authorization"
+        }
+      ],
+      "durability": 7,
+      "evidence": "the Board of Peace Charter... envisages a different, broader mandate: to act as a 'more nimble and effective' multilateral institution for peacebuilding... bypassing the eighty-year-old United Nations",
+      "name": "Federal Energy Oversight Bypass (CREU Designation)",
+      "taxonomy_id": "A-06",
+      "what_it_does": "The new organization claims it can do what the United Nations does but faster and without UN oversight. It bypasses 80 years of international law and agreements that protect smaller countries."
+    }
+  ],
+  "new_mechanisms_detected": [
+    {
+      "description": "A sitting head of state creates a nominally multilateral international organization in which governance authorities \u2014 agenda-setting, tie-breaking, dispute arbitration, entity creation and dissolution, successor selection, and full budget control \u2014 are vested in a single named individual in their personal capacity rather than in the office they hold. Unlike standard international organizations where authority vests in member-state consensus or rotating leadership, this structure makes the organization an extension of one person's authority that persists beyond their governmental tenure and is not subject to any democratic check, succession mechanism, or external legal framework.",
+      "name": "International Organization Charter as Personal Authority Vehicle",
+      "suggested_category": "C",
+      "suggested_durability": 8,
+      "why_it_matters": "A president creates an official-looking international organization but actually owns and controls all the power personally, forever. When he leaves office, he keeps all the authority and the billions in money. It's a way to turn public money into personal power that outlasts his presidency."
+    },
+    {
+      "description": "A major multilateral financial institution (World Bank) establishes a Financial Intermediary Fund specifically structured to transfer pooled donor funds to a third party while explicitly disclaiming all fiduciary responsibility for post-transfer use. Unlike prior FIFs where the bank retained governance and fiduciary roles, this structure allows the institution to launder donor legitimacy onto a recipient entity while bearing no accountability for how funds are spent \u2014 effectively converting institutional credibility into a reputational subsidy for an otherwise unaccountable recipient.",
+      "name": "Pass-Through Fiduciary Abdication (Limited Trustee FIF Structure)",
+      "suggested_category": "C",
+      "suggested_durability": 7,
+      "why_it_matters": "The World Bank hands billions to the new organization but officially says it's not responsible for what happens to the money. It's like giving someone your credit card, then saying you don't care if they spend it all. The bank gets credit for helping but zero responsibility if the money is wasted or stolen."
+    },
+    {
+      "description": "A reconstruction funding architecture is deliberately structured to bypass the recognized governing authority of the territory being reconstructed (Palestinian Authority), both by creating a new fund that does not require PA agreement and by failing to reference the PA's own reconstruction plans \u2014 in contrast to precedent FIFs for Ukraine and Haiti where the affected government chaired or occupied governance seats. This structure prevents the territory's population from having meaningful input over reconstruction priorities while enabling external powers to determine the political and economic shape of post-conflict recovery.",
+      "name": "Host Government Exclusion from Reconstruction Governance",
+      "suggested_category": "A",
+      "suggested_durability": 6,
+      "why_it_matters": "Palestinians who live in Gaza and would actually receive the aid have no say in how the money is spent or what gets rebuilt. Instead, foreign powers decide everything. It's like someone else controlling your paycheck and deciding what you can buy without asking you."
+    },
+    {
+      "description": "The UN Security Council endorses a plan referencing a specific mandate (Gaza reconstruction, Palestinian self-determination) while the governing charter for the implementing body \u2014 unpublished at the time of the vote \u2014 contains an entirely different and broader mandate with no reference to the stated objectives. By withholding the charter until after the authorizing vote, the mechanism captures UN legitimacy for a body whose actual governance structure and mandate the Security Council members did not review or approve.",
+      "name": "Mandate Scope Bait-and-Switch (UN Endorsement of Undisclosed Charter)",
+      "suggested_category": "A",
+      "suggested_durability": 7,
+      "why_it_matters": "The United Nations votes to support an organization for Gaza reconstruction, but the actual rulebook that the organization will follow is kept secret until after the vote. The UN approves something without knowing what it's really approving, like signing a contract without reading it."
+    },
+    {
+      "description": "A sitting official or entity with a large pending personal lawsuit against a financial institution simultaneously negotiates for that same institution to serve as the depository and account manager for a major public or quasi-public fund under the official's control. The unresolved litigation creates structural leverage over the bank's cooperation and terms, while the account relationship creates financial dependency running in the opposite direction \u2014 producing a bilateral capture relationship that compromises both the bank's independence and the integrity of the fund's governance.",
+      "name": "Pending Litigation as Financial Leverage (Lawsuit-Settlement-Account Nexus)",
+      "suggested_category": "G",
+      "suggested_durability": 5,
+      "why_it_matters": "The president has a $5 billion lawsuit against a bank at the same moment that bank is chosen to hold the organization's billions. The bank might give better terms to settle the lawsuit. The president might agree to terms he wouldn't normally accept. Either way, the bank's independence is compromised and so is the integrity of the fund."
+    }
+  ],
+  "political_translator_summary": "Here's what's happening: President Trump created a new international organization called the Board of Peace to manage billions of dollars for Gaza reconstruction. But instead of working through the United Nations the way other countries do, he designed this organization so that he personally controls every decision. He picks all the board members. He decides how to spend the money. He can change the rules whenever he wants. He even gets to pick his own successor if he wants. Congress never approved this. There are no public financial records. Nobody has to explain where the money goes.\n\nWhy this matters: Your tax dollars are being used to fund an organization with zero transparency. The president's personal friends run it. There's a $5 billion lawsuit between the president and JPMorgan Chase happening at the exact same time JPMorgan is being asked to hold the organization's money in a private bank account. If this organization fails, the money could vanish. If it succeeds, it could become a permanent power source for the president even after he leaves office. Meanwhile, the Palestinians who actually need help rebuilding Gaza have no say in how the money gets spent.\n\nWhat citizens can do right now: Contact your members of Congress\u2014especially those on the House Foreign Affairs Committee and the Senate Foreign Relations Committee. Tell them to demand the full charter be published immediately and to hold hearings on where the money is going. File a Freedom of Information Act request to the Treasury Department asking for all financial documents related to the Board of Peace and its bank accounts. Contact your state attorney general and tell them you want your state to demand transparency from any organization receiving federal funds. Support news organizations that investigate where this money is actually going. The most urgent action is to call your Senate representatives and demand they vote on a resolution requiring Congress to approve any federal funds going to the Board of Peace.",
+  "timestamp": "2026-04-08T00:00:00Z"
+}
