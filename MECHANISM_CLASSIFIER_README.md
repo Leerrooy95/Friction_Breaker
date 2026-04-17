@@ -11,7 +11,7 @@
 
 This taxonomy is the foundation layer for the countermeasure engine. It extracts every legal, regulatory, personnel, financial, and procedural mechanism documented in The Regulated Friction Project and classifies them into a machine-queryable structure.
 
-**Total mechanisms cataloged**: 66
+**Total mechanisms cataloged**: 69
 **Categories**: 8
 
 > **Future: Mechanism Dependency Graph** — Some mechanisms enable or depend on
@@ -31,9 +31,9 @@ This taxonomy is the foundation layer for the countermeasure engine. It extracts
 |----|----------|-------|-------------|
 | A | Legislative Architecture | 14 | Auto-approvals, iterative loops, emergency clauses, bespoke carve-outs, competitor exclusions, federal oversight bypasses, interstate incentive race, state preemption of local authority, strategic asset declaration, water rights capture |
 | B | Regulatory Capture and Override | 8 | Forced approval despite adverse findings, beneficial ownership concealment, 13F gaps, OCC preemption, PILOT agreements, ratepayer cost shift without binding demand, inaugural-period deal structuring, vertical integration lock-in |
-| C | Personnel Cycling and Lock-In | 7 | Pre-accountability firings, acting official installation, civil service conversion, wartime purges, temporary entity absorption, impoundment, diplomatic title as legal shield |
+| C | Personnel Cycling and Lock-In | 9 | Pre-accountability firings, acting official installation, civil service conversion, wartime purges, temporary entity absorption, impoundment, diplomatic title as legal shield, unauthorized cross-appropriations transfer, presidential parallel finance entity |
 | D | Democratic Check Suppression | 11 | Ballot initiative restrictions, constitutional protection reversal, clock-running litigation, coercion template, theological access architecture, curriculum pipeline, compliance enforcement, CUFI lobbying, CREC/Pentagon access, preemptive credibility assassination, demand shock narrative override |
-| E | Information Control | 9 | Selective redaction, witness support defunding, media acquisition, FaaS protest supply chain, cyber-kinetic operations, information archive as deterrent, calendar anchor exploitation, shutter control, statistical smokescreen |
+| E | Information Control | 10 | Selective redaction, witness support defunding, media acquisition, FaaS protest supply chain, cyber-kinetic operations, information archive as deterrent, calendar anchor exploitation, shutter control, statistical smokescreen, crisis-linked urgency capture |
 | F | Surveillance / Data Centralization | 4 | FISA Section 702 coupling, backdoor US person queries, ECSP definition expansion, PCLOB oversight gutting |
 | G | Capital Opacity | 8 | Emoluments bypass via stablecoin, revolving door nexus, mBridge CBDC settlement, dual-alignment bridge state, OPEC+ leverage, BRI vacuum capture, consolidated private empire IPO, regulatory exemption tailoring |
 | H | Judicial / Enforcement Architecture | 5 | Invalid appointments, supply chain risk designation, subpoena non-enforcement, NPA leverage capture, enforcement weaponization |
@@ -130,16 +130,21 @@ Outputs: Plain-English report (Political Translator format)
 
 ## Taxonomy Completeness
 
-v2.4.0 is comprehensive as of April 2026, covering:
+v2.5.0 is comprehensive as of April 2026, covering:
 
 - ✅ Legislative architecture (14 mechanisms)
 - ✅ Regulatory capture (8 mechanisms)
-- ✅ Personnel cycling (7 mechanisms)
+- ✅ Personnel cycling (9 mechanisms)
 - ✅ Democratic check suppression (11 mechanisms)
-- ✅ Information control (9 mechanisms)
+- ✅ Information control (10 mechanisms)
 - ✅ Surveillance (4 mechanisms)
 - ✅ Capital opacity (8 mechanisms)
 - ✅ Judicial architecture (5 mechanisms)
+
+**v2.5.0 additions** (April 17, 2026): Three mechanisms detected during Board of Peace funding analysis (`Leroys_Tests/Discord_Run_1/`):
+- **C-08** Unauthorized Cross-Appropriations Transfer (durability 5) — the structural cousin to C-06 Impoundment: instead of withholding funds Congress appropriated, this reroutes them by sourcing across multiple accounts below political salience thresholds
+- **C-09** Presidential Parallel Finance Entity (durability 6) — off-budget international entity funded with redirected appropriations, no FOIA/IG/congressional oversight, chairman authority held in personal capacity with potential post-term persistence
+- **E-10** Crisis-Linked Urgency Capture (durability 5) — the real-crisis twin of E-07 Calendar Anchor Exploitation: active wars and emergencies produce attention windows that compound the unscrutinized-action effect of predictable calendar timing
 
 **v2.4.0 additions** (April 17, 2026): Three mechanisms detected during AI datacenter analysis (`Leroys_Tests/Discord_Test_1/`):
 - **A-14** Water Rights Capture via Data Center Siting (durability 9 — highest in taxonomy, tied with information archive deterrent and dual-alignment bridge state)
