@@ -11,7 +11,7 @@
 
 This taxonomy is the foundation layer for the countermeasure engine. It extracts every legal, regulatory, personnel, financial, and procedural mechanism documented in The Regulated Friction Project and classifies them into a machine-queryable structure.
 
-**Total mechanisms cataloged**: 56
+**Total mechanisms cataloged**: 66
 **Categories**: 8
 
 > **Future: Mechanism Dependency Graph** — Some mechanisms enable or depend on
@@ -29,14 +29,14 @@ This taxonomy is the foundation layer for the countermeasure engine. It extracts
 
 | ID | Category | Count | Description |
 |----|----------|-------|-------------|
-| A | Legislative Architecture | 12 | Auto-approvals, iterative loops, emergency clauses, bespoke carve-outs, competitor exclusions, federal oversight bypasses, interstate incentive race, state preemption of local authority |
-| B | Regulatory Capture and Override | 6 | Forced approval despite adverse findings, beneficial ownership concealment, 13F gaps, OCC preemption, PILOT agreements, ratepayer cost shift without binding demand |
-| C | Personnel Cycling and Lock-In | 6 | Pre-accountability firings, acting official installation, civil service conversion, wartime purges, temporary entity absorption, impoundment |
-| D | Democratic Check Suppression | 9 | Ballot initiative restrictions, constitutional protection reversal, clock-running litigation, coercion template, theological access architecture, curriculum pipeline, compliance enforcement, CUFI lobbying, CREC/Pentagon access |
-| E | Information Control | 7 | Selective redaction, witness support defunding, media acquisition, FaaS protest supply chain, cyber-kinetic operations, information archive as deterrent, calendar anchor exploitation |
+| A | Legislative Architecture | 14 | Auto-approvals, iterative loops, emergency clauses, bespoke carve-outs, competitor exclusions, federal oversight bypasses, interstate incentive race, state preemption of local authority, strategic asset declaration, water rights capture |
+| B | Regulatory Capture and Override | 8 | Forced approval despite adverse findings, beneficial ownership concealment, 13F gaps, OCC preemption, PILOT agreements, ratepayer cost shift without binding demand, inaugural-period deal structuring, vertical integration lock-in |
+| C | Personnel Cycling and Lock-In | 7 | Pre-accountability firings, acting official installation, civil service conversion, wartime purges, temporary entity absorption, impoundment, diplomatic title as legal shield |
+| D | Democratic Check Suppression | 11 | Ballot initiative restrictions, constitutional protection reversal, clock-running litigation, coercion template, theological access architecture, curriculum pipeline, compliance enforcement, CUFI lobbying, CREC/Pentagon access, preemptive credibility assassination, demand shock narrative override |
+| E | Information Control | 9 | Selective redaction, witness support defunding, media acquisition, FaaS protest supply chain, cyber-kinetic operations, information archive as deterrent, calendar anchor exploitation, shutter control, statistical smokescreen |
 | F | Surveillance / Data Centralization | 4 | FISA Section 702 coupling, backdoor US person queries, ECSP definition expansion, PCLOB oversight gutting |
-| G | Capital Opacity | 6 | Emoluments bypass via stablecoin, revolving door nexus, mBridge CBDC settlement, dual-alignment bridge state, OPEC+ leverage, BRI vacuum capture |
-| H | Judicial / Enforcement Architecture | 4 | Invalid appointments, supply chain risk designation, subpoena non-enforcement, NPA leverage capture |
+| G | Capital Opacity | 8 | Emoluments bypass via stablecoin, revolving door nexus, mBridge CBDC settlement, dual-alignment bridge state, OPEC+ leverage, BRI vacuum capture, consolidated private empire IPO, regulatory exemption tailoring |
+| H | Judicial / Enforcement Architecture | 5 | Invalid appointments, supply chain risk designation, subpoena non-enforcement, NPA leverage capture, enforcement weaponization |
 
 ---
 
@@ -130,16 +130,21 @@ Outputs: Plain-English report (Political Translator format)
 
 ## Taxonomy Completeness
 
-v2.1 is comprehensive as of April 2026, covering:
+v2.4.0 is comprehensive as of April 2026, covering:
 
-- ✅ Legislative architecture (12 mechanisms)
-- ✅ Regulatory capture (6 mechanisms)
-- ✅ Personnel cycling (6 mechanisms)
-- ✅ Democratic check suppression (9 mechanisms)
-- ✅ Information control (7 mechanisms)
+- ✅ Legislative architecture (14 mechanisms)
+- ✅ Regulatory capture (8 mechanisms)
+- ✅ Personnel cycling (7 mechanisms)
+- ✅ Democratic check suppression (11 mechanisms)
+- ✅ Information control (9 mechanisms)
 - ✅ Surveillance (4 mechanisms)
-- ✅ Capital opacity (6 mechanisms)
-- ✅ Judicial architecture (4 mechanisms)
+- ✅ Capital opacity (8 mechanisms)
+- ✅ Judicial architecture (5 mechanisms)
+
+**v2.4.0 additions** (April 17, 2026): Three mechanisms detected during AI datacenter analysis (`Leroys_Tests/Discord_Test_1/`):
+- **A-14** Water Rights Capture via Data Center Siting (durability 9 — highest in taxonomy, tied with information archive deterrent and dual-alignment bridge state)
+- **B-08** Vertical Integration Lock-In (durability 8)
+- **D-11** Demand Shock Narrative Override (durability 6)
 
 **Future growth**: The taxonomy will expand as the tool detects new mechanisms via `new_mechanisms_detected` in analysis outputs. Each new mechanism flagged should be verified and added to the taxonomy JSON via a pull request.
 
