@@ -1,13 +1,13 @@
 {
   "metadata": {
     "name": "Mechanism Classifier Taxonomy",
-    "version": "2.4.0",
+    "version": "2.5.0",
     "source_repo": "github.com/Leerrooy95/The_Regulated_Friction_Project",
     "source_version": "v11.9",
     "generated": "2026-04-17",
     "author": "Austin Smith + Claude (Opus 4.6)",
     "purpose": "Structured classification of every legal, regulatory, personnel, financial, and procedural mechanism documented in the Regulated Friction Project. Foundation layer for the countermeasure engine.",
-    "total_mechanisms": 66,
+    "total_mechanisms": 69,
     "categories": 8
   },
   "categories": [
@@ -854,6 +854,68 @@
       "status": "active"
     },
     {
+      "id": "C-08",
+      "name": "Unauthorized Cross-Appropriations Transfer (Executive Fund Laundering)",
+      "category": "C",
+      "jurisdiction": "federal",
+      "jurisdiction_detail": "Executive branch agencies (State Department, Treasury, etc.)",
+      "mechanism_type": "executive",
+      "description": "The executive branch transfers congressionally appropriated funds from their legally authorized purposes to a new, unauthorized entity by pulling from multiple appropriations accounts simultaneously — spreading the total across enough line items that no single account shows a politically visible deficit. The receiving entity has no congressional authorization, no FOIA obligations, no inspector general, and no accountability structure.",
+      "how_it_works": "1. Executive branch identifies a destination entity that lacks congressional authorization. 2. Agency staff source funds from multiple appropriations accounts rather than a single account. 3. Each individual transfer falls below the threshold of immediate political salience. 4. No single appropriations account shows a deficit large enough to trigger committee attention. 5. Aggregated total reaches significant size (e.g., $1.25B from 3 accounts). 6. Receiving entity has no FOIA obligation, no IG oversight, no congressional reporting requirement. 7. Once funds are transferred and commitments made, legal remedies become complex because reversal requires identifying injury and standing. 8. Pattern can repeat across administrations once precedent is established.",
+      "durability": 5,
+      "durability_notes": "Likely violates the Impoundment Control Act of 1974, but enforcement requires congressional will or court order. Once funds are deployed abroad and commitments made to foreign parties, reversal becomes practically difficult even if legally ordered. Each successful transfer establishes precedent for the next.",
+      "reversal_pathways": [
+        "Federal court order requiring return of diverted funds to original appropriations via mandamus action brought by congressional leaders",
+        "GAO reporting requirement triggered for any fund transfer across appropriations categories above a defined threshold (e.g., $50M)",
+        "Legislation prohibiting cross-appropriations transfers above a threshold without explicit congressional authorization",
+        "Mandatory 30-day congressional notice period before any transfer across appropriations categories",
+        "Inspector General investigation at originating agency with standing to block transfer pending review",
+        "Appropriations rider restoring specific funds and designating them as 'no-transfer' funds",
+        "Strengthened Antideficiency Act enforcement targeting officials who authorize unauthorized transfers"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Discord_Run_1/friction_breaker_report_20260417_131205.json"
+      ],
+      "real_examples": [
+        "State Department $1.25B transfer to Board of Peace (March 2026): $1B from international disaster assistance + $200M from peacekeeping operations + $50M from international organizations and programs",
+        "No congressional authorization obtained; Semafor report confirmed by source familiar with funding",
+        "Sen. Catherine Cortez Masto legislation introduced to redirect $1B to LIHEAP as legislative response"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "C-09",
+      "name": "Presidential Parallel Finance Entity (Off-Budget International Fund)",
+      "category": "C",
+      "jurisdiction": "federal",
+      "jurisdiction_detail": "Executive branch, international",
+      "mechanism_type": "executive",
+      "description": "The president creates an international organization outside normal congressional authorization, funds it with redirected appropriations, and commits to large total contributions — with no governance transparency, no FOIA obligations, no IG oversight, and no congressional authorization. Structurally distinct from think tanks, federal agencies, and foreign aid programs: it is a presidential entity that receives public funds and deploys them according to undisclosed criteria, potentially with authority continuing after the creator leaves office.",
+      "how_it_works": "1. President announces creation of international organization via executive action or international framework (e.g., UN Security Council resolution). 2. Governance charter is drafted without publication or public comment. 3. Chairman authority is vested in the president in a personal capacity rather than as an office-holder. 4. Executive board members named without reference to their current offices or titles — preserving their authority even after they leave government service. 5. Public funds are transferred via cross-appropriations mechanisms (see C-08). 6. Entity has no FOIA obligations, no inspector general, no conflict-of-interest rules. 7. Commits to large total contributions ($10B+) creating commitments that bind future administrations. 8. International commitments (contracts, troop deployments, reconstruction agreements) create facts on the ground difficult to unwind even if funding is cut.",
+      "durability": 6,
+      "durability_notes": "Durability could escalate to 8+ if authority persists post-term as charter language suggests. Once international commitments are made and third parties (foreign governments, contractors, multilateral institutions) have acted in reliance, reversal requires diplomatic and legal costs future administrations may not be willing to bear. The longer it operates, the more entrenched it becomes.",
+      "reversal_pathways": [
+        "Congressional legislation requiring any presidential entity receiving federal funds above a threshold to register as a federal agency with full FOIA, IG, and congressional reporting obligations",
+        "Subpoena and public release of governance charter, executive board composition, investment criteria, and all fund disbursements",
+        "Appropriations prohibition on further transfers to any entity lacking congressional authorization",
+        "Mandatory conflict-of-interest disclosure for all principals before any fund deployment",
+        "Sunset provision forcing reauthorization by next administration — preventing post-term authority persistence",
+        "Antideficiency Act litigation challenging the legal basis for the entity's receipt of federal funds",
+        "Future administration dissolving the entity and recovering committed funds where legally possible"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Discord_Run_1/friction_breaker_report_20260417_131205.json",
+        "_AI_CONTEXT_INDEX/03_BOARD_OF_PEACE.md"
+      ],
+      "real_examples": [
+        "Board of Peace (January-February 2026): $10B total US commitment, $1.25B already transferred, chairman authority held by Trump in personal capacity, executive board members identified without current office references (per Carnegie Endowment analysis)",
+        "UN Security Council Resolution 2803 welcomed the Board but Congress played no authorizing role",
+        "No FOIA obligations, no IG, no published charter, no conflict-of-interest rules",
+        "$1 billion pay-in required for permanent membership — creating a parallel international finance structure"
+      ],
+      "status": "active"
+    },
+    {
       "id": "D-01",
       "name": "Ballot Initiative Process Restrictions",
       "category": "D",
@@ -1405,6 +1467,35 @@
       "real_examples": [
         "DHS deportation statistics changing from 675K to 622K to 700K to 350-400K within days — Ungaro case invisible within noise",
         "~75% of detained individuals had no criminal record — making targeted political removals indistinguishable from routine enforcement"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "E-10",
+      "name": "Crisis-Linked Urgency Capture (Active-Crisis Attention Windows for Policy Action)",
+      "category": "E",
+      "jurisdiction": "both",
+      "jurisdiction_detail": "Systemic — applies across all levels of government",
+      "mechanism_type": "procedural",
+      "description": "Major fund transfers, policy changes, or structural decisions are executed during windows when press and public attention are consumed by active crises (wars, disasters, major emergencies) — reducing oversight scrutiny without requiring the calendar timing of E-07. Unlike manufactured urgency (D-11), this exploits real crisis attention capture. The longer a crisis dominates headlines, the wider the attention window for unscrutinized action.",
+      "how_it_works": "1. Active crisis (war, natural disaster, major emergency) dominates press coverage and congressional attention. 2. Executive branch, regulatory agencies, or legislative coalitions execute policy actions that would normally receive significant scrutiny. 3. Media capacity for investigative reporting is redirected to crisis coverage. 4. Congressional oversight staff are redirected to crisis-related hearings and briefings. 5. Actions that would trigger public controversy in normal conditions pass with minimal coverage. 6. Crisis framing can also be used post-hoc to justify actions ('this was needed because of the war'). 7. Effect is proportional to crisis duration and intensity — longer, bigger crises produce wider attention windows. 8. Differs from E-07 Calendar Anchor because crisis windows are unpredictable and often extended.",
+      "durability": 5,
+      "durability_notes": "Transparency and watchdog infrastructure can counter this, but crisis intensity tends to overwhelm normal oversight capacity. Effect compounds when multiple crises overlap. Active war coverage dominates headlines for weeks, not days — significantly longer attention window than calendar anchors.",
+      "reversal_pathways": [
+        "Mandatory 30-day public comment period for cross-appropriations transfers above $100M regardless of geopolitical context",
+        "Crisis-window flagging: independent watchdog institutions maintain dashboards tracking executive actions during active crises for retrospective scrutiny",
+        "Dedicated congressional oversight staff assigned to non-crisis policy actions during active-crisis periods",
+        "Press coalitions maintaining dedicated investigative capacity for non-crisis governance during major emergencies",
+        "Retrospective review legislation requiring GAO audit of all executive actions above a threshold taken during declared emergency periods",
+        "Extended public comment periods automatically triggered when a national emergency is in effect",
+        "Public documentation of crisis-window pattern (this repo's function) to enable pattern recognition"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Discord_Run_1/friction_breaker_report_20260417_131205.json"
+      ],
+      "real_examples": [
+        "Board of Peace $1.25B transfer executed during Iran war (February-March 2026) — cited by Sen. Cortez Masto's competing legislation explicitly connecting war-driven energy cost increases to the fund diversion",
+        "Structurally related to E-07 Calendar Anchor Exploitation but driven by unpredictable crisis rather than predictable calendar timing"
       ],
       "status": "active"
     },
