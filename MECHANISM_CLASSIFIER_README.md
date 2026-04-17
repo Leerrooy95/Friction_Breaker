@@ -11,7 +11,7 @@
 
 This taxonomy is the foundation layer for the countermeasure engine. It extracts every legal, regulatory, personnel, financial, and procedural mechanism documented in The Regulated Friction Project and classifies them into a machine-queryable structure.
 
-**Total mechanisms cataloged**: 69
+**Total mechanisms cataloged**: 73
 **Categories**: 8
 
 > **Future: Mechanism Dependency Graph** — Some mechanisms enable or depend on
@@ -29,13 +29,13 @@ This taxonomy is the foundation layer for the countermeasure engine. It extracts
 
 | ID | Category | Count | Description |
 |----|----------|-------|-------------|
-| A | Legislative Architecture | 14 | Auto-approvals, iterative loops, emergency clauses, bespoke carve-outs, competitor exclusions, federal oversight bypasses, interstate incentive race, state preemption of local authority, strategic asset declaration, water rights capture |
+| A | Legislative Architecture | 16 | Auto-approvals, iterative loops, emergency clauses, bespoke carve-outs, competitor exclusions, federal oversight bypasses, interstate incentive race, state preemption of local authority, strategic asset declaration, water rights capture, host government exclusion, mandate scope bait-and-switch |
 | B | Regulatory Capture and Override | 8 | Forced approval despite adverse findings, beneficial ownership concealment, 13F gaps, OCC preemption, PILOT agreements, ratepayer cost shift without binding demand, inaugural-period deal structuring, vertical integration lock-in |
-| C | Personnel Cycling and Lock-In | 9 | Pre-accountability firings, acting official installation, civil service conversion, wartime purges, temporary entity absorption, impoundment, diplomatic title as legal shield, unauthorized cross-appropriations transfer, presidential parallel finance entity |
+| C | Personnel Cycling and Lock-In | 10 | Pre-accountability firings, acting official installation, civil service conversion, wartime purges, temporary entity absorption, impoundment, diplomatic title as legal shield, unauthorized cross-appropriations transfer, presidential parallel finance entity, pass-through fiduciary abdication |
 | D | Democratic Check Suppression | 11 | Ballot initiative restrictions, constitutional protection reversal, clock-running litigation, coercion template, theological access architecture, curriculum pipeline, compliance enforcement, CUFI lobbying, CREC/Pentagon access, preemptive credibility assassination, demand shock narrative override |
 | E | Information Control | 10 | Selective redaction, witness support defunding, media acquisition, FaaS protest supply chain, cyber-kinetic operations, information archive as deterrent, calendar anchor exploitation, shutter control, statistical smokescreen, crisis-linked urgency capture |
 | F | Surveillance / Data Centralization | 4 | FISA Section 702 coupling, backdoor US person queries, ECSP definition expansion, PCLOB oversight gutting |
-| G | Capital Opacity | 8 | Emoluments bypass via stablecoin, revolving door nexus, mBridge CBDC settlement, dual-alignment bridge state, OPEC+ leverage, BRI vacuum capture, consolidated private empire IPO, regulatory exemption tailoring |
+| G | Capital Opacity | 9 | Emoluments bypass via stablecoin, revolving door nexus, mBridge CBDC settlement, dual-alignment bridge state, OPEC+ leverage, BRI vacuum capture, consolidated private empire IPO, regulatory exemption tailoring, pending litigation as financial leverage |
 | H | Judicial / Enforcement Architecture | 5 | Invalid appointments, supply chain risk designation, subpoena non-enforcement, NPA leverage capture, enforcement weaponization |
 
 ---
@@ -130,20 +130,27 @@ Outputs: Plain-English report (Political Translator format)
 
 ## Taxonomy Completeness
 
-v2.5.0 is comprehensive as of April 2026, covering:
+v2.6.0 is comprehensive as of April 2026, covering:
 
-- ✅ Legislative architecture (14 mechanisms)
+- ✅ Legislative architecture (16 mechanisms)
 - ✅ Regulatory capture (8 mechanisms)
-- ✅ Personnel cycling (9 mechanisms)
+- ✅ Personnel cycling (10 mechanisms)
 - ✅ Democratic check suppression (11 mechanisms)
 - ✅ Information control (10 mechanisms)
 - ✅ Surveillance (4 mechanisms)
-- ✅ Capital opacity (8 mechanisms)
+- ✅ Capital opacity (9 mechanisms)
 - ✅ Judicial architecture (5 mechanisms)
+
+**v2.6.0 changes** (April 17, 2026): Four new mechanisms detected during Board of Peace governance analysis (`Leroys_Tests/Discord_Run_2/`), plus refinement of one existing mechanism:
+- **A-15** Host Government Exclusion from Reconstruction Governance (durability 6) — reconstruction architecture deliberately bypassing recognized host government, in contrast to Ukraine/Haiti FIF precedent
+- **A-16** Mandate Scope Bait-and-Switch (durability 7) — UN Security Council endorsement of an implementing body whose actual charter is unpublished at time of vote
+- **C-10** Pass-Through Fiduciary Abdication (durability 7) — World Bank as 'limited trustee' explicitly disclaiming fiduciary responsibility, converting institutional credibility into reputational subsidy
+- **G-09** Pending Litigation as Financial Leverage (durability 5) — bilateral capture between sitting official and bank via concurrent personal lawsuit and depository selection
+- **C-09 refinement**: Durability upgraded 6→8 based on Carnegie Endowment evidence that the charter vests specific governance authorities (agenda-setting, tie-breaking, dispute arbitration, entity creation/dissolution, successor selection, full budget control) in personal capacity with post-term persistence
 
 **v2.5.0 additions** (April 17, 2026): Three mechanisms detected during Board of Peace funding analysis (`Leroys_Tests/Discord_Run_1/`):
 - **C-08** Unauthorized Cross-Appropriations Transfer (durability 5) — the structural cousin to C-06 Impoundment: instead of withholding funds Congress appropriated, this reroutes them by sourcing across multiple accounts below political salience thresholds
-- **C-09** Presidential Parallel Finance Entity (durability 6) — off-budget international entity funded with redirected appropriations, no FOIA/IG/congressional oversight, chairman authority held in personal capacity with potential post-term persistence
+- **C-09** Presidential Parallel Finance Entity (durability 8 as of v2.6.0) — off-budget international entity funded with redirected appropriations, no FOIA/IG/congressional oversight, chairman authority held in personal capacity with post-term persistence
 - **E-10** Crisis-Linked Urgency Capture (durability 5) — the real-crisis twin of E-07 Calendar Anchor Exploitation: active wars and emergencies produce attention windows that compound the unscrutinized-action effect of predictable calendar timing
 
 **v2.4.0 additions** (April 17, 2026): Three mechanisms detected during AI datacenter analysis (`Leroys_Tests/Discord_Test_1/`):
@@ -151,7 +158,7 @@ v2.5.0 is comprehensive as of April 2026, covering:
 - **B-08** Vertical Integration Lock-In (durability 8)
 - **D-11** Demand Shock Narrative Override (durability 6)
 
-**Future growth**: The taxonomy will expand as the tool detects new mechanisms via `new_mechanisms_detected` in analysis outputs. Each new mechanism flagged should be verified and added to the taxonomy JSON via a pull request.
+**Future growth**: The taxonomy will expand as the tool detects new mechanisms via `new_mechanisms_detected` in analysis outputs. Each new mechanism flagged should be verified and added to the taxonomy JSON via a pull request. When a detection is a sharper version of an existing mechanism (rather than a genuinely new one), the existing entry should be refined rather than duplicated.
 
 ---
 
