@@ -174,4 +174,4 @@ v2.6.0 is comprehensive as of April 2026, covering:
 
 ## License
 
-[MIT License](LICENSE) — same as The Regulated Friction Project.
+[MIT License](LICENSE)
