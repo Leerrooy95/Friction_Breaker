@@ -1,6 +1,6 @@
 # Mechanism Classifier Taxonomy — Documentation
 
-**Version**: 2.2.0
+**Version**: 2.7.0
 **Source**: The Regulated Friction Project (v12.3)
 **Generated**: April 2026
 **Authors**: Austin Smith + Claude (Opus 4.6)
@@ -11,7 +11,7 @@
 
 This taxonomy is the foundation layer for the countermeasure engine. It extracts every legal, regulatory, personnel, financial, and procedural mechanism documented in The Regulated Friction Project and classifies them into a machine-queryable structure.
 
-**Total mechanisms cataloged**: 73
+**Total mechanisms cataloged**: 76
 **Categories**: 8
 
 > **Future: Mechanism Dependency Graph** — Some mechanisms enable or depend on
@@ -29,14 +29,14 @@ This taxonomy is the foundation layer for the countermeasure engine. It extracts
 
 | ID | Category | Count | Description |
 |----|----------|-------|-------------|
-| A | Legislative Architecture | 16 | Auto-approvals, iterative loops, emergency clauses, bespoke carve-outs, competitor exclusions, federal oversight bypasses, interstate incentive race, state preemption of local authority, strategic asset declaration, water rights capture, host government exclusion, mandate scope bait-and-switch |
+| A | Legislative Architecture | 17 | Auto-approvals, iterative loops, emergency clauses, bespoke carve-outs, competitor exclusions, federal oversight bypasses, interstate incentive race, state preemption of local authority, strategic asset declaration, water rights capture, host government exclusion, mandate scope bait-and-switch, public-private cost obfuscation |
 | B | Regulatory Capture and Override | 8 | Forced approval despite adverse findings, beneficial ownership concealment, 13F gaps, OCC preemption, PILOT agreements, ratepayer cost shift without binding demand, inaugural-period deal structuring, vertical integration lock-in |
 | C | Personnel Cycling and Lock-In | 10 | Pre-accountability firings, acting official installation, civil service conversion, wartime purges, temporary entity absorption, impoundment, diplomatic title as legal shield, unauthorized cross-appropriations transfer, presidential parallel finance entity, pass-through fiduciary abdication |
-| D | Democratic Check Suppression | 11 | Ballot initiative restrictions, constitutional protection reversal, clock-running litigation, coercion template, theological access architecture, curriculum pipeline, compliance enforcement, CUFI lobbying, CREC/Pentagon access, preemptive credibility assassination, demand shock narrative override |
+| D | Democratic Check Suppression | 12 | Ballot initiative restrictions, constitutional protection reversal, clock-running litigation, coercion template, theological access architecture, curriculum pipeline, compliance enforcement, CUFI lobbying, CREC/Pentagon access, preemptive credibility assassination, demand shock narrative override, bipartisan absorption of coercive narrative |
 | E | Information Control | 10 | Selective redaction, witness support defunding, media acquisition, FaaS protest supply chain, cyber-kinetic operations, information archive as deterrent, calendar anchor exploitation, shutter control, statistical smokescreen, crisis-linked urgency capture |
 | F | Surveillance / Data Centralization | 4 | FISA Section 702 coupling, backdoor US person queries, ECSP definition expansion, PCLOB oversight gutting |
 | G | Capital Opacity | 9 | Emoluments bypass via stablecoin, revolving door nexus, mBridge CBDC settlement, dual-alignment bridge state, OPEC+ leverage, BRI vacuum capture, consolidated private empire IPO, regulatory exemption tailoring, pending litigation as financial leverage |
-| H | Judicial / Enforcement Architecture | 5 | Invalid appointments, supply chain risk designation, subpoena non-enforcement, NPA leverage capture, enforcement weaponization |
+| H | Judicial / Enforcement Architecture | 6 | Invalid appointments, supply chain risk designation, subpoena non-enforcement, NPA leverage capture, enforcement weaponization, crisis event instrumentalization for pending litigation pressure |
 
 ---
 
@@ -130,16 +130,21 @@ Outputs: Plain-English report (Political Translator format)
 
 ## Taxonomy Completeness
 
-v2.6.0 is comprehensive as of April 2026, covering:
+v2.7.0 is comprehensive as of April 2026, covering:
 
-- ✅ Legislative architecture (16 mechanisms)
+- ✅ Legislative architecture (17 mechanisms)
 - ✅ Regulatory capture (8 mechanisms)
 - ✅ Personnel cycling (10 mechanisms)
-- ✅ Democratic check suppression (11 mechanisms)
+- ✅ Democratic check suppression (12 mechanisms)
 - ✅ Information control (10 mechanisms)
 - ✅ Surveillance (4 mechanisms)
 - ✅ Capital opacity (9 mechanisms)
-- ✅ Judicial architecture (5 mechanisms)
+- ✅ Judicial architecture (6 mechanisms)
+
+**v2.7.0 changes** (April 27, 2026): Three new mechanisms detected during White House ballroom / DOJ litigation pressure analysis (`Leroys_Tests/Discord_Run_3/`):
+- **A-17** Public-Private Cost Obfuscation (Mixed Funding Narrative Laundering) (durability 5) — a construction project with substantial public funding is characterized publicly as 'privately funded,' with public components budgeted under separate agency line items to prevent consolidated cost accountability
+- **D-12** Bipartisan Absorption of Coercive Narrative (Cross-Party Urgency Laundering) (durability 3) — a coercive policy narrative generated by one party is rapidly amplified by members of the opposing party immediately following a trauma event, providing cross-partisan legitimacy that insulates the narrative from normal counter-pressure
+- **H-06** Crisis Event Instrumentalization for Pending Litigation Pressure (Judicial Bypass via Trauma Narrative) (durability 4) — an active shooting or violent incident is instrumentalized within hours to pressure civil plaintiffs to voluntarily dismiss pending lawsuits, with a formal government deadline letter explicitly linking the crisis to the litigation outcome
 
 **v2.6.0 changes** (April 17, 2026): Four new mechanisms detected during Board of Peace governance analysis (`Leroys_Tests/Discord_Run_2/`), plus refinement of one existing mechanism:
 - **A-15** Host Government Exclusion from Reconstruction Governance (durability 6) — reconstruction architecture deliberately bypassing recognized host government, in contrast to Ukraine/Haiti FIF precedent
