@@ -1,13 +1,13 @@
 {
   "metadata": {
     "name": "Mechanism Classifier Taxonomy",
-    "version": "2.6.0",
+    "version": "2.7.0",
     "source_repo": "github.com/Leerrooy95/The_Regulated_Friction_Project",
     "source_version": "v11.9",
-    "generated": "2026-04-17",
+    "generated": "2026-04-27",
     "author": "Austin Smith + Claude (Opus 4.6)",
     "purpose": "Structured classification of every legal, regulatory, personnel, financial, and procedural mechanism documented in the Regulated Friction Project. Foundation layer for the countermeasure engine.",
-    "total_mechanisms": 73,
+    "total_mechanisms": 76,
     "categories": 8
   },
   "categories": [
@@ -2079,6 +2079,89 @@
       ],
       "real_examples": [
         "Amanda Ungaro — long-term US resident, witness to Epstein-network activities, mother of Paolo Zampoli's child, allegedly deported to Brazil after Zampoli contacted ICE, hidden within mass deportation statistics"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "A-17",
+      "name": "Public-Private Cost Obfuscation (Mixed Funding Narrative Laundering)",
+      "category": "A",
+      "jurisdiction": "federal",
+      "jurisdiction_detail": "Executive branch, federal agencies, OMB",
+      "mechanism_type": "financial",
+      "description": "A construction or infrastructure project with substantial public funding components is publicly characterized as 'privately funded,' with the public components (security upgrades, bunker construction, ancillary public expenditures) described as categorically distinct from the project itself. This creates a false public ledger: officials can simultaneously claim private philanthropy while deploying public resources, making accountability for total public expenditure impossible without forensic budget analysis. The mechanism generates deniability when critics raise public cost concerns because each component is technically accurate in isolation while the combined characterization is false.",
+      "how_it_works": "1. A major project is announced with a 'privately funded' label emphasizing philanthropic or private contributions. 2. Public funding components (security infrastructure, site preparation, ancillary costs) are budgeted under separate line items with different agency designations. 3. Each component is technically classified differently, making aggregation across budget documents require expert forensic analysis. 4. Officials use the 'privately funded' label in public communications while the separate public expenditures proceed through normal appropriations or discretionary executive channels. 5. Critics who raise total public cost concerns are rebutted with technically accurate statements about the private contribution portion. 6. The true total public cost only becomes visible through investigative journalism or FOIA-forced document production. 7. By the time the full picture emerges, the project is complete and reversal is economically infeasible.",
+      "durability": 5,
+      "durability_notes": "Moderate durability because investigative journalism and congressional budget analysis can reconstruct the true cost picture, but this requires sustained effort. The initial narrative advantage is significant. Once the project is funded and underway, cost transparency no longer affects the outcome.",
+      "reversal_pathways": [
+        "FOIA requests for all budget line items associated with the project across all agencies",
+        "Congressional mandate requiring consolidated public reporting of all federal expenditures associated with any project receiving more than $X in private funding",
+        "GAO audit of total public expenditure including security, site preparation, and ancillary costs",
+        "Investigative journalism reconstructing the full cost picture across agency budget documents",
+        "Legislation requiring a single 'true cost' disclosure for any project described as privately funded that also involves public expenditures above a threshold",
+        "Public interest litigation seeking consolidated accounting of all public costs",
+        "Inspector General investigation into whether the 'privately funded' characterization was misleading"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Discord_Run_3/friction_breaker_report_20260427_003203.md"
+      ],
+      "real_examples": [
+        "White House ballroom project (2026): characterized as privately funded while taxpayer money paid for bunker construction and security upgrades described as separate line items — the combined public cost was not disclosed in official communications"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "D-12",
+      "name": "Bipartisan Absorption of Coercive Narrative (Cross-Party Urgency Laundering)",
+      "category": "D",
+      "jurisdiction": "federal",
+      "jurisdiction_detail": "Congress, executive branch communications, media ecosystem",
+      "mechanism_type": "political",
+      "description": "A coercive or self-serving policy narrative generated by one party is rapidly amplified by members of the opposing party immediately following a trauma event, providing cross-partisan legitimacy that insulates the narrative from normal political counter-pressure. The mechanism works because tragedy and crisis temporarily dissolve partisan filters: opposition members endorse the majority framing not because of policy merits but because the emotional context makes dissent appear callous or unpatriotic, creating a window where manufactured urgency becomes bipartisan consensus before scrutiny can be applied.",
+      "how_it_works": "1. A trauma event (shooting, attack, disaster) creates an emotional context that suppresses normal partisan skepticism. 2. The majority party immediately advances a policy narrative tied to the event — 'this proves we need X.' 3. Members of the opposition party, facing social cost for appearing callous in a moment of national grief, quickly affirm the majority framing. 4. Cross-party endorsements are amplified by media as evidence of genuine bipartisan consensus. 5. The appearance of bipartisan agreement insulates the narrative from normal political challenge — critics now appear to be opposing the consensus, not the policy. 6. The window of bipartisan cover is exploited to advance the policy before scrutiny can be organized. 7. By the time normal partisan dynamics resume, the policy is in place or the legal challenge is withdrawn.",
+      "durability": 3,
+      "durability_notes": "Low durability because the emotional window that creates the bipartisan absorption effect is temporary — normal partisan competition typically resumes within days to weeks. However, during that window, irreversible actions (lawsuit dismissals, appropriations) can be taken that cannot be easily undone when normal scrutiny resumes.",
+      "reversal_pathways": [
+        "Public documentation of the pattern by journalists and researchers to make it recognizable in real time",
+        "Opposition caucus institutional norms committing to a 48-72 hour review period before endorsing any policy framing tied to a crisis event",
+        "Civil society organizations maintaining standing 'rapid response' capacity to publicly push back against cross-party consensus framing before it crystallizes",
+        "Media literacy education helping journalists distinguish between genuine bipartisan agreement and trauma-driven endorsement",
+        "Post-crisis retrospective reviews in which opposition members publicly re-evaluate statements made under emotional duress",
+        "Preserving the legal record: plaintiff organizations committing in advance to maintaining suits regardless of political pressure during crisis windows"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Discord_Run_3/friction_breaker_report_20260427_003203.md"
+      ],
+      "real_examples": [
+        "White House ballroom project (2026): Democrats including Sen. John Fetterman endorsed the Republican framing that the $400M ballroom was a security necessity immediately following the White House Correspondents' Dinner shooting — providing bipartisan cover before any independent assessment of the claim was possible"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "H-06",
+      "name": "Crisis Event Instrumentalization for Pending Litigation Pressure (Judicial Bypass via Trauma Narrative)",
+      "category": "H",
+      "jurisdiction": "federal",
+      "jurisdiction_detail": "DOJ, federal district courts",
+      "mechanism_type": "judicial",
+      "description": "An active shooting or violent incident is instrumentalized within hours to pressure civil plaintiffs to voluntarily dismiss pending lawsuits, with the government issuing a formal deadline letter explicitly linking the crisis to the litigation outcome. The mechanism exploits the window of public fear and bipartisan convergence immediately following a violent event to create social and legal pressure for withdrawal of cases that were proceeding normally through the courts — bypassing the judicial process not by winning on the merits but by rendering continuation politically and emotionally costly for the plaintiff organization.",
+      "how_it_works": "1. Civil litigation is proceeding normally against a government project or policy. 2. A violent incident or crisis event occurs, creating a window of public fear and emotional vulnerability. 3. Within hours, government officials issue a formal letter to the plaintiff citing the crisis as a reason the contested project is now a security necessity. 4. The letter sets a short deadline (hours, not days) for the plaintiff to voluntarily dismiss the lawsuit. 5. The threat of government-forced dismissal motion is attached if the plaintiff does not comply. 6. The plaintiff organization faces social pressure from bipartisan endorsements of the government framing — continuing the lawsuit appears callous or obstructionist in the emotional aftermath. 7. The combination of legal threat, emotional pressure, and social stigma creates conditions for voluntary dismissal without any judicial ruling on the merits. 8. The judicial process is bypassed not through procedural manipulation but through manufactured emotional context.",
+      "durability": 4,
+      "durability_notes": "Low-to-moderate durability because the emotional window is temporary and courts retain independent authority to deny a voluntary dismissal or allow the case to continue if the plaintiff chooses to resist. However, once a plaintiff voluntarily dismisses, reinstatement requires showing grounds — and the precedent of capitulation under pressure may discourage future plaintiffs from maintaining suits during crisis windows.",
+      "reversal_pathways": [
+        "Judicial injunction maintaining lawsuit regardless of government pressure — courts can deny voluntary dismissal motions if prejudice to the public interest is shown",
+        "Congressional oversight of DOJ litigation pressure tactics during crisis windows, including subpoena of all communications related to deadline letters",
+        "Inspector General investigation into whether DOJ used the crisis as a pretext to pressure unrelated civil litigation",
+        "Plaintiff organizations establishing internal protocols committing to maintain litigation regardless of crisis-window political pressure",
+        "Public documentation and labeling of the pattern to reduce its effectiveness through recognition",
+        "Bar association ethics guidance on government attorney conduct when issuing deadline letters during trauma events",
+        "Legislation requiring independent review before DOJ can issue coercive deadline letters to civil plaintiffs"
+      ],
+      "repo_references": [
+        "Leroys_Tests/Discord_Run_3/friction_breaker_report_20260427_003203.md"
+      ],
+      "real_examples": [
+        "White House ballroom lawsuit (2026): Assistant Attorney General Brett Shumate issued a formal letter to the National Trust for Historic Preservation within hours of the White House Correspondents' Dinner shooting, demanding dismissal of their lawsuit by 9 a.m. the next day or the DOJ would seek court-ordered dismissal — explicitly linking the shooting to the need for the ballroom construction"
       ],
       "status": "active"
     }
