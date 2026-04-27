@@ -9,6 +9,8 @@ An open-source tool that identifies legal, regulatory, and procedural mechanisms
 
 Powered by [The Regulated Friction Project](https://github.com/Leerrooy95/The_Regulated_Friction_Project).
 
+> **Live hosted version**: [regulatedfriction.me](https://regulatedfriction.me) — sign in with Discord, no API key required. Tier-based access (Observer · Supporter · Sustainer · Analyst). See [Access Tiers](#access-tiers) below.
+
 ---
 
 ## Why This Exists
@@ -23,7 +25,7 @@ Friction Breaker makes these mechanisms visible. It reads any text you give it, 
 
 1. **You paste text** — a news article, executive order, bill text, regulatory action, or anything else.
 2. **GLiNER2 extracts entities** locally (zero-cost, no API needed, runs on CPU).
-3. **The Mechanism Classifier** matches what it finds against a taxonomy of **73 documented mechanisms** across 8 categories, extracted from The Regulated Friction Project.
+3. **The Mechanism Classifier** matches what it finds against a taxonomy of **76 documented mechanisms** across 8 categories, extracted from The Regulated Friction Project.
 4. **Claude generates countermeasure analysis** — ranked by durability (hardest to reverse first) — in plain English anyone can understand.
 
 Every analysis includes:
@@ -104,6 +106,23 @@ This tool requires an **Anthropic API key** for the countermeasure analysis step
 
 GLiNER2 runs entirely locally — no API key needed for entity extraction.
 
+> **Prefer no setup?** Use the hosted version at [regulatedfriction.me](https://regulatedfriction.me) — sign in with Discord and analyze without managing an API key.
+
+---
+
+## Access Tiers
+
+The hosted server at [regulatedfriction.me](https://regulatedfriction.me) uses Discord OAuth and Patreon-based tiers:
+
+| Tier | Analyses / month | How to get it |
+|------|-----------------|---------------|
+| **Observer** | 3 | Just sign in with Discord |
+| **Supporter** | 20 | $5/mo on Patreon |
+| **Sustainer** | 60 | $10/mo on Patreon |
+| **Analyst** | 200 | $25/mo on Patreon |
+
+The self-hosted BYOK version (this repository) has no usage limits — run as many analyses as your API key allows.
+
 ---
 
 ## How It Works
@@ -132,7 +151,7 @@ Each mechanism in the taxonomy has:
 | **Reversal Pathways** | Specific countermeasures ranked by durability                         |
 | **Real Examples**   | Verified instances from the research                                    |
 
-**8 categories, 73 mechanisms.** See [`MECHANISM_CLASSIFIER_README.md`](MECHANISM_CLASSIFIER_README.md) for full documentation.
+**8 categories, 76 mechanisms.** See [`MECHANISM_CLASSIFIER_README.md`](MECHANISM_CLASSIFIER_README.md) for full documentation.
 
 ---
 
@@ -176,7 +195,7 @@ Reports can be downloaded in **PDF, DOCX, Markdown, CSV, JSON, or plain text** �
 | **GLiNER2**            | Local entity extraction (205M params, runs on CPU)    | Free  |
 | **Claude API**         | Mechanism classification + countermeasure analysis     | BYOK  |
 | **Flask**              | Web interface + REST API                               | Free  |
-| **Mechanism Taxonomy** | 73 mechanisms from The Regulated Friction Project      | Free  |
+| **Mechanism Taxonomy** | 76 mechanisms from The Regulated Friction Project      | Free  |
 
 ---
 
@@ -185,10 +204,10 @@ Reports can be downloaded in **PDF, DOCX, Markdown, CSV, JSON, or plain text** �
 ```
 Friction_Breaker/
 ├── app.py                              # Flask app + CLI + analysis pipeline
-├── mechanism_classifier_taxonomy.json  # Mechanism taxonomy (73 mechanisms, 8 categories)
+├── mechanism_classifier_taxonomy.json  # Mechanism taxonomy (76 mechanisms, 8 categories)
 ├── MECHANISM_CLASSIFIER_README.md      # Taxonomy documentation
 ├── templates/
-│   └── index.html                      # Web UI
+│   └── index.html                      # Web UI (BYOK self-hosted version)
 ├── _AI_CONTEXT_INDEX/                  # Background knowledge base
 ├── output/                             # Analysis results (auto-created, gitignored)
 ├── tests/                              # Test suite
@@ -268,11 +287,15 @@ See [SECURITY.md](SECURITY.md) for the vulnerability reporting policy.
 ## Changelog
 
 ### v1.1.0 (April 2026)
+- **Taxonomy v2.7.0**: 76 mechanisms across 8 categories — three new mechanisms from Discord_Run_3 analysis (White House ballroom / DOJ litigation pressure):
+  - **A-17** Public-Private Cost Obfuscation (Mixed Funding Narrative Laundering) — durability 5
+  - **D-12** Bipartisan Absorption of Coercive Narrative (Cross-Party Urgency Laundering) — durability 3
+  - **H-06** Crisis Event Instrumentalization for Pending Litigation Pressure (Judicial Bypass via Trauma Narrative) — durability 4
+- **Live server**: hosted version at [regulatedfriction.me](https://regulatedfriction.me) with Discord OAuth and Patreon tier system (Observer / Supporter / Sustainer / Analyst)
 - **Batch mode**: `--batch` CLI flag processes a file of URLs/texts (one per line), saving all results to `output/`
 - **Configurable rate limiting**: `RATE_LIMIT` environment variable (default: `10 per minute`)
 - **Context index in Claude prompt**: Background research from `_AI_CONTEXT_INDEX/` is now included in analysis prompts (capped at 8K chars)
 - **Taxonomy version tracking**: `/health` endpoint and analysis metadata now include `taxonomy_version`
-- **Taxonomy v2.2.0**: 56 mechanisms across 8 categories (docs updated to match)
 
 ---
 
