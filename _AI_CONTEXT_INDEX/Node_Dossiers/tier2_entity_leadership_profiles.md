@@ -75,7 +75,7 @@ This dossier documents the leadership structure of entities appearing in the cap
 
 | # | Claim | Status | Source |
 |---|-------|--------|--------|
-| 1 | PIF AUM approximately $925B (2025) | ⚠️ PARTIALLY VERIFIED — ~$925B reported for 2025; the $930-941B figure may reflect later estimates | [Wikipedia](https://en.wikipedia.org/wiki/Public_Investment_Fund), [Cord Magazine](https://cordmagazine.com/business/entrepreneurship/yasir-al-rumayyan-governor-of-public-investment-fund-of-saudi-arabia-the-architect-of-saudi-arabias-investments/) |
+| 1 | PIF AUM approximately $913B (end-2024); ~$1.15T (mid-2025) | ✅ VERIFIED — $913B confirmed in PIF 2024 Annual Report (19% YoY increase); mid-2025 figure crossed $1.15T per multiple financial sources | [PIF 2024 Annual Report via Saudi Press](https://saudipress.com/saudi-pif-s-assets-under-management-rise-19-to-913bn-in-2024), [Semafor](https://www.semafor.com/article/07/02/2025/saudis-pif-hits-1-trillion-in-assets-amid-rising-costs-and-strategy-shift), [Finance Middle East](https://www.financemiddleeast.com/news/saudi-pif-and-adia-climb-global-swf-rankings-with-trillion-dollar-portfolios/), [Wikipedia](https://en.wikipedia.org/wiki/Public_Investment_Fund) |
 | 2 | PIF invested $2B into Affinity Partners (Kushner) in 2021 | ✅ VERIFIED — PIF board overruled advisers' objections | [NYT via Yahoo Finance](https://finance.yahoo.com/news/jared-kushners-post-white-house-211939446.html), [Middle East Eye](https://www.middleeasteye.net/news/saudi-arabia-sovereign-wealth-fund-panel-objected-kushner-fund), [Senate Finance Committee](https://www.finance.senate.gov/chairmans-news/wyden-investigation-of-kushner-firm-continues-new-letter-outlines-affinity-partners-fee-structure-lack-of-return-to-investors-questionable-deals-with-foreign-governments) |
 | 3 | PIF advisers raised questions about Kushner investment merit | ✅ VERIFIED — Panel cited lack of experience, excessive fees, public relations risk | [NYT via Yahoo Finance](https://finance.yahoo.com/news/jared-kushners-post-white-house-211939446.html), [Middle East Eye](https://www.middleeasteye.net/news/saudi-arabia-sovereign-wealth-fund-panel-objected-kushner-fund) |
 | 4 | PIF management overruled advisers on Kushner investment | ✅ VERIFIED — Crown Prince MBS overruled advisory panel | [NYT via Yahoo Finance](https://finance.yahoo.com/news/jared-kushners-post-white-house-211939446.html), [Middle East Eye](https://www.middleeasteye.net/news/saudi-arabia-sovereign-wealth-fund-panel-objected-kushner-fund) |
@@ -218,13 +218,13 @@ Source: [MGX press release](https://www.mgx.ae/en/news/tahnoon-bin-zayed-chairs-
 
 | # | Claim | Status |
 |---|-------|--------|
-| 1 | Malik net worth at least $103M (Feb 2026) | 🔍 UNVERIFIABLE — Net worth not publicly disclosed; Wikipedia mentions "eight-figure" BofA settlement |
-| 2 | Malik owns ~10.1M shares of CLBR.U (Colombier III) | 🔍 UNVERIFIABLE — SEC Form 4 filings exist but specific share count not independently confirmed in this search |
+| 1 | Malik net worth at least $103M (Feb 2026) | ✅ VERIFIED — Net worth at least $103M based on 10,116,667 CLBR.U shares per SEC filings: [GuruFocus](https://www.gurufocus.com/insider/184399/omeed-malik), [StockTitan SEC Form 4](https://www.stocktitan.net/sec-filings/CLBR/form-4-colombier-acquisition-corp-iii-insider-trading-activity-9cab2c2898d7.html) |
+| 2 | Malik owns ~10.1M shares of CLBR.U (Colombier III) | ✅ VERIFIED — SEC Form 4 and Schedule 13D filings confirm 10,116,667 ordinary shares as of February 5, 2026, held via Knights Court LLC / Colombier Sponsor III LLC: [StockTitan SEC Form 4](https://www.stocktitan.net/sec-filings/CLBR/form-4-colombier-acquisition-corp-iii-insider-trading-activity-9cab2c2898d7.html), [StockTitan Schedule 13D](https://www.stocktitan.net/sec-filings/CLBR/schedule-13d-colombier-acquisition-corp-iii-major-shareholder-acquisi-e9de5c3b5434.html) |
 | 3 | GrabAGun merger ($150M) via Colombier II | ✅ VERIFIED — Enterprise value $196.5M (commonly cited as $150M base); merged July 2025; NYSE: PEW/PEWW. Colombier II delivered >$179M in gross proceeds. | [StockTitan](https://www.stocktitan.net/news/CLBR/grab-a-gun-a-mobile-focused-online-firearms-retailer-defending-the-8ay3hczyn1zi.html), [Investing.com](https://www.investing.com/news/stock-market-news/grabagun-completes-spac-merger-to-begin-trading-on-nyse-as-pew-432SI-4136482), [DeepNewz](https://deepnewz.com/stocks/colombier-acquisition-corp-ii-to-merge-grabagun-196-5-million-trump-jr-advises-f17a8e84) |
 | 4 | Colombier III IPO filed for $260M (late 2025) | ✅ VERIFIED — S-1 filed October 17, 2025; priced at $260M; completed IPO raised $299M with full over-allotment exercise in Feb 2026; trades as CLBR.U on NYSE | [Renaissance Capital](https://www.renaissancecapital.com/IPO-Center/News/114319/SPAC-Colombier-Acquisition-III-files-for-a-$260-million-IPO-led-by-Omeed-Ma), [Bloomberg, Oct 17, 2025](https://www.bloomberg.com/news/articles/2025-10-17/trump-jr-s-firm-taps-palihapitya-gop-influencers-for-new-spac), [SPAC Insider](https://www.spacinsider.com/news/headline-post/colombier-acquisition-corp-iii-clbru-prices-260m-ipo), [StockTitan 8-K](https://www.stocktitan.net/sec-filings/CLBR/8-k-colombier-acquisition-corp-iii-reports-material-event-434d36ca29d1.html) |
 | 5 | Chamath Palihapitiya involved in Colombier III | ✅ VERIFIED — Named as board member alongside Donald Trump Jr., Laura Ingraham, Blake Masters in Bloomberg (Oct 17, 2025) and US News/Reuters | [Bloomberg, Oct 17, 2025](https://www.bloomberg.com/news/articles/2025-10-17/trump-jr-s-firm-taps-palihapitya-gop-influencers-for-new-spac), [US News](https://money.usnews.com/investing/news/articles/2025-10-17/spac-backed-by-trump-jr-omeed-malik-files-for-260-million-us-ipo) |
-| 6 | Silver Lake is investor in 1789 Capital | 🔍 UNVERIFIABLE — Referenced in some reports but not independently confirmed. Web search (April 2026) found no Fox Business, Bloomberg, SEC filing, or press release confirming Silver Lake as a direct LP or co-investor in 1789 Capital; Silver Lake's 2024 fundraising activity ($20.5B SLP VII) focused on technology deals unrelated to 1789 Capital. |
-| 7 | Deployed ~$800M across portfolio by early 2026 | 🔍 UNVERIFIABLE — Specific deployment figure not independently confirmed |
+| 6 | Silver Lake is investor in 1789 Capital | 🔍 UNVERIFIABLE — Referenced in some reports but not independently confirmed. Web searches (April 2026) found no Fox Business, Bloomberg, SEC filing, or press release confirming Silver Lake as a direct LP or co-investor in 1789 Capital; PitchBook and CB Insights list of 1789 Capital co-investors does not include Silver Lake; Silver Lake's 2024 fundraising activity ($20.5B SLP VII) focused on technology deals unrelated to 1789 Capital. |
+| 7 | Deployed ~$800M across portfolio by early 2026 | 🔍 UNVERIFIABLE — Specific deployment figure not independently confirmed; portfolio government contracts total $735M+ reported indirectly but no source confirms the $800M deployed figure specifically. |
 
 ---
 
@@ -279,13 +279,13 @@ Source: [MGX press release](https://www.mgx.ae/en/news/tahnoon-bin-zayed-chairs-
 | 1789 Capital leadership | 3 | 3 | 0 | 0 |
 | 1789 Capital key claims | 4 | 4 | 0 | 0 |
 | 1789 Capital investments | 6 | 6 | 0 | 0 |
-| 1789 Capital unverified | 7 | 0 | 1 | 6 |
+| 1789 Capital unverified | 7 | 5 | 0 | 2 |
 | Network connections | 8 | 8 | 0 | 0 |
 | Capital flows | 5 | 5 | 0 | 0 |
 | Royal family involvement | 3 | 3 | 0 | 0 |
-| **TOTAL** | **115** | **99** | **4** | **12** |
+| **TOTAL** | **115** | **104** | **3** | **8** |
 
-**Verification Rate**: 86% verified, 3.5% partially verified, 10.5% unverifiable (mostly investigative/sensitive claims)
+**Verification Rate**: 90.4% verified, 2.6% partially verified, 7% unverifiable (2 remaining: Silver Lake investor claim and $800M deployed figure — neither confirmed by SEC filings, Bloomberg, or other independent sources)
 
 ---
 
