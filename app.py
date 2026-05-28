@@ -128,6 +128,7 @@ _RATE_LIMIT = os.getenv("RATE_LIMIT", "10 per minute")
 _FLASK_HOST = os.getenv("FLASK_HOST", "127.0.0.1")  # Bind to loopback by default (CWE-605)
 _MAX_INPUT_CHARS = 50000
 _MAX_CONTEXT_CHARS = 8000  # Cap for context index injected into Claude prompt
+_PERSIST_RESULTS = os.getenv("PERSIST_RESULTS", "false").strip().lower() == "true"
 _BASE_DIR = Path(__file__).resolve().parent
 _TAXONOMY_FILE = _BASE_DIR / "mechanism_classifier_taxonomy.json"
 _CONTEXT_DIR = _BASE_DIR / "_AI_CONTEXT_INDEX"
@@ -1144,9 +1145,9 @@ def run_analysis(text: str, api_key: str) -> dict:
         "timestamp": datetime.now(timezone.utc).isoformat()
     }
 
-    # 6. Save
-    save_result(result)
-
+   # 6. Save (only when explicitly enabled; off by default for privacy)
+    if _PERSIST_RESULTS:
+        save_result(result)
     return result
 
 
