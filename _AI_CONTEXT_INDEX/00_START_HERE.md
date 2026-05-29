@@ -2,7 +2,7 @@
 
 **Purpose**: Quick reference guide for AI models to understand The Regulated Friction Project without reading every document.
 
-**Last Updated**: April 27, 2026 | **Repository Version**: v12.5
+**Last Updated**: May 7, 2026 | **Repository Version**: v12.8
 
 ---
 
@@ -117,7 +117,8 @@ Key results include: permutation testing (p < 0.0001), Granger causality (p = 0.
 | **UAE MGX** | 15% TikTok, Stargate equity | `04_CAPITAL_ARCHITECTURE.md` |
 | **1789 Capital** | Media investment (TCN — historical; bought out June 2025), Trump Jr. | `02_MEDIA_FIREWALL.md` |
 | **Omeed Malik** | Former TCN financier, 1789 founder | `02_MEDIA_FIREWALL.md` |
-| **Larry Ellison** | Oracle chairman, WBD guarantor — dual exposure node | `02_MEDIA_FIREWALL.md`, `04_CAPITAL_ARCHITECTURE.md` |
+| **Larry Ellison** | Oracle chairman, WBD guarantor, PCAST member, TBI funder — infrastructure + media + policy architecture | `Node_Dossiers/tier1_ellison_node.md`, `02_MEDIA_FIREWALL.md`, `04_CAPITAL_ARCHITECTURE.md` |
+| **Tony Blair** | Board of Peace Executive Board, TBI chair, Oracle deployment vehicle, Iraq War rehabilitation arc | `Node_Dossiers/tier1_blair_node.md`, `03_BOARD_OF_PEACE.md` |
 
 ---
 
@@ -220,6 +221,10 @@ For full routing details see `CONTEXT_ROUTER.md`. Quick reference:
 | `tier1_zorro_ranch_epstein.md` | Epstein, Zorro Ranch, San Rafael Ranch, New Mexico, DOJ files, NM truth commission, AG Torrez, Huffines, Kahn, Indyke |
 | `tier1_kushner_historical.md` | Charles Kushner, pardon, Kushner Companies |
 | `tier1_binsulayem_epstein.md` | bin Sulayem, DP World, Epstein, UAE |
+| `tier1_thiel_node.md` | Peter Thiel, Palantir, Founders Fund, Valar Ventures, 1789 Capital, Mithril Capital, JD Vance, Antichrist, katechon, Cluny Project, Vincenzo Gioberti Cultural Association, Pope Leo XIV, Bilderberg Steering Committee, Brexit email June 2016, "amazing new alliances," "return to tribalism," Handala, Carbyne, Reporty |
+| `tier1_zampolli_node.md` | Paolo Zampolli, Amanda Ungaro, ID Models, WATO, Special Envoy Global Partnerships, David Venturella, Jean-Luc Brunel, TerraMar Project, Elite Model Management 2004, Melania H-1B, Hungary April 2026, St. István Basilica, Second Notice SLAPP, RAI Report, Maurizio Miculan |
+| `tier1_blair_node.md` | Tony Blair, Tony Blair Institute (TBI), Board of Peace, Gaza Executive Board, Larry Ellison, Oracle, World Governments Summit, NHS National Data Library, national data unification, Peter Mandelson (adjacent — Epstein-linked), Keir Starmer, Good Friday Agreement, Iraq War, Chilcot Report |
+| `tier1_ellison_node.md` | Larry Ellison, David Ellison, Safra Catz, Oracle, Skydance, Paramount Skydance, Warner Bros. Discovery, CNN, HBO, CBS News, Bari Weiss, PCAST, Stargate, TikTok, Lawrence Ellison Foundation, TBI, "citizens will be on their best behavior," national data unification, $16M CBS-Trump settlement, Late Show cancellation, 60 Minutes Venezuela hold |
 | `tier2_affinity_qxo.md` | Affinity Partners, QXO, Apollo, Jared Kushner |
 | `tier2_sovereign_wealth_movers.md` | PIF, Mubadala, Saudi, UAE, 13F filings |
 | `tier2_egypt_gulf_integration.md` | Egypt, Sisi, Ras El-Hekma, ADQ, Suez |
