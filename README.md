@@ -9,8 +9,6 @@ An open-source tool that identifies legal, regulatory, and procedural mechanisms
 
 Powered by [The Regulated Friction Project](https://github.com/Leerrooy95/The_Regulated_Friction_Project).
 
-> **Live hosted version**: [regulatedfriction.me](https://regulatedfriction.me) — sign in with Discord, no API key required. Tier-based access (Observer · Supporter · Sustainer · Analyst). See [Access Tiers](#access-tiers) below.
-
 ---
 
 ## Why This Exists
@@ -105,23 +103,6 @@ This tool requires an **Anthropic API key** for the countermeasure analysis step
 3. Export it: `export ANTHROPIC_API_KEY=sk-ant-...`
 
 GLiNER2 runs entirely locally — no API key needed for entity extraction.
-
-> **Prefer no setup?** Use the hosted version at [regulatedfriction.me](https://regulatedfriction.me) — sign in with Discord and analyze without managing an API key.
-
----
-
-## Access Tiers
-
-The hosted server at [regulatedfriction.me](https://regulatedfriction.me) uses Discord OAuth and Patreon-based tiers:
-
-| Tier | Analyses / month | How to get it |
-|------|-----------------|---------------|
-| **Observer** | 3 | Just sign in with Discord |
-| **Supporter** | 20 | $5/mo on Patreon |
-| **Sustainer** | 60 | $10/mo on Patreon |
-| **Analyst** | 200 | $25/mo on Patreon |
-
-The self-hosted BYOK version (this repository) has no usage limits — run as many analyses as your API key allows.
 
 ---
 
@@ -291,7 +272,6 @@ See [SECURITY.md](SECURITY.md) for the vulnerability reporting policy.
   - **A-17** Public-Private Cost Obfuscation (Mixed Funding Narrative Laundering) — durability 5
   - **D-12** Bipartisan Absorption of Coercive Narrative (Cross-Party Urgency Laundering) — durability 3
   - **H-06** Crisis Event Instrumentalization for Pending Litigation Pressure (Judicial Bypass via Trauma Narrative) — durability 4
-- **Live server**: hosted version at [regulatedfriction.me](https://regulatedfriction.me) with Discord OAuth and Patreon tier system (Observer / Supporter / Sustainer / Analyst)
 - **Batch mode**: `--batch` CLI flag processes a file of URLs/texts (one per line), saving all results to `output/`
 - **Configurable rate limiting**: `RATE_LIMIT` environment variable (default: `10 per minute`)
 - **Context index in Claude prompt**: Background research from `_AI_CONTEXT_INDEX/` is now included in analysis prompts (capped at 8K chars)
